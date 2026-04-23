@@ -107,9 +107,8 @@
   perspective: 1200px;
 }
 
-.bottle-wrapper {
   width: 100%;
-  max-width: 400px;
+  max-width: 600px;
   height: auto;
   display: flex;
   align-items: center;
