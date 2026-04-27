@@ -15,45 +15,38 @@ const ProductShowcase = () => {
   const products = [
     {
       id: 1,
-      name: 'Walnut Oil',
-      image: '/images/image1.png',
-      description: 'Premium walnut oil',
+      name: 'Refined Soya Oil',
+      image: '/images/RefinedSoyaOil.jpeg',
+      description: 'Premium refined soya oil',
       bgColor: '#FFF8DC'
     },
     {
       id: 2,
-      name: 'Hemp Oil',
-      image: '/images/image2.png',
-      description: 'Pure hemp seed oil',
+      name: 'Soya Bean Oil',
+      image: '/images/SoyaBeanOil.jpeg',
+      description: 'High quality soya bean oil',
       bgColor: '#F0FFF0'
     },
     {
       id: 3,
-      name: 'Sunflower Oil',
-      image: '/images/image3.png',
-      description: 'Cold-pressed sunflower',
+      name: 'Kitchen Background',
+      image: '/images/KitchenBg.jpeg',
+      description: 'Perfect for every kitchen',
       bgColor: '#FFFACD'
     },
     {
       id: 4,
-      name: 'Tea Tree Oil',
-      image: '/images/image4.png',
-      description: 'Pure tea tree essence',
+      name: 'Company Slogan',
+      image: '/images/Slogan.jpeg',
+      description: 'Our promise to you',
       bgColor: '#E8F5E9'
     },
     {
       id: 5,
-      name: 'Pumpkin Oil',
-      image: '/images/image5.png',
-      description: 'Premium pumpkin seed',
+      name: 'Company Logo',
+      image: '/images/logo.jpeg',
+      description: 'Our brand identity',
       bgColor: '#FFF3E0'
-    },
-    {
-      id: 6,
-      name: 'Avocado Oil',
-      image: '/images/image6.png',
-      description: 'Pure avocado extract',
-      bgColor: '#FFFDE7'
     }
   ]
 

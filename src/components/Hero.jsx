@@ -7,53 +7,45 @@ import '../styles/Bottle3D.css'
 const Hero = ({ scrollY }) => {
   // Oil types with real bottle images
   const oilTypes = [
-    { 
-      name: 'Walnut Oil', 
-      image: '/images/image1.png',
-      description: 'Premium walnut oil',
+    {
+      name: 'Refined Soya Oil',
+      image: '/images/RefinedSoyaOil.jpeg',
+      description: 'Premium refined soya oil',
       bgGradient: 'linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 100%)',
-      company: 'PureGlow',
-      tagline: 'Pure & Natural Oils'
+      company: 'Your Company',
+      tagline: 'Pure & Trusted Quality'
     },
-    { 
-      name: 'Hemp Oil', 
-      image: '/images/image2.png',
-      description: 'Pure hemp seed oil',
+    {
+      name: 'Soya Bean Oil',
+      image: '/images/SoyaBeanOil.jpeg',
+      description: 'High quality soya bean oil',
       bgGradient: 'linear-gradient(135deg, #F0FFF0 0%, #E8F5E9 100%)',
-      company: 'PureGlow',
-      tagline: 'Pure & Natural Oils'
+      company: 'Your Company',
+      tagline: 'Natural Goodness'
     },
-    { 
-      name: 'Sunflower Oil', 
-      image: '/images/image3.png',
-      description: 'Cold-pressed sunflower',
+    {
+      name: 'Kitchen Background',
+      image: '/images/KitchenBg.jpeg',
+      description: 'Perfect for every kitchen',
       bgGradient: 'linear-gradient(135deg, #FFFACD 0%, #FFD700 100%)',
-      company: 'PureGlow',
-      tagline: 'Pure & Natural Oils'
+      company: 'Your Company',
+      tagline: 'Healthy Cooking Starts Here'
     },
-    { 
-      name: 'Tea Tree Oil', 
-      image: '/images/image4.png',
-      description: 'Pure tea tree essence',
+    {
+      name: 'Company Slogan',
+      image: '/images/Slogan.jpeg',
+      description: 'Our promise to you',
       bgGradient: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)',
-      company: 'PureGlow',
-      tagline: 'Pure & Natural Oils'
+      company: 'Your Company',
+      tagline: 'Quality & Trust'
     },
-    { 
-      name: 'Pumpkin Oil', 
-      image: '/images/image5.png',
-      description: 'Premium pumpkin seed',
+    {
+      name: 'Company Logo',
+      image: '/images/logo.jpeg',
+      description: 'Our brand identity',
       bgGradient: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)',
-      company: 'PureGlow',
-      tagline: 'Pure & Natural Oils'
-    },
-    { 
-      name: 'Avocado Oil', 
-      image: '/images/image6.png',
-      description: 'Pure avocado extract',
-      bgGradient: 'linear-gradient(135deg, #FFFDE7 0%, #FFEB3B 100%)',
-      company: 'PureGlow',
-      tagline: 'Pure & Natural Oils'
+      company: 'Your Company',
+      tagline: 'Excellence in Every Drop'
     }
   ]
 
