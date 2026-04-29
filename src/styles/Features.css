@@ -1,129 +1,123 @@
-/* Features Section Styles */
-.features {
-  width: 100%;
-  padding: 5rem 2rem;
-  background: linear-gradient(180deg, #FFFDF7 0%, #FFFBF0 100%);
-}
-
-.features-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.features-header {
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.features-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 800;
-  color: #1a1a1a;
-  margin: 0 0 1rem 0;
-  letter-spacing: -1px;
-}
-
-.features-subtitle {
-  font-size: 1.1rem;
-  color: #6b6b6b;
-  margin: 0;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.feature-card {
-  background: #FFFFFF;
-  border-radius: 16px;
-  padding: 2.5rem 2rem;
-  border: 1px solid #F0E6D2;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+/* ===== FEATURES SECTION ===== */
+.features-section {
+  padding: 6rem 0;
+  background: var(--bg-dark-2);
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease;
 }
 
-.feature-card:nth-child(1) {
-  background: linear-gradient(135deg, #FFF8DC 0%, #FFFFFF 100%);
-  border-color: #FFE8B6;
-}
-
-.feature-card:nth-child(2) {
-  background: linear-gradient(135deg, #F0FFF0 0%, #FFFFFF 100%);
-  border-color: #C8E6C9;
-}
-
-.feature-card:nth-child(3) {
-  background: linear-gradient(135deg, #FFFACD 0%, #FFFFFF 100%);
-  border-color: #FFF59D;
-}
-
-.feature-card:nth-child(4) {
-  background: linear-gradient(135deg, #FFE4E1 0%, #FFFFFF 100%);
-  border-color: #FFCCCC;
-}
-
-.feature-card::before {
+.features-section::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, #F4D03F, #D4AF37);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
 }
 
-.feature-card:hover::before {
-  transform: scaleX(1);
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* Feature Card */
+.feature-card {
+  position: relative;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(212, 175, 55, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Shine Effect */
+.feature-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+  transition: left 0.6s;
+  pointer-events: none;
+}
+
+.feature-card:hover .feature-shine {
+  left: 100%;
+}
+
+/* Icon */
+.feature-icon-wrapper {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-icon-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
+  opacity: 0.15;
+  transition: opacity 0.3s;
+}
+
+.feature-card:hover .feature-icon-bg {
+  opacity: 0.25;
 }
 
 .feature-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  display: inline-block;
+  position: relative;
+  font-size: 1.8rem;
+  z-index: 1;
 }
 
+/* Text */
 .feature-title {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 0.75rem 0;
+  color: var(--text-white);
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
 }
 
-.feature-description {
-  font-size: 1rem;
-  color: #6b6b6b;
-  line-height: 1.6;
-  margin: 0;
+.feature-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.7;
 }
 
-.feature-line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #F4D03F, transparent);
-  transform-origin: left;
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-@media (max-width: 768px) {
-  .features {
-    padding: 3rem 1.5rem;
+@media (max-width: 640px) {
+  .features-section {
+    padding: 4rem 0;
   }
 
   .features-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
-  .features-title {
-    font-size: 1.75rem;
+  .feature-card {
+    padding: 1.5rem;
   }
 }

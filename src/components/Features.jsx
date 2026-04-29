@@ -3,134 +3,86 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import '../styles/Features.css'
 
-// Features component with scroll-triggered animations
 const Features = () => {
-  const { ref, inView } = useInView({
-    threshold: 0.2,
-    triggerOnce: true
-  })
+  const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true })
 
-  // Feature data
   const features = [
     {
-      id: 1,
       icon: '🌿',
-      title: '100% Natural',
-      description: 'No additives, no preservatives. Pure oil from nature.',
-      delay: 0
+      title: '100% Pure & Natural',
+      description: 'No chemicals, no additives. Gold Mairani oils are crafted with traditional methods to deliver pure, unadulterated quality.',
+      gradient: 'linear-gradient(135deg, #1B5E20, #4CAF50)',
     },
     {
-      id: 2,
-      icon: '💪',
-      title: 'Rich in Nutrients',
-      description: 'Packed with antioxidants and essential fatty acids.',
-      delay: 0.2
+      icon: '🏭',
+      title: 'Modern Processing',
+      description: 'State-of-the-art refinery by Mateshwari Industries ensures consistent quality and hygiene in every bottle.',
+      gradient: 'linear-gradient(135deg, #E65100, #FF9800)',
     },
     {
-      id: 3,
-      icon: '❄️',
-      title: 'Cold Pressed',
-      description: 'Traditional method preserves all nutrients.',
-      delay: 0.4
-    },
-    {
-      id: 4,
       icon: '❤️',
-      title: 'Heart Friendly',
-      description: 'Supports cardiovascular health naturally.',
-      delay: 0.6
+      title: 'Heart-Healthy Oils',
+      description: 'Our oils are rich in essential fatty acids and antioxidants, supporting cardiovascular health for your family.',
+      gradient: 'linear-gradient(135deg, #D32F2F, #EF5350)',
+    },
+    {
+      icon: '👨‍🍳',
+      title: 'Perfect for Every Dish',
+      description: 'From crispy frying to aromatic tempering, our range of oils caters to every Indian cooking style.',
+      gradient: 'linear-gradient(135deg, #B8860B, #F4D03F)',
+    },
+    {
+      icon: '✅',
+      title: 'FSSAI Certified',
+      description: 'Every batch is tested and certified, meeting the highest Indian food safety standards.',
+      gradient: 'linear-gradient(135deg, #0D3B0F, #1B5E20)',
+    },
+    {
+      icon: '📦',
+      title: 'Multiple Pack Sizes',
+      description: 'Available in convenient sizes from 500ml to 15L, perfect for households and businesses alike.',
+      gradient: 'linear-gradient(135deg, #4A148C, #7C4DFF)',
     }
   ]
 
-  // Container animation
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  }
-
-  // Individual card animation with scroll trigger
-  const cardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 30,
-      scale: 0.95
-    },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        delay: i * 0.15,
-        duration: 0.6,
-        ease: [0.34, 1.56, 0.64, 1]
-      }
-    })
-  }
-
   return (
-    <section className="features" ref={ref}>
-      <motion.div 
-        className="features-container"
-        variants={containerVariants}
-        initial="hidden"
-        animate={inView ? 'visible' : 'hidden'}
+    <section className="features-section" id="features" ref={ref}>
+      <motion.div
+        className="section-container"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.6 }}
       >
-        {/* Section heading with entrance animation */}
-        <motion.div 
-          className="features-header"
-          initial={{ opacity: 0, y: -20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-        >
-          <h2 className="features-title">Why Choose Our Oil?</h2>
-          <p className="features-subtitle">Crafted with care for your wellbeing</p>
-        </motion.div>
+        <h2 className="section-title">
+          Why Choose <span className="gold-text">Gold Mairani?</span>
+        </h2>
+        <p className="section-subtitle">
+          Trusted by thousands of families across India
+        </p>
 
-        {/* Features grid with staggered animations */}
-        <motion.div className="features-grid">
-          {features.map((feature, index) => (
+        <div className="features-grid">
+          {features.map((feature, i) => (
             <motion.div
-              key={feature.id}
+              key={i}
               className="feature-card"
-              variants={cardVariants}
-              custom={index}
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.15 + i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{
-                y: -10,
-                boxShadow: '0 20px 40px rgba(244, 208, 63, 0.2)',
+                y: -8,
                 transition: { duration: 0.3 }
               }}
             >
-              {/* Icon animation on hover */}
-              <motion.div 
-                className="feature-icon"
-                whileHover={{ 
-                  scale: 1.2, 
-                  rotate: 10,
-                  transition: { duration: 0.3 }
-                }}
-              >
-                {feature.icon}
-              </motion.div>
-
+              <div className="feature-icon-wrapper">
+                <div className="feature-icon-bg" style={{ background: feature.gradient }} />
+                <span className="feature-icon">{feature.icon}</span>
+              </div>
               <h3 className="feature-title">{feature.title}</h3>
-              <p className="feature-description">{feature.description}</p>
-
-              {/* Animated underline on hover */}
-              <motion.div 
-                className="feature-line"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.3 }}
-              />
+              <p className="feature-desc">{feature.description}</p>
+              <div className="feature-shine" />
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   )

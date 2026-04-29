@@ -1,398 +1,359 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import '../styles/Hero.css'
-import '../styles/Bottle3D.css'
 
-// Hero component with animated rotating oil bottle and parallax effect
 const Hero = ({ scrollY }) => {
-  // Oil types with real bottle images
-  const oilTypes = [
+  const oilProducts = [
     {
-      name: 'Refined Soya Oil',
-      image: '/images/RefinedSoyaOil.jpeg',
-      description: 'Premium refined soya oil',
-      bgGradient: 'linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 100%)',
-      company: 'Your Company',
-      tagline: 'Pure & Trusted Quality'
+      id: 'mustard',
+      name: 'MUSTARD',
+      fullName: 'Pure Mustard Oil',
+      tagline: 'Swad Ka Powerful Blast!',
+      description: 'Gold Mairani Kachi Ghani Pure Mustard Oil — traditional cold-pressed purity for every Indian kitchen.',
+      image: '/images/mustard_oil_bottle.png',
+      labelImage: '/images/Slogan.jpeg',
+      bgGradient: 'radial-gradient(ellipse at 30% 50%, rgba(212, 47, 47, 0.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(244, 208, 63, 0.12) 0%, transparent 50%)',
+      accentColor: '#D32F2F',
+      glowColor: 'rgba(244, 208, 63, 0.4)',
+      textBgColor: 'rgba(211, 47, 47, 0.08)',
     },
     {
-      name: 'Soya Bean Oil',
-      image: '/images/SoyaBeanOil.jpeg',
-      description: 'High quality soya bean oil',
-      bgGradient: 'linear-gradient(135deg, #F0FFF0 0%, #E8F5E9 100%)',
-      company: 'Your Company',
-      tagline: 'Natural Goodness'
+      id: 'soyabean',
+      name: 'SOYABEAN',
+      fullName: 'Refined Soya Oil',
+      tagline: 'Rich in Taste & Purity',
+      description: 'Gold Mairani Refined Soya Bean Oil — light, healthy & rich in essential nutrients for wholesome cooking.',
+      image: '/images/soyabean_oil_bottle.png',
+      labelImage: '/images/RefinedSoyaOil.jpeg',
+      bgGradient: 'radial-gradient(ellipse at 30% 50%, rgba(27, 94, 32, 0.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(76, 175, 80, 0.12) 0%, transparent 50%)',
+      accentColor: '#1B5E20',
+      glowColor: 'rgba(76, 175, 80, 0.4)',
+      textBgColor: 'rgba(27, 94, 32, 0.08)',
     },
     {
-      name: 'Kitchen Background',
-      image: '/images/KitchenBg.jpeg',
-      description: 'Perfect for every kitchen',
-      bgGradient: 'linear-gradient(135deg, #FFFACD 0%, #FFD700 100%)',
-      company: 'Your Company',
-      tagline: 'Healthy Cooking Starts Here'
-    },
-    {
-      name: 'Company Slogan',
-      image: '/images/Slogan.jpeg',
-      description: 'Our promise to you',
-      bgGradient: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)',
-      company: 'Your Company',
-      tagline: 'Quality & Trust'
-    },
-    {
-      name: 'Company Logo',
-      image: '/images/logo.jpeg',
-      description: 'Our brand identity',
-      bgGradient: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)',
-      company: 'Your Company',
-      tagline: 'Excellence in Every Drop'
+      id: 'cottonseed',
+      name: 'COTTONSEED',
+      fullName: 'Refined Cottonseed Oil',
+      tagline: 'Pure & Light Cooking',
+      description: 'Gold Mairani Refined Cottonseed Oil — naturally light, pure and perfect for crispy, healthy frying.',
+      image: '/images/cottonseed_oil_bottle.png',
+      labelImage: '/images/KitchenBg.jpeg',
+      bgGradient: 'radial-gradient(ellipse at 30% 50%, rgba(230, 81, 0, 0.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(255, 152, 0, 0.12) 0%, transparent 50%)',
+      accentColor: '#E65100',
+      glowColor: 'rgba(255, 152, 0, 0.4)',
+      textBgColor: 'rgba(230, 81, 0, 0.08)',
     }
   ]
 
-  const [currentOilIndex, setCurrentOilIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(1)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
-  // No auto-rotation - only manual control via buttons
+  // Auto-slide every 4 seconds
   useEffect(() => {
-    // Component cleanup
-    return () => {}
-  }, [])
+    if (!isAutoPlaying) return
+    const timer = setInterval(() => {
+      setDirection(1)
+      setCurrentIndex(prev => (prev + 1) % oilProducts.length)
+    }, 4000)
+    return () => clearInterval(timer)
+  }, [isAutoPlaying, oilProducts.length])
 
-  // Handle next oil
-  const handleNextOil = () => {
-    setCurrentOilIndex((prev) => (prev + 1) % oilTypes.length)
+  const handleNext = useCallback(() => {
+    setIsAutoPlaying(false)
     setDirection(1)
-  }
+    setCurrentIndex(prev => (prev + 1) % oilProducts.length)
+    setTimeout(() => setIsAutoPlaying(true), 8000)
+  }, [oilProducts.length])
 
-  // Handle previous oil
-  const handlePrevOil = () => {
-    setCurrentOilIndex((prev) => (prev - 1 + oilTypes.length) % oilTypes.length)
+  const handlePrev = useCallback(() => {
+    setIsAutoPlaying(false)
     setDirection(-1)
-  }
+    setCurrentIndex(prev => (prev - 1 + oilProducts.length) % oilProducts.length)
+    setTimeout(() => setIsAutoPlaying(true), 8000)
+  }, [oilProducts.length])
 
-  // Handle direct oil selection via indicator dots
-  const handleOilSelect = (index) => {
-    setDirection(index > currentOilIndex ? 1 : -1)
-    setCurrentOilIndex(index)
-  }
+  const handleSelect = useCallback((index) => {
+    setIsAutoPlaying(false)
+    setDirection(index > currentIndex ? 1 : -1)
+    setCurrentIndex(index)
+    setTimeout(() => setIsAutoPlaying(true), 8000)
+  }, [currentIndex])
 
-  const currentOil = oilTypes[currentOilIndex]
+  const current = oilProducts[currentIndex]
 
-  // Animation variants for the bottle
+  // Animation variants for the bottle — slides from left/right
   const bottleVariants = {
-    initial: { 
-      y: 0, 
-      opacity: 0, 
-      scale: 0.8,
-      rotateZ: -15
-    },
-    animate: { 
-      y: 0, 
-      opacity: 1, 
-      scale: 1,
-      rotateZ: 0,
-      transition: { 
-        duration: 1.2, 
-        ease: [0.34, 1.56, 0.64, 1],
-        delay: 0.2
-      }
-    }
-  }
-
-  // Oil rotation animation - directional slide in/out based on button click
-  const oilRotateVariants = {
-    enter: (direction) => ({
+    enter: (dir) => ({
+      x: dir > 0 ? 300 : -300,
       opacity: 0,
-      scale: 0.8,
-      x: direction > 0 ? -200 : 200  // Slide in from opposite direction
+      scale: 0.7,
+      rotateY: dir > 0 ? 25 : -25,
     }),
     center: {
+      x: 0,
       opacity: 1,
       scale: 1,
-      x: 0,
+      rotateY: 0,
       transition: {
-        duration: 0.9,
-        ease: 'easeOut',
-        type: 'spring',
-        stiffness: 70,
-        damping: 20
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
       }
     },
-    exit: (direction) => ({
+    exit: (dir) => ({
+      x: dir > 0 ? -300 : 300,
       opacity: 0,
-      scale: 0.8,
-      x: direction > 0 ? 200 : -200,  // Slide out in button direction
+      scale: 0.7,
+      rotateY: dir > 0 ? -25 : 25,
       transition: {
-        duration: 0.7,
+        duration: 0.5,
         ease: 'easeIn'
       }
     })
   }
 
-  // Floating animation loop
-  const floatingVariants = {
-    float: {
-      y: [0, -20, 0],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: 'easeInOut'
-      }
-    }
-  }
-
-  // Text animation variants
-  const textVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: (i) => ({
+  // Background text animation
+  const bgTextVariants = {
+    enter: (dir) => ({
+      x: dir > 0 ? 200 : -200,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
       opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.4 + i * 0.15,
-        duration: 0.8
-      }
+      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }
+    },
+    exit: (dir) => ({
+      x: dir > 0 ? -200 : 200,
+      opacity: 0,
+      transition: { duration: 0.4 }
     })
   }
 
-  const buttonVariants = {
-    initial: { opacity: 0, scale: 0.9 },
-    animate: {
+  // Info text animation
+  const infoVariants = {
+    enter: { opacity: 0, y: 30 },
+    center: {
       opacity: 1,
-      scale: 1,
-      transition: { delay: 0.8, duration: 0.6 }
+      y: 0,
+      transition: { duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }
     },
-    hover: { scale: 1.08 }
-  }
-
-  // Oil info animation
-  const oilInfoVariants = {
-    enter: { opacity: 0, y: 20 },
-    center: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
-  }
-
-  // Render - no decorative elements needed with real images
-  const renderDecorativeElements = () => {
-    return null
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: { duration: 0.3 }
+    }
   }
 
   return (
-    <section className="hero">
-      {/* Animated background gradient - changes with oil type */}
-      <motion.div 
-        className="hero-bg"
-        animate={{ 
-          background: oilTypes[currentOilIndex].bgGradient
-        }}
-        transition={{ 
-          duration: 0
-        }}
-        style={{
-          background: oilTypes[currentOilIndex].bgGradient
-        }}
-      />
+    <section className="hero" id="hero">
+      {/* Animated Background */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`bg-${currentIndex}`}
+          className="hero-bg-gradient"
+          style={{ background: current.bgGradient }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}
+        />
+      </AnimatePresence>
 
-      {/* Floating Particles Background */}
-      <div className="floating-particles">
-        {[...Array(6)].map((_, i) => (
+      {/* Ambient Glow */}
+      <div className="hero-ambient-glow" style={{ background: current.glowColor }} />
+
+      {/* Floating Particles */}
+      <div className="hero-particles">
+        {[...Array(8)].map((_, i) => (
           <motion.div
-            key={`particle-${i}`}
-            className="particle"
+            key={i}
+            className="hero-particle"
             animate={{
-              y: [0, -50, 0],
-              x: [0, Math.random() * 50 - 25, 0],
-              opacity: [0.3, 0.8, 0.3]
+              y: [0, -60 - Math.random() * 40, 0],
+              x: [0, Math.random() * 40 - 20, 0],
+              opacity: [0.1, 0.5, 0.1],
             }}
             transition={{
-              duration: 4 + i,
+              duration: 5 + Math.random() * 4,
               repeat: Infinity,
-              ease: 'easeInOut',
-              delay: i * 0.3
+              delay: i * 0.5,
+              ease: 'easeInOut'
             }}
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${40 + Math.random() * 60}px`,
-              height: `${40 + Math.random() * 60}px`,
-              background: '#FFD700',
-              borderRadius: '50%',
-              filter: 'blur(40px)',
-              opacity: 0.15
+              left: `${10 + Math.random() * 80}%`,
+              top: `${10 + Math.random() * 80}%`,
+              width: `${30 + Math.random() * 50}px`,
+              height: `${30 + Math.random() * 50}px`,
+              background: current.glowColor,
             }}
           />
         ))}
       </div>
 
-      <div className="hero-content">
-        {/* Main headline with animated oil product name */}
-        <motion.h1 
-          key={`title-${currentOilIndex}`}
-          className="hero-title"
-          variants={textVariants}
-          initial="initial"
-          animate="animate"
-          custom={0}
-        >
-          {currentOil.name}
-        </motion.h1>
-
-        {/* Subheading - Tagline */}
-        <motion.p 
-          key={`subtitle-${currentOilIndex}`}
-          className="hero-subtitle"
-          variants={textVariants}
-          initial="initial"
-          animate="animate"
-          custom={1}
-        >
-          {currentOil.tagline}
-        </motion.p>
-
-        {/* Description */}
-        <motion.p 
-          key={`description-${currentOilIndex}`}
-          className="hero-description"
-          variants={textVariants}
-          initial="initial"
-          animate="animate"
-          custom={2}
-        >
-          {currentOil.description} • Natural & Trusted
-        </motion.p>
-
-        {/* CTA Button with hover effect */}
-        <motion.button 
-          className="btn-primary hero-cta"
-          variants={buttonVariants}
-          initial="initial"
-          animate="animate"
-          whileHover="hover"
-        >
-          Buy Now
-        </motion.button>
-      </div>
-
-      {/* Floating bottle animation with parallax and rotating oil carousel */}
-      <motion.div 
-        className="hero-bottle-container"
-        style={{ 
-          y: scrollY * 0.5, // Parallax effect - moves 50% of scroll distance
-          zIndex: 10
-        }}
-      >
-        <motion.div
-          className="bottle-wrapper"
-          variants={bottleVariants}
-          initial="initial"
-          animate="animate"
-          whileHover="animate"
-        >
-          <motion.div
-            animate="float"
-            variants={floatingVariants}
-          >
-            {/* Rotating Oil Bottle with AnimatePresence */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentOilIndex}
-                custom={direction}
-                variants={oilRotateVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                style={{ perspective: 1200 }}
-              >
-                {/* Real Bottle Image */}
-                <div className="bottle-3d-scene">
-                  <img 
-                    src={currentOil.image} 
-                    alt={currentOil.name}
-                    className="bottle-image"
-                    style={{
-                      maxWidth: '100%',
-                      height: 'auto',
-                      filter: 'drop-shadow(0 30px 60px rgba(0, 0, 0, 0.2))'
-                    }}
-                  />
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Large Decorative Elements - 45% bottle size */}
-            <AnimatePresence mode="wait">
-              {renderDecorativeElements()}
-            </AnimatePresence>
-          </motion.div>
-
-          {/* Oil Type Information */}
+      <div className="hero-layout">
+        {/* Left Side — Product Info */}
+        <div className="hero-info-side">
           <AnimatePresence mode="wait">
             <motion.div
-              key={`info-${currentOilIndex}`}
-              className="oil-info"
-              variants={oilInfoVariants}
+              key={`info-${currentIndex}`}
+              className="hero-info-content"
+              variants={infoVariants}
               initial="enter"
               animate="center"
               exit="exit"
             >
-              <h3 className="oil-name">{currentOil.name}</h3>
-              <p className="oil-description">{currentOil.description}</p>
-              <div className="oil-indicator">
-                {oilTypes.map((_, index) => (
-                  <motion.button
-                    key={index}
-                    className={`indicator-dot ${index === currentOilIndex ? 'active' : ''}`}
-                    onClick={() => handleOilSelect(index)}
-                    animate={{ 
-                      scale: index === currentOilIndex ? 1 : 0.6,
-                      opacity: index === currentOilIndex ? 1 : 0.4
-                    }}
-                    whileHover={{ scale: index === currentOilIndex ? 1.2 : 0.8 }}
-                    whileTap={{ scale: 0.9 }}
-                    aria-label={`Select ${oilTypes[index].name}`}
-                    type="button"
-                  />
-                ))}
+              <motion.span 
+                className="hero-badge"
+                style={{ borderColor: current.accentColor, color: current.accentColor }}
+              >
+                ● Gold Mairani
+              </motion.span>
+
+              <h1 className="hero-main-title">
+                <span className="hero-title-line1">{current.fullName}</span>
+              </h1>
+
+              <p className="hero-tagline" style={{ color: current.accentColor }}>
+                {current.tagline}
+              </p>
+
+              <p className="hero-desc">{current.description}</p>
+
+              <div className="hero-cta-group">
+                <motion.a
+                  href="#products"
+                  className="btn-gold"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Explore Products
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </motion.a>
               </div>
             </motion.div>
           </AnimatePresence>
-        </motion.div>
-      </motion.div>
+        </div>
 
-      {/* Navigation Arrows */}
-      <div className="oil-navigation">
+        {/* Center — 3D Bottle with background name */}
+        <div className="hero-bottle-stage">
+          {/* Background Name Text */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`bgtext-${currentIndex}`}
+              className="hero-bg-name"
+              custom={direction}
+              variants={bgTextVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              style={{ color: current.textBgColor }}
+            >
+              {current.name}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* 3D Bottle */}
+          <div className="bottle-perspective-wrapper">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={`bottle-${currentIndex}`}
+                className="bottle-3d-container"
+                custom={direction}
+                variants={bottleVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+              >
+                <motion.img
+                  src={current.image}
+                  alt={current.fullName}
+                  className="bottle-hero-image"
+                  animate={{
+                    y: [0, -12, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: 'easeInOut'
+                  }}
+                  draggable={false}
+                />
+
+                {/* Bottle glow effect */}
+                <div
+                  className="bottle-glow"
+                  style={{
+                    background: `radial-gradient(ellipse, ${current.glowColor} 0%, transparent 70%)`
+                  }}
+                />
+
+                {/* Bottle reflection */}
+                <div className="bottle-reflection" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation Controls */}
+      <div className="hero-controls">
         <motion.button
-          className="nav-arrow nav-arrow-left"
-          onClick={handlePrevOil}
+          className="hero-nav-btn"
+          onClick={handlePrev}
           whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          aria-label="Previous oil"
+          whileTap={{ scale: 0.9 }}
+          aria-label="Previous product"
         >
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="17 6 7 16 17 26"></polyline>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M15 18l-6-6 6-6" />
           </svg>
         </motion.button>
 
+        {/* Indicator Dots */}
+        <div className="hero-indicators">
+          {oilProducts.map((product, i) => (
+            <motion.button
+              key={i}
+              className={`hero-dot ${i === currentIndex ? 'active' : ''}`}
+              onClick={() => handleSelect(i)}
+              animate={{
+                width: i === currentIndex ? 32 : 10,
+                background: i === currentIndex
+                  ? `linear-gradient(90deg, ${product.accentColor}, ${product.glowColor})`
+                  : 'rgba(255,255,255,0.25)'
+              }}
+              whileHover={{ scale: 1.2 }}
+              transition={{ duration: 0.3 }}
+              aria-label={`Select ${product.fullName}`}
+            />
+          ))}
+        </div>
+
         <motion.button
-          className="nav-arrow nav-arrow-right"
-          onClick={handleNextOil}
+          className="hero-nav-btn"
+          onClick={handleNext}
           whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          aria-label="Next oil"
+          whileTap={{ scale: 0.9 }}
+          aria-label="Next product"
         >
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="11 6 21 16 11 26"></polyline>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M9 18l6-6-6-6" />
           </svg>
         </motion.button>
       </div>
 
-      {/* Scroll indicator animation */}
-      <motion.div 
-        className="scroll-indicator"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
+      {/* Scroll Indicator */}
+      <motion.div
+        className="hero-scroll-hint"
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="6 9 12 15 18 9"></polyline>
+        <span>Scroll Down</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M6 9l6 6 6-6" />
         </svg>
       </motion.div>
     </section>
