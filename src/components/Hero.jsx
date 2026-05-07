@@ -11,6 +11,7 @@ const Hero = () => {
       tagline: 'Swad Ka Powerful Blast!',
       description: 'Gold Mairani Kachi Ghani Pure Mustard Oil — traditional cold-pressed purity for every Indian kitchen.',
       image: '/images/mustard850.png',
+      video: '/images/mustardvideo.mp4',
       bgGradient: 'radial-gradient(ellipse at 50% 30%, rgba(211, 47, 47, 0.25) 0%, rgba(211, 47, 47, 0.08) 50%, transparent 75%)',
       accentColor: '#D32F2F',
       glowColor: 'rgba(211, 47, 47, 0.45)',
@@ -23,6 +24,7 @@ const Hero = () => {
       tagline: 'Rich in Taste & Purity',
       description: 'Gold Mairani Refined Soya Bean Oil — light, healthy & rich in essential nutrients for wholesome cooking.',
       image: '/images/soyabean850.png',
+      video: '/images/soyabeanvideo.mp4',
       bgGradient: 'radial-gradient(ellipse at 50% 30%, rgba(76, 175, 80, 0.22) 0%, rgba(27, 94, 32, 0.08) 50%, transparent 75%)',
       accentColor: '#1B5E20',
       glowColor: 'rgba(76, 175, 80, 0.45)',
@@ -35,6 +37,7 @@ const Hero = () => {
       tagline: 'Pure & Light Cooking',
       description: 'Gold Mairani Refined Cottonseed Oil — naturally light, pure and perfect for crispy, healthy frying.',
       image: '/images/cottonseed850.png',
+      video: '/images/cottonseedvideo.mp4',
       bgGradient: 'radial-gradient(ellipse at 50% 30%, rgba(255, 152, 0, 0.22) 0%, rgba(230, 81, 0, 0.08) 50%, transparent 75%)',
       accentColor: '#E65100',
       glowColor: 'rgba(255, 152, 0, 0.45)',
@@ -46,49 +49,63 @@ const Hero = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(1)
-  const autoSlideTimer = useRef(null)
-  const pauseTimeout = useRef(null)
-  const [isPaused, setIsPaused] = useState(false)
+  const videoRefs = useRef([])
+  const fadePauseTimeout = useRef(null)
+  const prevIndexRef = useRef(0)
+  const VIDEO_START = 3
+  const VIDEO_END = 10
 
-  // Auto-slide every 4 seconds
+  // When slide changes: seek newly-active video to 3s, play it, and advance smoothly at 10s
   useEffect(() => {
-    if (isPaused) return
-    autoSlideTimer.current = setInterval(() => {
+    const vid = videoRefs.current[currentIndex]
+    if (!vid) return
+
+    const previousIndex = prevIndexRef.current
+    const previousVideo = videoRefs.current[previousIndex]
+
+    const advanceSlide = () => {
       setDirection(1)
       setCurrentIndex(prev => (prev + 1) % productCount)
-    }, 4000)
-    return () => clearInterval(autoSlideTimer.current)
-  }, [isPaused, productCount])
+    }
 
-  // Cleanup pause timeout on unmount
-  useEffect(() => {
-    return () => clearTimeout(pauseTimeout.current)
-  }, [])
+    const handleTimeUpdate = () => {
+      if (vid.currentTime >= VIDEO_END) {
+        vid.removeEventListener('timeupdate', handleTimeUpdate)
+        advanceSlide()
+      }
+    }
 
-  // Pause auto-slide on manual interaction, resume after 6s
-  const pauseAutoSlide = useCallback(() => {
-    setIsPaused(true)
-    clearTimeout(pauseTimeout.current)
-    pauseTimeout.current = setTimeout(() => setIsPaused(false), 6000)
-  }, [])
+    const activate = () => {
+      vid.currentTime = VIDEO_START
+      vid.play().catch(() => {})
+      vid.addEventListener('timeupdate', handleTimeUpdate)
+    }
 
-  const handleNext = useCallback(() => {
-    pauseAutoSlide()
-    setDirection(1)
-    setCurrentIndex(prev => (prev + 1) % productCount)
-  }, [productCount, pauseAutoSlide])
+    clearTimeout(fadePauseTimeout.current)
+    if (previousVideo && previousIndex !== currentIndex) {
+      fadePauseTimeout.current = setTimeout(() => {
+        previousVideo.pause()
+      }, 1400)
+    }
 
-  const handlePrev = useCallback(() => {
-    pauseAutoSlide()
-    setDirection(-1)
-    setCurrentIndex(prev => (prev - 1 + productCount) % productCount)
-  }, [productCount, pauseAutoSlide])
+    if (vid.readyState >= 2) {
+      activate()
+    } else {
+      vid.addEventListener('loadeddata', activate, { once: true })
+    }
+
+    prevIndexRef.current = currentIndex
+
+    return () => {
+      vid.removeEventListener('timeupdate', handleTimeUpdate)
+      clearTimeout(fadePauseTimeout.current)
+    }
+  }, [currentIndex, productCount])
 
   const handleSelect = useCallback((index) => {
-    pauseAutoSlide()
     setDirection(index > currentIndex ? 1 : -1)
     setCurrentIndex(index)
-  }, [currentIndex, pauseAutoSlide])
+  }, [currentIndex])
 
   const current = oilProducts[currentIndex]
 
@@ -157,18 +174,20 @@ const Hero = () => {
 
   return (
     <section className="hero" id="hero">
-      {/* Video Background */}
+      {/* Video Background — all 3 always mounted, crossfade via opacity */}
       <div className="hero-video-wrapper">
-        <video
-          className="hero-video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-        >
-          <source src="/images/mustardvideo.mp4" type="video/mp4" />
-        </video>
+        {oilProducts.map((product, i) => (
+          <video
+            key={product.id}
+            ref={el => { videoRefs.current[i] = el }}
+            className={`hero-video ${i === currentIndex ? 'hero-video--active' : ''}`}
+            muted
+            playsInline
+            preload="auto"
+          >
+            <source src={product.video} type="video/mp4" />
+          </video>
+        ))}
         <div className="hero-video-overlay" />
       </div>
 
@@ -240,18 +259,6 @@ const Hero = () => {
 
       {/* Navigation Controls */}
       <div className="hero-controls">
-        <motion.button
-          className="hero-nav-btn"
-          onClick={handlePrev}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.92 }}
-          aria-label="Previous product"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </motion.button>
-
         <div className="hero-indicators">
           {oilProducts.map((product, i) => (
             <motion.button
@@ -270,18 +277,6 @@ const Hero = () => {
             />
           ))}
         </div>
-
-        <motion.button
-          className="hero-nav-btn"
-          onClick={handleNext}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.92 }}
-          aria-label="Next product"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M9 18l6-6-6-6" />
-          </svg>
-        </motion.button>
       </div>
 
       {/* ===== PRODUCT INFO ===== */}
