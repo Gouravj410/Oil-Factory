@@ -32,18 +32,15 @@ const ProductDetail = () => {
         'Enhances Digestion',
         'Traditional Cooking Essential'
       ],
-      packingSizes: [
-        { size: '500 ML', price: '₹185', uses: 'Single Use / Trial' },
-        { size: '1 Liter', price: '₹350', uses: 'Regular Family Use' },
-        { size: '2 Liter', price: '₹680', uses: 'Monthly Family Use' },
-        { size: '5 Liter', price: '₹1,650', uses: 'Bulk Purchase' },
-        { size: '15 Liter', price: '₹4,800', uses: 'Commercial / Bulk' }
+      packagingTypes: [
+        { type: 'Plastic Bottle', size: '500 ML', image: '/images/mustard_oil_bottle.png', description: 'Convenient for daily use' },
+        { type: 'Plastic Bottle', size: '1 Liter', image: '/images/mustard_oil_bottle.png', description: 'Perfect for families' },
+        { type: 'Can', size: '5 Liter', image: '/images/MustardOilCan.jpg', description: 'Bulk storage solution' }
       ],
       images: [
-        '/images/Slogan.jpeg',
+        '/images/mustard_oil_bottle.png',
         '/images/mustard_poster_1.png',
-        '/images/mustard_poster_2.png',
-        '/images/mustard_poster_3.png'
+        '/images/mustard_poster_2.png'
       ]
     },
     soyabean: {
@@ -67,16 +64,13 @@ const ProductDetail = () => {
         'Promotes Healthy Skin',
         'Versatile for All Dishes'
       ],
-      packingSizes: [
-        { size: '500 ML', price: '₹120', uses: 'Single Use / Trial' },
-        { size: '1 Liter', price: '₹220', uses: 'Regular Family Use' },
-        { size: '2 Liter', price: '₹420', uses: 'Monthly Family Use' },
-        { size: '5 Liter', price: '₹1,000', uses: 'Bulk Purchase' },
-        { size: '15 Liter', price: '₹2,850', uses: 'Commercial / Bulk' }
+      packagingTypes: [
+        { type: 'Plastic Bottle', size: '500 ML', image: '/images/soyabean_oil_bottle.png', description: 'Convenient for daily use' },
+        { type: 'Plastic Bottle', size: '1 Liter', image: '/images/soyabean_oil_bottle.png', description: 'Perfect for families' },
+        { type: 'Can', size: '5 Liter', image: '/images/MustardOilCan.jpg', description: 'Bulk storage solution' }
       ],
       images: [
-        '/images/RefinedSoyaOil.jpeg',
-        '/images/SoyaBeanOil.jpeg',
+        '/images/soyabean_oil_bottle.png',
         '/images/soya_poster_1.png',
         '/images/soya_poster_2.png'
       ]
@@ -102,18 +96,15 @@ const ProductDetail = () => {
         'Pure & Additive-Free',
         'Long Shelf Life'
       ],
-      packingSizes: [
-        { size: '500 ML', price: '₹110', uses: 'Single Use / Trial' },
-        { size: '1 Liter', price: '₹200', uses: 'Regular Family Use' },
-        { size: '2 Liter', price: '₹380', uses: 'Monthly Family Use' },
-        { size: '5 Liter', price: '₹900', uses: 'Bulk Purchase' },
-        { size: '15 Liter', price: '₹2,550', uses: 'Commercial / Bulk' }
+      packagingTypes: [
+        { type: 'Plastic Bottle', size: '500 ML', image: '/images/cottonseed_oil_bottle.png', description: 'Convenient for daily use' },
+        { type: 'Plastic Bottle', size: '1 Liter', image: '/images/cottonseed_oil_bottle.png', description: 'Perfect for families' },
+        { type: 'Can', size: '5 Liter', image: '/images/MustardOilCan.jpg', description: 'Bulk storage solution' }
       ],
       images: [
-        '/images/KitchenBg.jpeg',
+        '/images/cottonseed_oil_bottle.png',
         '/images/cotton_poster_1.png',
-        '/images/cotton_poster_2.png',
-        '/images/cotton_poster_3.png'
+        '/images/cotton_poster_2.png'
       ]
     }
   }
@@ -140,7 +131,7 @@ const ProductDetail = () => {
         style={{ background: `linear-gradient(135deg, ${product.accentColor}15 0%, ${product.accentColor}05 100%)` }}
       >
         <div className="product-hero-content">
-          <Link to="/" className="back-link">
+          <Link to="/#products" className="back-link">
             ← Back to Home
           </Link>
           
@@ -245,18 +236,18 @@ const ProductDetail = () => {
         </motion.div>
       </div>
 
-      {/* Packing Sizes Section */}
+      {/* Packaging Types Section */}
       <motion.div
         className="product-packing-section"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.6 }}
       >
-        <h2 className="packing-title">Available Pack Sizes</h2>
-        <p className="packing-subtitle">Choose the perfect size for your needs</p>
+        <h2 className="packing-title">Available Packaging</h2>
+        <p className="packing-subtitle">Choose the perfect packaging for your needs</p>
 
         <div className="packing-grid">
-          {product.packingSizes.map((pack, i) => (
+          {product.packagingTypes.map((pack, i) => (
             <motion.div
               key={i}
               className="packing-card"
@@ -264,11 +255,12 @@ const ProductDetail = () => {
               transition={{ duration: 0.3 }}
               style={{ borderTopColor: product.accentColor }}
             >
-              <div className="packing-size">{pack.size}</div>
-              <div className="packing-price" style={{ color: product.accentColor }}>
-                {pack.price}
+              <div className="packing-image">
+                <img src={pack.image} alt={`${pack.type} ${pack.size}`} />
               </div>
-              <div className="packing-uses">{pack.uses}</div>
+              <div className="packing-type">{pack.type}</div>
+              <div className="packing-size">{pack.size}</div>
+              <div className="packing-description">{pack.description}</div>
             </motion.div>
           ))}
         </div>
@@ -288,7 +280,7 @@ const ProductDetail = () => {
           <button className="cta-btn-primary" style={{ background: product.accentColor }}>
             Order Now
           </button>
-          <Link to="/" className="cta-btn-secondary">
+          <Link to="/#products" className="cta-btn-secondary">
             Back to Home
           </Link>
         </div>

@@ -53,9 +53,7 @@ const Hero = () => {
   const fadePauseTimeout = useRef(null)
   const prevIndexRef = useRef(0)
   const VIDEO_START = 3
-  const VIDEO_END = 10
 
-  // When slide changes: seek newly-active video to 3s, play it, and advance smoothly at 10s
   useEffect(() => {
     const vid = videoRefs.current[currentIndex]
     if (!vid) return
@@ -63,28 +61,17 @@ const Hero = () => {
     const previousIndex = prevIndexRef.current
     const previousVideo = videoRefs.current[previousIndex]
 
-    const advanceSlide = () => {
-      setDirection(1)
-      setCurrentIndex(prev => (prev + 1) % productCount)
-    }
-
-    const handleTimeUpdate = () => {
-      if (vid.currentTime >= VIDEO_END) {
-        vid.removeEventListener('timeupdate', handleTimeUpdate)
-        advanceSlide()
-      }
-    }
-
     const activate = () => {
       vid.currentTime = VIDEO_START
+      vid.loop = true
       vid.play().catch(() => {})
-      vid.addEventListener('timeupdate', handleTimeUpdate)
     }
 
     clearTimeout(fadePauseTimeout.current)
     if (previousVideo && previousIndex !== currentIndex) {
       fadePauseTimeout.current = setTimeout(() => {
         previousVideo.pause()
+        previousVideo.currentTime = VIDEO_START
       }, 1400)
     }
 
@@ -97,78 +84,84 @@ const Hero = () => {
     prevIndexRef.current = currentIndex
 
     return () => {
-      vid.removeEventListener('timeupdate', handleTimeUpdate)
       clearTimeout(fadePauseTimeout.current)
     }
   }, [currentIndex, productCount])
 
-  const handleSelect = useCallback((index) => {
-    setDirection(index > currentIndex ? 1 : -1)
-    setCurrentIndex(index)
-  }, [currentIndex])
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setDirection(1)
+      setCurrentIndex(prev => (prev + 1) % productCount)
+    }, 5000)
+
+    return () => clearInterval(intervalId)
+  }, [productCount])
 
   const current = oilProducts[currentIndex]
+  const motionTransition = { duration: 0.85, ease: [0.16, 1, 0.3, 1] }
 
   // Bottle slide animation
   const bottleVariants = {
     enter: (dir) => ({
-      x: dir > 0 ? 200 : -200,
+      x: dir > 0 ? 240 : -240,
       opacity: 0,
-      scale: 0.85,
+      scale: 0.92,
     }),
     center: {
       x: 0,
       opacity: 1,
       scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1],
-      }
+      transition: motionTransition
     },
     exit: (dir) => ({
-      x: dir > 0 ? -200 : 200,
+      x: dir > 0 ? -180 : 180,
       opacity: 0,
-      scale: 0.85,
-      transition: {
-        duration: 0.4,
-        ease: 'easeIn'
-      }
+      scale: 0.92,
+      transition: { duration: 0.45, ease: 'easeOut' }
     })
   }
 
   // Background text animation — subtle watermark
   const bgTextVariants = {
     enter: (dir) => ({
-      x: dir > 0 ? 100 : -100,
+      x: dir > 0 ? 120 : -120,
       y: "-50%",
       opacity: 0,
+      scale: 0.98,
     }),
     center: {
       x: 0,
       y: "-50%",
       opacity: 0.06,
-      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 }
+      scale: 1,
+      transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: 0.05 }
     },
     exit: (dir) => ({
-      x: dir > 0 ? -100 : 100,
+      x: dir > 0 ? -120 : 120,
       y: "-50%",
       opacity: 0,
-      transition: { duration: 0.35 }
+      scale: 0.98,
+      transition: { duration: 0.4, ease: 'easeOut' }
     })
   }
 
-  // Info text animation
+  const stageVariants = {
+    enter: (dir) => ({ opacity: 0, y: dir > 0 ? 40 : -40, scale: 0.99 }),
+    center: { opacity: 1, y: 0, scale: 1, transition: motionTransition },
+    exit: (dir) => ({ opacity: 0, y: dir > 0 ? -30 : 30, scale: 0.99, transition: { duration: 0.45, ease: 'easeOut' } })
+  }
+
   const infoVariants = {
     enter: { opacity: 0, y: 20 },
     center: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }
+      transition: { duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }
     },
     exit: {
       opacity: 0,
-      y: -15,
-      transition: { duration: 0.25 }
+      y: -20,
+      transition: { duration: 0.35 }
     }
   }
 
@@ -177,16 +170,20 @@ const Hero = () => {
       {/* Video Background — all 3 always mounted, crossfade via opacity */}
       <div className="hero-video-wrapper">
         {oilProducts.map((product, i) => (
-          <video
+          <motion.video
             key={product.id}
             ref={el => { videoRefs.current[i] = el }}
             className={`hero-video ${i === currentIndex ? 'hero-video--active' : ''}`}
             muted
             playsInline
+            loop
             preload="auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: i === currentIndex ? 1 : 0 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <source src={product.video} type="video/mp4" />
-          </video>
+          </motion.video>
         ))}
         <div className="hero-video-overlay" />
       </div>
@@ -208,76 +205,62 @@ const Hero = () => {
       <div className="hero-ambient-glow" style={{ background: current.glowColor }} />
 
       {/* ===== CENTERED STAGE: Name behind → Bottle in front ===== */}
-      <div className="hero-center-stage">
-
-        {/* BIG NAME TEXT - watermark behind bottle */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`bgtext-${currentIndex}`}
-            className="hero-bg-name"
-            custom={direction}
-            variants={bgTextVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            style={{ color: current.nameBgColor }}
-          >
-            {current.name}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* BOTTLE - centered, in front of name */}
-        <div className="bottle-perspective-wrapper">
-          <AnimatePresence mode="wait" custom={direction}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`stage-${currentIndex}`}
+          className="hero-center-stage"
+          custom={direction}
+          variants={stageVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+        >
+          {/* BIG NAME TEXT - watermark behind bottle */}
+          <AnimatePresence mode="wait">
             <motion.div
-              key={`bottle-${currentIndex}`}
-              className="bottle-3d-container"
+              key={`bgtext-${currentIndex}`}
+              className="hero-bg-name"
               custom={direction}
-              variants={bottleVariants}
+              variants={bgTextVariants}
               initial="enter"
               animate="center"
               exit="exit"
             >
-              <img
-                src={current.image}
-                alt={current.fullName}
-                className="bottle-hero-image"
-                draggable={false}
-              />
-
-              {/* Bottle ground shadow */}
-              <div
-                className="bottle-glow"
-                style={{
-                  background: `radial-gradient(ellipse, ${current.glowColor} 0%, transparent 70%)`
-                }}
-              />
+              {current.name}
             </motion.div>
           </AnimatePresence>
-        </div>
-      </div>
 
-      {/* Navigation Controls */}
-      <div className="hero-controls">
-        <div className="hero-indicators">
-          {oilProducts.map((product, i) => (
-            <motion.button
-              key={i}
-              className={`hero-dot ${i === currentIndex ? 'active' : ''}`}
-              onClick={() => handleSelect(i)}
-              animate={{
-                width: i === currentIndex ? 32 : 10,
-                background: i === currentIndex
-                  ? product.accentColor
-                  : 'rgba(255,255,255,0.25)'
-              }}
-              whileHover={{ scale: 1.15 }}
-              transition={{ duration: 0.3 }}
-              aria-label={`Select ${product.fullName}`}
-            />
-          ))}
-        </div>
-      </div>
+          {/* BOTTLE - centered, in front of name */}
+          <div className="bottle-perspective-wrapper">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={`bottle-${currentIndex}`}
+                className="bottle-3d-container"
+                custom={direction}
+                variants={bottleVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+              >
+                <img
+                  src={current.image}
+                  alt={current.fullName}
+                  className="bottle-hero-image"
+                  draggable={false}
+                />
+
+                {/* Bottle ground shadow */}
+                <div
+                  className="bottle-glow"
+                  style={{
+                    background: `radial-gradient(ellipse, ${current.glowColor} 0%, transparent 70%)`
+                  }}
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      </AnimatePresence>
 
       {/* ===== PRODUCT INFO ===== */}
       <div className="hero-info-bar">

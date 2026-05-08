@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Navigation, Pagination, FreeMode } from 'swiper/modules'
+import { Navigation, Pagination, FreeMode } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -11,6 +11,62 @@ import '../styles/ProductCarousels.css'
 
 const ProductCarousels = () => {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
+  const swiperRef = useRef(null)
+
+  useEffect(() => {
+    if (swiperRef.current && swiperRef.current.swiper) {
+      const swiper = swiperRef.current.swiper
+      let timeoutId = null
+      let isPaused = false
+      
+      const autoSlide = () => {
+        if (swiper && !swiper.destroyed && !isPaused) {
+          swiper.slideNext()
+          // Random delay between 3-4 seconds (3000-4000ms)
+          const delay = Math.random() * 1000 + 3000
+          timeoutId = setTimeout(autoSlide, delay)
+        }
+      }
+      
+      const startAutoSlide = () => {
+        if (!isPaused) {
+          const delay = Math.random() * 1000 + 3000
+          timeoutId = setTimeout(autoSlide, delay)
+        }
+      }
+      
+      const pauseAutoSlide = () => {
+        isPaused = true
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+          timeoutId = null
+        }
+      }
+      
+      const resumeAutoSlide = () => {
+        isPaused = false
+        startAutoSlide()
+      }
+      
+      // Add mouse event listeners to the swiper container
+      const swiperEl = swiperRef.current.el
+      if (swiperEl) {
+        swiperEl.addEventListener('mouseenter', pauseAutoSlide)
+        swiperEl.addEventListener('mouseleave', resumeAutoSlide)
+      }
+      
+      // Start auto sliding
+      startAutoSlide()
+      
+      return () => {
+        if (timeoutId) clearTimeout(timeoutId)
+        if (swiperEl) {
+          swiperEl.removeEventListener('mouseenter', pauseAutoSlide)
+          swiperEl.removeEventListener('mouseleave', resumeAutoSlide)
+        }
+      }
+    }
+  }, [inView])
 
   const productData = [
     {
@@ -73,13 +129,13 @@ const ProductCarousels = () => {
         {/* Horizontal Card Slider */}
         <div className="pc-slider-wrapper">
           <Swiper
-            modules={[Autoplay, Navigation, Pagination, FreeMode]}
+            ref={swiperRef}
+            modules={[Navigation, Pagination, FreeMode]}
             spaceBetween={28}
             slidesPerView={1.15}
             centeredSlides={false}
             loop={false}
             freeMode={{ enabled: true, sticky: false }}
-            autoplay={{ delay: 3500, disableOnInteraction: true, pauseOnMouseEnter: true }}
             navigation={{
               nextEl: '.pc-next',
               prevEl: '.pc-prev',

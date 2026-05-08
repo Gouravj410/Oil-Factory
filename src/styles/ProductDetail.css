@@ -198,6 +198,31 @@
   border-color: rgba(255, 255, 255, 0.15);
 }
 
+.packing-image {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.packing-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.packing-type {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-light);
+}
+
 .packing-size {
   font-family: 'Playfair Display', serif;
   font-size: 1.5rem;
@@ -205,13 +230,7 @@
   margin-bottom: 0.8rem;
 }
 
-.packing-price {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-bottom: 0.8rem;
-}
-
-.packing-uses {
+.packing-description {
   font-size: 0.9rem;
   color: var(--text-muted);
   line-height: 1.5;
