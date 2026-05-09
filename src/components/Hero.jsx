@@ -12,6 +12,8 @@ const Hero = () => {
       description: 'Gold Mairani Kachi Ghani Pure Mustard Oil — traditional cold-pressed purity for every Indian kitchen.',
       image: '/images/mustard850.png',
       video: '/images/mustardvideo.mp4',
+      videoScale: 1.15,
+      videoBrightness: 1,
       bgGradient: 'radial-gradient(ellipse at 50% 30%, rgba(211, 47, 47, 0.25) 0%, rgba(211, 47, 47, 0.08) 50%, transparent 75%)',
       accentColor: '#D32F2F',
       glowColor: 'rgba(211, 47, 47, 0.45)',
@@ -25,6 +27,8 @@ const Hero = () => {
       description: 'Gold Mairani Refined Soya Bean Oil — light, healthy & rich in essential nutrients for wholesome cooking.',
       image: '/images/soyabean850.png',
       video: '/images/soyabeanvideo.mp4',
+      videoScale: 1.15,
+      videoBrightness: 1,
       bgGradient: 'radial-gradient(ellipse at 50% 30%, rgba(76, 175, 80, 0.22) 0%, rgba(27, 94, 32, 0.08) 50%, transparent 75%)',
       accentColor: '#1B5E20',
       glowColor: 'rgba(76, 175, 80, 0.45)',
@@ -38,6 +42,8 @@ const Hero = () => {
       description: 'Gold Mairani Refined Cottonseed Oil — naturally light, pure and perfect for crispy, healthy frying.',
       image: '/images/cottonseed850.png',
       video: '/images/cottonseedvideo.mp4',
+      videoScale: 1,
+      videoBrightness: 0.55,
       bgGradient: 'radial-gradient(ellipse at 50% 30%, rgba(255, 152, 0, 0.22) 0%, rgba(230, 81, 0, 0.08) 50%, transparent 75%)',
       accentColor: '#E65100',
       glowColor: 'rgba(255, 152, 0, 0.45)',
@@ -98,26 +104,29 @@ const Hero = () => {
   }, [productCount])
 
   const current = oilProducts[currentIndex]
-  const motionTransition = { duration: 0.85, ease: [0.16, 1, 0.3, 1] }
+  const motionTransition = { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
 
-  // Bottle slide animation
+  // Bottle slide + rotate animation
   const bottleVariants = {
     enter: (dir) => ({
-      x: dir > 0 ? 240 : -240,
+      x: dir > 0 ? 280 : -280,
       opacity: 0,
-      scale: 0.92,
+      scale: 0.88,
+      rotate: dir > 0 ? 14 : -14,
     }),
     center: {
       x: 0,
       opacity: 1,
       scale: 1,
-      transition: motionTransition
+      rotate: 0,
+      transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
     },
     exit: (dir) => ({
-      x: dir > 0 ? -180 : 180,
+      x: dir > 0 ? -200 : 200,
       opacity: 0,
-      scale: 0.92,
-      transition: { duration: 0.45, ease: 'easeOut' }
+      scale: 0.88,
+      rotate: dir > 0 ? -12 : 12,
+      transition: { duration: 0.48, ease: [0.4, 0, 1, 1] }
     })
   }
 
@@ -178,6 +187,10 @@ const Hero = () => {
             playsInline
             loop
             preload="auto"
+            style={{
+              transform: `translateX(-50%) scale(${product.videoScale ?? 1})`,
+              filter: `brightness(${product.videoBrightness ?? 1})`
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: i === currentIndex ? 1 : 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
