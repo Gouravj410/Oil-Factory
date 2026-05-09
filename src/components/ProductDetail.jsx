@@ -79,7 +79,7 @@ const ProductDetail = () => {
       name: 'Refined Cottonseed Oil',
       fullName: 'Gold Mairani Refined Cottonseed Oil',
       tagline: 'Pure & Light Cooking',
-      accentColor: '#FF9800',
+      accentColor: '#1976D2',
       description: 'Gold Mairani Refined Cottonseed Oil is naturally light and pure, extracted from premium cotton seeds. It\'s ideal for crispy frying, baking, and everyday cooking. The refined process ensures consistent quality, purity, and a clean taste in every bottle.',
       features: [
         'Naturally Light Oil',
