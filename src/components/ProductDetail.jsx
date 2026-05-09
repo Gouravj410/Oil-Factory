@@ -33,12 +33,12 @@ const ProductDetail = () => {
         'Traditional Cooking Essential'
       ],
       packagingTypes: [
-        { type: 'Plastic Bottle', size: '500 ML', image: '/images/mustard_oil_bottle.png', description: 'Convenient for daily use' },
-        { type: 'Plastic Bottle', size: '1 Liter', image: '/images/mustard_oil_bottle.png', description: 'Perfect for families' },
-        { type: 'Can', size: '5 Liter', image: '/images/MustardOilCan.jpg', description: 'Bulk storage solution' }
+        { type: 'Plastic Bottle', size: '400 ML', image: '/images/mustard400.png', description: 'Perfect for everyday use' },
+        { type: 'Plastic Bottle', size: '850 ML', image: '/images/mustard850.png', description: 'Ideal for kitchen staples' },
+        { type: 'Can', size: '5 Liter', image: '/images/MustardOilCan.png', description: 'Bulk storage solution' }
       ],
       images: [
-        '/images/mustard_oil_bottle.png',
+        '/images/mustard850.png',
         '/images/mustard_poster_1.png',
         '/images/mustard_poster_2.png'
       ]
@@ -65,12 +65,12 @@ const ProductDetail = () => {
         'Versatile for All Dishes'
       ],
       packagingTypes: [
-        { type: 'Plastic Bottle', size: '500 ML', image: '/images/soyabean_oil_bottle.png', description: 'Convenient for daily use' },
-        { type: 'Plastic Bottle', size: '1 Liter', image: '/images/soyabean_oil_bottle.png', description: 'Perfect for families' },
-        { type: 'Can', size: '5 Liter', image: '/images/MustardOilCan.jpg', description: 'Bulk storage solution' }
+        { type: 'Plastic Bottle', size: '400 ML', image: '/images/soyabean400.png', description: 'Perfect for everyday use' },
+        { type: 'Plastic Bottle', size: '850 ML', image: '/images/soyabean850.png', description: 'Ideal for kitchen staples' },
+        { type: 'Can', size: '5 Liter', image: '/images/SoyaBeansOilCan.png', description: 'Bulk storage solution' }
       ],
       images: [
-        '/images/soyabean_oil_bottle.png',
+        '/images/soyabean850.png',
         '/images/soya_poster_1.png',
         '/images/soya_poster_2.png'
       ]
@@ -97,12 +97,11 @@ const ProductDetail = () => {
         'Long Shelf Life'
       ],
       packagingTypes: [
-        { type: 'Plastic Bottle', size: '500 ML', image: '/images/cottonseed_oil_bottle.png', description: 'Convenient for daily use' },
-        { type: 'Plastic Bottle', size: '1 Liter', image: '/images/cottonseed_oil_bottle.png', description: 'Perfect for families' },
-        { type: 'Can', size: '5 Liter', image: '/images/MustardOilCan.jpg', description: 'Bulk storage solution' }
+        { type: 'Plastic Bottle', size: '400 ML', image: '/images/cottonseed400.png', description: 'Perfect for everyday use' },
+        { type: 'Plastic Bottle', size: '850 ML', image: '/images/cottonseed850.png', description: 'Ideal for kitchen staples' }
       ],
       images: [
-        '/images/cottonseed_oil_bottle.png',
+        '/images/cottonseed850.png',
         '/images/cotton_poster_1.png',
         '/images/cotton_poster_2.png'
       ]
@@ -115,7 +114,7 @@ const ProductDetail = () => {
     return (
       <div className="product-not-found">
         <h1>Product Not Found</h1>
-        <Link to="/">Back to Home</Link>
+        <Link to={{ pathname: '/', hash: '#products' }}>Back to Products</Link>
       </div>
     )
   }
@@ -131,8 +130,8 @@ const ProductDetail = () => {
         style={{ background: `linear-gradient(135deg, ${product.accentColor}15 0%, ${product.accentColor}05 100%)` }}
       >
         <div className="product-hero-content">
-          <Link to="/#products" className="back-link">
-            ← Back to Home
+          <Link to={{ pathname: '/', hash: '#products' }} className="back-link">
+            ← Back to Products
           </Link>
           
           <motion.h1
@@ -275,13 +274,10 @@ const ProductDetail = () => {
         style={{ background: `linear-gradient(135deg, ${product.accentColor}20 0%, ${product.accentColor}05 100%)` }}
       >
         <h2>Ready to Experience Gold Mairani Quality?</h2>
-        <p>Find our products at your nearest retailers or order online</p>
+        <p>Find our products at your nearest retailers.</p>
         <div className="cta-buttons">
-          <button className="cta-btn-primary" style={{ background: product.accentColor }}>
-            Order Now
-          </button>
-          <Link to="/#products" className="cta-btn-secondary">
-            Back to Home
+          <Link to={{ pathname: '/', hash: '#products' }} className="cta-btn-secondary">
+            Back to Products
           </Link>
         </div>
       </motion.div>
