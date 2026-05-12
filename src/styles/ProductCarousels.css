@@ -6,11 +6,11 @@
   overflow: hidden;
 }
 
-.section-container { max-width: 1300px; margin: 0 auto; }
+.section-container { max-width: 1100px; margin: 0 auto; }
 
 .section-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(1.9rem, 4vw, 3rem);
   font-weight: 900;
   text-align: center;
   margin-bottom: 1rem;
@@ -28,12 +28,12 @@
 }
 
 /* SLIDER WRAPPER */
-.pc-slider-wrapper { position: relative; padding: 0 0 1rem; }
-
-/* SWIPER OVERRIDES */
-.pc-swiper { padding: 1rem 0.5rem 3.5rem !important; overflow: visible !important; }
-.pc-swiper .swiper-wrapper { align-items: stretch; }
-.pc-swiper .swiper-slide { height: auto; }
+.pc-grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 1rem 0.5rem 3.5rem;
+}
 
 /* VERTICAL PRODUCT CARD */
 .pc-card {
@@ -43,12 +43,10 @@
   border: 1px solid;
   overflow: hidden;
   height: 100%;
-  min-height: 580px;
+  min-height: 460px;
   cursor: pointer;
   transition: box-shadow 0.4s ease, border-color 0.4s ease;
   position: relative;
-  width: 75vw;
-  max-width: 400px;
 }
 
 .pc-card:hover { box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5); }
@@ -57,19 +55,20 @@
 .pc-card-image-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 5;
   background: rgba(255, 255, 255, 0.02);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding-bottom: 1rem;
+  padding: 1.1rem 0.9rem 1rem;
 }
 
 .pc-card-bottle {
   height: auto;
-  width: 100%;
-  max-height: 90%;
+  width: auto;
+  max-width: 60%;
+  max-height: 74%;
   object-fit: contain;
   filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.5));
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -113,7 +112,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 1.5rem 1.5rem 1.8rem;
+  padding: 1.2rem 1.2rem 1.5rem;
   flex: 1;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -168,79 +167,29 @@
 
 .pc-card-btn:hover { opacity: 0.88; transform: translateX(3px); }
 
-/* CUSTOM NAV BUTTONS */
-.pc-nav-btn {
-  position: absolute;
-  top: 38%;
-  transform: translateY(-50%);
-  z-index: 20;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: var(--text-white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: background 0.3s, border-color 0.3s, transform 0.2s;
-}
 
-.pc-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.28);
-  transform: translateY(-50%) scale(1.08);
-}
-
-.pc-prev { left: -22px; }
-.pc-next { right: -22px; }
-.pc-nav-btn.swiper-button-disabled { opacity: 0.25; pointer-events: none; }
-
-/* PAGINATION */
-.pc-pagination { display: flex; justify-content: center; gap: 6px; margin-top: 0.5rem; }
-
-.pc-pagination .swiper-pagination-bullet {
-  width: 8px; height: 8px; border-radius: 50px;
-  background: rgba(255, 255, 255, 0.25); opacity: 1;
-  transition: all 0.3s; cursor: pointer;
-}
-
-.pc-pagination .swiper-pagination-bullet-active {
-  background: var(--gold-primary); width: 24px;
-}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .product-carousels { padding: 5rem 1.5rem 4rem; }
-  .pc-prev { left: -12px; }
-  .pc-next { right: -12px; }
-  .pc-nav-btn { width: 42px; height: 42px; }
 }
 
 @media (max-width: 900px) {
-  .pc-prev { left: -10px; }
-  .pc-next { right: -10px; }
-  .pc-card { min-height: 520px; }
+  .pc-grid-wrapper { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .pc-card { min-height: 480px; }
 }
 
 @media (max-width: 768px) {
   .product-carousels { padding: 4rem 1rem 3.5rem; }
   .section-subtitle { margin-bottom: 2.5rem; }
-  .pc-card { min-height: 480px; }
+  .pc-grid-wrapper { grid-template-columns: 1fr; gap: 24px; }
+  .pc-card { min-height: 440px; max-width: 500px; margin: 0 auto; }
   .pc-card-body { padding: 1.2rem 1.2rem 1.5rem; }
-  .pc-prev { left: 0; }
-  .pc-next { right: 0; }
-  .pc-nav-btn { width: 38px; height: 38px; }
 }
 
 @media (max-width: 600px) {
   .product-carousels { padding: 3.5rem 0.75rem 3rem; }
-  .pc-prev { left: 0; }
-  .pc-next { right: 0; }
-  .pc-nav-btn { width: 36px; height: 36px; }
-  .pc-card { min-height: 460px; }
+  .pc-card { min-height: 400px; }
   .pc-card-body { padding: 1rem; }
   .pc-card-benefits { grid-template-columns: 1fr; }
   .pc-card-btn { padding: 0.6rem 1.2rem; font-size: 0.82rem; }

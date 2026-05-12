@@ -15,8 +15,7 @@ const Navbar = () => {
   }, [])
 
   const navLinks = [
-    { label: 'Home', href: '#hero' },
-    { label: 'Products', href: '#products' },
+    { label: 'Home', href: '#products' },
     { label: 'Why Us', href: '#features' },
     { label: 'About', href: '#about' },
     { label: 'Contact', href: '#footer' }
@@ -31,7 +30,7 @@ const Navbar = () => {
     >
       <div className="navbar-inner">
         {/* Logo */}
-        <a href="#hero" className="navbar-logo">
+        <a href="#products" className="navbar-logo">
           <img src="/images/logo.jpeg" alt="Mateshwari Industries" className="logo-img" />
           <div className="logo-text">
             <span className="logo-brand">Gold Mairani</span>

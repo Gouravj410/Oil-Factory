@@ -104,13 +104,13 @@ const Hero = () => {
   }, [productCount])
 
   const current = oilProducts[currentIndex]
-  const motionTransition = { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
+  const motionTransition = { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
 
   // Bottle fade animation
   const bottleVariants = {
     enter: (dir) => ({
       opacity: 0,
-      scale: 0.9,
+      scale: 0.96,
     }),
     center: {
       opacity: 1,
@@ -119,8 +119,8 @@ const Hero = () => {
     },
     exit: (dir) => ({
       opacity: 0,
-      scale: 0.9,
-      transition: { duration: 0.8, ease: [0.4, 0, 1, 1] }
+      scale: 0.96,
+      transition: { duration: 1.0, ease: 'easeOut' }
     })
   }
 
@@ -133,19 +133,19 @@ const Hero = () => {
     center: {
       opacity: 0.06,
       scale: 1,
-      transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.05 }
+      transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.05 }
     },
     exit: (dir) => ({
       opacity: 0,
       scale: 0.98,
-      transition: { duration: 0.6, ease: 'easeOut' }
+      transition: { duration: 0.9, ease: 'easeOut' }
     })
   }
 
   const stageVariants = {
-    enter: (dir) => ({ opacity: 0, y: dir > 0 ? 40 : -40, scale: 0.99 }),
-    center: { opacity: 1, y: 0, scale: 1, transition: motionTransition },
-    exit: (dir) => ({ opacity: 0, y: dir > 0 ? -30 : 30, scale: 0.99, transition: { duration: 0.45, ease: 'easeOut' } })
+    enter: (dir) => ({ opacity: 0, scale: 0.98 }),
+    center: { opacity: 1, scale: 1, transition: motionTransition },
+    exit: (dir) => ({ opacity: 0, scale: 0.98, transition: { duration: 0.9, ease: 'easeOut' } })
   }
 
   const infoVariants = {
