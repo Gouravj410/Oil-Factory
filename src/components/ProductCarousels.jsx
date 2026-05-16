@@ -18,8 +18,8 @@ const ProductCarousels = () => {
       accentColor: '#D32F2F',
       gradientBg: 'linear-gradient(180deg, rgba(211,47,47,0.13) 0%, rgba(211,47,47,0.03) 100%)',
       borderColor: 'rgba(211,47,47,0.30)',
-      image: '/images/mustard400.png',
-      poster: '/images/mustard_poster_1.png',
+      image: './images/mustard400.png',
+      poster: './images/mustard_poster_1.png',
     },
     {
       id: 'soyabean',
@@ -31,8 +31,8 @@ const ProductCarousels = () => {
       accentColor: '#4CAF50',
       gradientBg: 'linear-gradient(180deg, rgba(76,175,80,0.13) 0%, rgba(76,175,80,0.03) 100%)',
       borderColor: 'rgba(76,175,80,0.30)',
-      image: '/images/soyabean400.png',
-      poster: '/images/RefinedSoyaOil.jpeg',
+      image: './images/soyabean400.png',
+      poster: './images/RefinedSoyaOil.jpeg',
     },
     {
       id: 'cottonseed',
@@ -44,8 +44,8 @@ const ProductCarousels = () => {
       accentColor: '#1976D2',
       gradientBg: 'linear-gradient(180deg, rgba(25,118,210,0.13) 0%, rgba(25,118,210,0.03) 100%)',
       borderColor: 'rgba(25,118,210,0.30)',
-      image: '/images/cottonseed400.png',
-      poster: '/images/KitchenBg.jpeg',
+      image: './images/cottonseed400.png',
+      poster: './images/KitchenBg.jpeg',
     },
   ]
 

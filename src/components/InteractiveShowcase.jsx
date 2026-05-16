@@ -36,7 +36,7 @@ const InteractiveShowcase = () => {
     {
       id: 1,
       productName: "Kachi Ghani Mustard Oil",
-      productImages: ["/images/mustard850.png", "/images/MustardOilCan.png"],
+      productImages: ["./images/mustard850.png", "./images/MustardOilCan.png"],
       dishNames: ["Spicy Aloo Dum", "Rich Paneer Tikka"],
       dishImages: ["/authentic_aloo_dum.png", "/paneer_tikka.png"],
       titleLine1: "For Authentic",
@@ -48,7 +48,7 @@ const InteractiveShowcase = () => {
     {
       id: 2,
       productName: "Refined Soyabean Oil",
-      productImages: ["/images/soyabean850.png", "/images/SoyaBeansOilCan.png"],
+      productImages: ["./images/soyabean850.png", "./images/SoyaBeansOilCan.png"],
       dishNames: ["Comforting Dal Tadka", "Fragrant Veg Pulao"],
       dishImages: ["/healthy_dal.png", "/veg_pulao.png"],
       titleLine1: "For Healthy",
@@ -60,7 +60,7 @@ const InteractiveShowcase = () => {
     {
       id: 3,
       productName: "Refined Cottonseed Oil",
-      productImages: ["/images/cottonseed850.png"],
+      productImages: ["./images/cottonseed850.png"],
       dishNames: ["Crispy Samosas & Pakodas"],
       dishImages: ["/crispy_samosa.png"],
       titleLine1: "For Perfect",

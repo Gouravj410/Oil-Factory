@@ -9,7 +9,7 @@ const Recipes = () => {
   const recipes = [
     {
       title: "Spicy Mustard Fish Curry",
-      image: "/mustard_fish_curry.png",
+      image: "./mustard_fish_curry.png",
       oil: "Kachi Ghani Mustard Oil",
       time: "40 mins",
       difficulty: "Medium",
@@ -17,7 +17,7 @@ const Recipes = () => {
     },
     {
       title: "Crispy Golden Samosas",
-      image: "/crispy_samosa.png",
+      image: "./crispy_samosa.png",
       oil: "Refined Cottonseed Oil",
       time: "45 mins",
       difficulty: "Hard",
@@ -25,7 +25,7 @@ const Recipes = () => {
     },
     {
       title: "Comforting Dal Tadka",
-      image: "/healthy_dal.png",
+      image: "./healthy_dal.png",
       oil: "Refined Soyabean Oil",
       time: "30 mins",
       difficulty: "Easy",

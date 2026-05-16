@@ -33,14 +33,14 @@ const ProductDetail = () => {
         'Traditional Cooking Essential'
       ],
       packagingTypes: [
-        { type: 'Plastic Bottle', size: '400 ML', image: '/images/mustard400.png', description: 'Perfect for everyday use' },
-        { type: 'Plastic Bottle', size: '850 ML', image: '/images/mustard850.png', description: 'Ideal for kitchen staples' },
-        { type: 'Can', size: '5 Liter', image: '/images/MustardOilCan.png', description: 'Bulk storage solution' }
+        { type: 'Plastic Bottle', size: '400 ML', image: './images/mustard400.png', description: 'Perfect for everyday use' },
+        { type: 'Plastic Bottle', size: '850 ML', image: './images/mustard850.png', description: 'Ideal for kitchen staples' },
+        { type: 'Can', size: '5 Liter', image: './images/MustardOilCan.png', description: 'Bulk storage solution' }
       ],
       images: [
-        '/images/mustard850.png',
-        '/images/mustard_poster_1.png',
-        '/images/mustard_poster_2.png'
+        './images/mustard850.png',
+        './images/mustard_poster_1.png',
+        './images/mustard_poster_2.png'
       ]
     },
     soyabean: {
@@ -65,14 +65,14 @@ const ProductDetail = () => {
         'Versatile for All Dishes'
       ],
       packagingTypes: [
-        { type: 'Plastic Bottle', size: '400 ML', image: '/images/soyabean400.png', description: 'Perfect for everyday use' },
-        { type: 'Plastic Bottle', size: '850 ML', image: '/images/soyabean850.png', description: 'Ideal for kitchen staples' },
-        { type: 'Can', size: '5 Liter', image: '/images/SoyaBeansOilCan.png', description: 'Bulk storage solution' }
+        { type: 'Plastic Bottle', size: '400 ML', image: './images/soyabean400.png', description: 'Perfect for everyday use' },
+        { type: 'Plastic Bottle', size: '850 ML', image: './images/soyabean850.png', description: 'Ideal for kitchen staples' },
+        { type: 'Can', size: '5 Liter', image: './images/SoyaBeansOilCan.png', description: 'Bulk storage solution' }
       ],
       images: [
-        '/images/soyabean850.png',
-        '/images/soya_poster_1.png',
-        '/images/soya_poster_2.png'
+        './images/soyabean850.png',
+        './images/soya_poster_1.png',
+        './images/soya_poster_2.png'
       ]
     },
     cottonseed: {
@@ -97,13 +97,13 @@ const ProductDetail = () => {
         'Long Shelf Life'
       ],
       packagingTypes: [
-        { type: 'Plastic Bottle', size: '400 ML', image: '/images/cottonseed400.png', description: 'Perfect for everyday use' },
-        { type: 'Plastic Bottle', size: '850 ML', image: '/images/cottonseed850.png', description: 'Ideal for kitchen staples' }
+        { type: 'Plastic Bottle', size: '400 ML', image: './images/cottonseed400.png', description: 'Perfect for everyday use' },
+        { type: 'Plastic Bottle', size: '850 ML', image: './images/cottonseed850.png', description: 'Ideal for kitchen staples' }
       ],
       images: [
-        '/images/cottonseed850.png',
-        '/images/cotton_poster_1.png',
-        '/images/cotton_poster_2.png'
+        './images/cottonseed850.png',
+        './images/cotton_poster_1.png',
+        './images/cotton_poster_2.png'
       ]
     }
   }

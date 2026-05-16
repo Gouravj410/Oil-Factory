@@ -13,7 +13,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="footer-brand-col">
             <div className="footer-logo-row">
-              <img src="/images/logo.jpeg" alt="Mateshwari Industries" className="footer-logo" />
+              <img src="./images/logo.jpeg" alt="Mateshwari Industries" className="footer-logo" />
               <div>
                 <h3 className="footer-brand-name">Gold Mairani</h3>
                 <p className="footer-brand-sub">By Mateshwari Industries</p>

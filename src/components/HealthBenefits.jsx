@@ -72,7 +72,7 @@ const HealthBenefits = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="health-circle">
-              <img src="/images/MustardOilCan.png" alt="Gold Mairani Quality" className="health-can-img" />
+              <img src="./images/MustardOilCan.png" alt="Gold Mairani Quality" className="health-can-img" />
               <div className="health-badge badge-1">100% Pure</div>
               <div className="health-badge badge-2">Heart Friendly</div>
               <div className="health-badge badge-3">Vitamin A&D</div>

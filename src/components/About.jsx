@@ -18,7 +18,7 @@ const About = () => {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="about-logo-frame">
-              <img src="/images/logo.jpeg" alt="Mateshwari Industries Logo" className="about-logo" />
+              <img src="./images/logo.jpeg" alt="Mateshwari Industries Logo" className="about-logo" />
               <div className="about-logo-glow" />
             </div>
 

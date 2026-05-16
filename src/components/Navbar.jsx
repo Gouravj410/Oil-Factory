@@ -32,7 +32,7 @@ const Navbar = ({ onRewardsClick }) => {
       <div className="navbar-inner">
         {/* Logo */}
         <a href="#products" className="navbar-logo">
-          <img src="/images/logo.jpeg" alt="Mateshwari Industries" className="logo-img" />
+          <img src="./images/logo.jpeg" alt="Mateshwari Industries" className="logo-img" />
           <div className="logo-text">
             <span className="logo-brand">Gold Mairani</span>
             <span className="logo-sub">Mateshwari Industries</span>
