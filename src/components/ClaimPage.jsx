@@ -119,7 +119,7 @@ export default function ClaimPage() {
         <h1>Invalid QR Code</h1>
         <p>{qrError}</p>
         <p className="cp-hint">If you believe this is a mistake, please contact our support team.</p>
-        <a href="/" className="cp-back-btn">← Go to Homepage</a>
+        <a href="#/" className="cp-back-btn">← Go to Homepage</a>
       </div>
     </div>
   )
@@ -154,7 +154,7 @@ export default function ClaimPage() {
           <p>Winners are announced after the campaign ends.</p>
           <p>Exciting prizes await — stay tuned!</p>
         </div>
-        <a href="/" className="cp-back-btn cp-back-btn--success">← Explore Our Products</a>
+        <a href="#/" className="cp-back-btn cp-back-btn--success">← Explore Our Products</a>
       </div>
     </div>
   )
