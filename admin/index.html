@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FMCG Reward System — Admin Portal</title>
+  <meta name="description" content="Admin dashboard for managing QR code-based FMCG reward campaigns, submissions, winners, and analytics." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="screen active">
+  <div class="login-bg">
+    <div class="login-orb orb1"></div>
+    <div class="login-orb orb2"></div>
+    <div class="login-orb orb3"></div>
+  </div>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon">🛢️</div>
+      <h1>FMCG Admin</h1>
+      <p>Reward Campaign Control Panel</p>
+    </div>
+    <form id="login-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter admin username" required autocomplete="username" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-wrap">
+          <input type="password" id="password" placeholder="Enter password" required autocomplete="current-password" />
+          <button type="button" class="toggle-pw" onclick="togglePassword()">👁</button>
+        </div>
+      </div>
+      <div id="login-error" class="alert-error hidden"></div>
+      <button type="submit" id="login-btn" class="btn-primary btn-full">
+        <span id="login-btn-text">Sign In</span>
+        <span id="login-spinner" class="spinner hidden"></span>
+      </button>
+    </form>
+    <div class="login-hint">
+      <strong style="color:var(--warning)">⚡ Demo Mode:</strong> username <code style="color:var(--primary)">admin</code> / password <code style="color:var(--primary)">admin123</code><br/>
+      <span style="opacity:0.6">Backend API: <span id="api-base-display">http://localhost:5000</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app-screen" class="screen hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-icon-sm">🛢️</span>
+        <span class="sidebar-brand">FMCG Admin</span>
+      </div>
+      <button class="sidebar-close" onclick="toggleSidebar()" id="sidebar-close-btn">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="navigate('dashboard', this)" id="nav-dashboard">
+        <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" onclick="navigate('schemes', this)" id="nav-schemes">
+        <span class="nav-icon">📋</span><span class="nav-label">Campaigns</span>
+      </a>
+      <a href="#" class="nav-item" onclick="navigate('batches', this)" id="nav-batches">
+        <span class="nav-icon">📦</span><span class="nav-label">QR Batches</span>
+      </a>
+      <a href="#" class="nav-item" onclick="navigate('submissions', this)" id="nav-submissions">
+        <span class="nav-icon">📥</span><span class="nav-label">Submissions</span>
+      </a>
+      <a href="#" class="nav-item" onclick="navigate('winners', this)" id="nav-winners">
+        <span class="nav-icon">🏆</span><span class="nav-label">Winners</span>
+      </a>
+      <a href="#" class="nav-item" onclick="navigate('profile', this)" id="nav-profile">
+        <span class="nav-icon">👤</span><span class="nav-label">Profile</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="admin-info">
+        <div class="admin-avatar" id="admin-avatar">A</div>
+        <div>
+          <div class="admin-name" id="admin-name-sidebar">Admin</div>
+          <div class="admin-role" id="admin-role-sidebar">admin</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()" id="menu-btn">☰</button>
+      <div class="topbar-title" id="page-title">Dashboard</div>
+      <div class="topbar-right">
+        <div class="api-status" id="api-status">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">Connecting…</span>
+        </div>
+        <div class="topbar-admin" id="topbar-admin">Admin</div>
+      </div>
+    </header>
+
+    <!-- PAGES -->
+    <main class="page-area">
+
+      <!-- DASHBOARD PAGE -->
+      <section id="page-dashboard" class="page active">
+        <div class="page-header">
+          <h2>Dashboard Overview</h2>
+          <button class="btn-secondary" onclick="loadDashboard()">🔄 Refresh</button>
+        </div>
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card skeleton"></div>
+          <div class="stat-card skeleton"></div>
+          <div class="stat-card skeleton"></div>
+          <div class="stat-card skeleton"></div>
+          <div class="stat-card skeleton"></div>
+          <div class="stat-card skeleton"></div>
+        </div>
+        <div class="dash-bottom">
+          <div class="dash-section">
+            <h3>Recent Activity</h3>
+            <div id="recent-activity" class="activity-list">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
+            </div>
+          </div>
+          <div class="dash-section">
+            <h3>QR Usage Overview</h3>
+            <div id="qr-usage-chart" class="chart-area">
+              <canvas id="usageCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CAMPAIGNS PAGE -->
+      <section id="page-schemes" class="page hidden">
+        <div class="page-header">
+          <h2>Campaign Schemes</h2>
+          <button class="btn-primary" onclick="openModal('create-scheme-modal')">+ New Campaign</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="schemes-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Title</th><th>Reward</th><th>QR Codes</th><th>Usage</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="schemes-tbody"><tr><td colspan="7" class="loading-row">Loading schemes…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- BATCHES PAGE -->
+      <section id="page-batches" class="page hidden">
+        <div class="page-header">
+          <h2>QR Batches</h2>
+          <button class="btn-primary" onclick="openModal('create-batch-modal')">+ Create Batch</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="batches-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Batch Name</th><th>Total Codes</th><th>Used</th><th>Remaining</th><th>Usage %</th><th>Created</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="batches-tbody"><tr><td colspan="8" class="loading-row">Loading batches…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SUBMISSIONS PAGE -->
+      <section id="page-submissions" class="page hidden">
+        <div class="page-header">
+          <h2>User Submissions</h2>
+          <div class="filter-row">
+            <input type="text" id="filter-city" placeholder="Filter by city…" class="filter-input" />
+            <select id="filter-period" class="filter-select">
+              <option value="">All Time</option>
+              <option value="today">Today</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+              <option value="year">This Year</option>
+            </select>
+            <button class="btn-secondary" onclick="loadSubmissions()">Filter</button>
+            <button class="btn-outline" onclick="exportSubmissions()">⬇ Export CSV</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Name</th><th>Phone</th><th>City</th><th>State</th><th>QR Code</th><th>Submitted</th><th>Winner</th>
+              </tr>
+            </thead>
+            <tbody id="submissions-tbody"><tr><td colspan="8" class="loading-row">Loading submissions…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="submissions-pagination"></div>
+      </section>
+
+      <!-- WINNERS PAGE -->
+      <section id="page-winners" class="page hidden">
+        <div class="page-header">
+          <h2>Winners Management</h2>
+          <div class="btn-group">
+            <button class="btn-primary" onclick="openModal('select-winners-modal')">🎲 Select Random Winners</button>
+            <button class="btn-outline" onclick="exportWinners()">⬇ Export CSV</button>
+          </div>
+        </div>
+        <div class="winner-stats" id="winner-stats">
+          <div class="wstat-card">
+            <span class="wstat-num" id="ws-total">—</span>
+            <span class="wstat-label">Total Winners</span>
+          </div>
+          <div class="wstat-card">
+            <span class="wstat-num" id="ws-announced">—</span>
+            <span class="wstat-label">Announced</span>
+          </div>
+          <div class="wstat-card">
+            <span class="wstat-num" id="ws-pending">—</span>
+            <span class="wstat-label">Pending Announcement</span>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="select-all-winners" onclick="toggleSelectAll(this)" /></th>
+                <th>ID</th><th>Name</th><th>Phone</th><th>City</th><th>Announced</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="winners-tbody"><tr><td colspan="7" class="loading-row">Loading winners…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="bulk-bar hidden" id="bulk-bar">
+          <span id="selected-count">0 selected</span>
+          <button class="btn-primary" onclick="bulkAnnounce()">📢 Announce Selected</button>
+        </div>
+        <div class="pagination" id="winners-pagination"></div>
+      </section>
+
+      <!-- PROFILE PAGE -->
+      <section id="page-profile" class="page hidden">
+        <div class="page-header">
+          <h2>My Profile</h2>
+        </div>
+        <div class="profile-card">
+          <div class="profile-avatar-big" id="profile-avatar-big">A</div>
+          <div class="profile-details" id="profile-details">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+          </div>
+          <div class="divider"></div>
+          <h3>Change Password</h3>
+          <form id="change-pw-form" onsubmit="handleChangePassword(event)" class="profile-form">
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" id="old-password" placeholder="Current password" required />
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="new-password" placeholder="New password (8+ chars)" required />
+            </div>
+            <div id="pw-msg" class="hidden"></div>
+            <button type="submit" class="btn-primary">Update Password</button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay hidden" id="modal-overlay" onclick="closeAllModals()"></div>
+
+<!-- Create Scheme Modal -->
+<div class="modal hidden" id="create-scheme-modal">
+  <div class="modal-header">
+    <h3>Create New Campaign</h3>
+    <button onclick="closeAllModals()">✕</button>
+  </div>
+  <form onsubmit="handleCreateScheme(event)">
+    <div class="form-group"><label>Campaign Title *</label><input id="s-title" placeholder="Spring Campaign 2024" required /></div>
+    <div class="form-group"><label>Description</label><textarea id="s-desc" placeholder="Campaign description…" rows="2"></textarea></div>
+    <div class="form-group"><label>Reward Text *</label><input id="s-reward-text" placeholder="Win a free bottle!" required /></div>
+    <div class="form-group"><label>Reward Details</label><input id="s-reward-details" placeholder="50 loyalty points + free bottle" /></div>
+    <div class="form-row">
+      <div class="form-group"><label>Start Date *</label><input type="datetime-local" id="s-start" required /></div>
+      <div class="form-group"><label>End Date *</label><input type="datetime-local" id="s-end" required /></div>
+    </div>
+    <div id="scheme-error" class="alert-error hidden"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn-outline" onclick="closeAllModals()">Cancel</button>
+      <button type="submit" class="btn-primary">Create Campaign</button>
+    </div>
+  </form>
+</div>
+
+<!-- Create Batch Modal -->
+<div class="modal hidden" id="create-batch-modal">
+  <div class="modal-header">
+    <h3>Create QR Batch</h3>
+    <button onclick="closeAllModals()">✕</button>
+  </div>
+  <form onsubmit="handleCreateBatch(event)">
+    <div class="form-group"><label>Batch Name *</label><input id="b-name" placeholder="Spring Campaign Batch 1" required /></div>
+    <div class="form-group"><label>Quantity (QR Codes) *</label><input type="number" id="b-qty" placeholder="10000" min="1" max="500000" required /></div>
+    <div class="form-group">
+      <label>Assign to Campaign</label>
+      <select id="b-scheme">
+        <option value="">— No campaign —</option>
+      </select>
+    </div>
+    <div id="batch-error" class="alert-error hidden"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn-outline" onclick="closeAllModals()">Cancel</button>
+      <button type="submit" class="btn-primary">Generate Batch</button>
+    </div>
+  </form>
+</div>
+
+<!-- Select Winners Modal -->
+<div class="modal hidden" id="select-winners-modal">
+  <div class="modal-header">
+    <h3>Select Random Winners</h3>
+    <button onclick="closeAllModals()">✕</button>
+  </div>
+  <form onsubmit="handleSelectWinners(event)">
+    <div class="form-group">
+      <label>Campaign *</label>
+      <select id="w-scheme" required>
+        <option value="">Select campaign…</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Number of Winners *</label>
+      <input type="number" id="w-count" placeholder="10" min="1" max="1000" required />
+    </div>
+    <div id="winner-error" class="alert-error hidden"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn-outline" onclick="closeAllModals()">Cancel</button>
+      <button type="submit" class="btn-primary">🎲 Select Winners</button>
+    </div>
+  </form>
+</div>
+
+<!-- Toast -->
+<div class="toast hidden" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

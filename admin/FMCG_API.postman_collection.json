@@ -1,0 +1,389 @@
+{
+  "info": {
+    "name": "FMCG Reward System API",
+    "_postman_id": "fmcg-reward-system-v1",
+    "description": "Complete API collection for the FMCG QR Code Reward Campaign System.\n\n**Setup:**\n1. Set `base_url` variable to your backend URL (default: http://localhost:5000)\n2. Run 'Admin Login' first — token is auto-saved\n3. All protected endpoints use the saved token automatically",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url",   "value": "http://localhost:5000", "type": "string" },
+    { "key": "token",      "value": "", "type": "string" },
+    { "key": "scheme_id",  "value": "1", "type": "string" },
+    { "key": "batch_id",   "value": "1", "type": "string" },
+    { "key": "qr_code",    "value": "QR123456789ABC", "type": "string" },
+    { "key": "submission_id", "value": "1", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Register Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/register", "host": ["{{base_url}}"], "path": ["api","auth","register"] },
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"admin\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"SecurePassword123!\"\n}" }
+          }
+        },
+        {
+          "name": "Admin Login",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const res = pm.response.json();",
+                "if (res.success && res.data && res.data.access_token) {",
+                "  pm.collectionVariables.set('token', res.data.access_token);",
+                "  pm.collectionVariables.set('refresh_token', res.data.refresh_token || '');",
+                "  console.log('✅ Token saved automatically');",
+                "}"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api","auth","login"] },
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"SecurePassword123!\"\n}" }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{refresh_token}}" }],
+            "url": { "raw": "{{base_url}}/api/auth/refresh", "host": ["{{base_url}}"], "path": ["api","auth","refresh"] }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/auth/profile", "host": ["{{base_url}}"], "path": ["api","auth","profile"] }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{base_url}}/api/auth/change-password", "host": ["{{base_url}}"], "path": ["api","auth","change-password"] },
+            "body": { "mode": "raw", "raw": "{\n  \"old_password\": \"SecurePassword123!\",\n  \"new_password\": \"NewPassword123!\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📱 Public QR Endpoints",
+      "item": [
+        {
+          "name": "Validate QR Code",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/qr/validate/{{qr_code}}", "host": ["{{base_url}}"], "path": ["api","qr","validate","{{qr_code}}"] }
+          }
+        },
+        {
+          "name": "Submit QR Form",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/qr/submit", "host": ["{{base_url}}"], "path": ["api","qr","submit"] },
+            "body": { "mode": "raw", "raw": "{\n  \"qr_code\": \"{{qr_code}}\",\n  \"name\": \"John Doe\",\n  \"phone\": \"9876543210\",\n  \"city\": \"Mumbai\",\n  \"state\": \"Maharashtra\",\n  \"purchase_details\": {\n    \"product\": \"Premium Oil\",\n    \"quantity\": \"1L\"\n  }\n}" }
+          }
+        },
+        {
+          "name": "Check Duplicate",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/qr/check-duplicate", "host": ["{{base_url}}"], "path": ["api","qr","check-duplicate"] },
+            "body": { "mode": "raw", "raw": "{\n  \"phone\": \"9876543210\"\n}" }
+          }
+        },
+        {
+          "name": "Get Reward Details",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/qr/get-reward/{{qr_code}}", "host": ["{{base_url}}"], "path": ["api","qr","get-reward","{{qr_code}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 Admin Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/admin/dashboard", "host": ["{{base_url}}"], "path": ["api","admin","dashboard"] }
+          }
+        },
+        {
+          "name": "List All Submissions",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/admin/submissions?page=1&per_page=50",
+              "host": ["{{base_url}}"], "path": ["api","admin","submissions"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "per_page", "value": "50" },
+                { "key": "city", "value": "Mumbai", "disabled": true },
+                { "key": "period", "value": "month", "disabled": true },
+                { "key": "batch_id", "value": "1", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Export Submissions CSV",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/admin/submissions/export", "host": ["{{base_url}}"], "path": ["api","admin","submissions","export"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 QR Batch Management",
+      "item": [
+        {
+          "name": "Create QR Batch",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const res = pm.response.json();",
+                "if (res.success && res.data && res.data.batch_id) {",
+                "  pm.collectionVariables.set('batch_id', String(res.data.batch_id));",
+                "  console.log('Batch ID saved:', res.data.batch_id);",
+                "}"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{base_url}}/api/admin/batch/create", "host": ["{{base_url}}"], "path": ["api","admin","batch","create"] },
+            "body": { "mode": "raw", "raw": "{\n  \"batch_name\": \"Spring Campaign Batch 1\",\n  \"quantity\": 1000,\n  \"scheme_id\": {{scheme_id}}\n}" }
+          }
+        },
+        {
+          "name": "Get Batch Details",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/admin/batch/{{batch_id}}", "host": ["{{base_url}}"], "path": ["api","admin","batch","{{batch_id}}"] }
+          }
+        },
+        {
+          "name": "List All Batches",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/admin/batches?page=1&per_page=50",
+              "host": ["{{base_url}}"], "path": ["api","admin","batches"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "per_page", "value": "50" }]
+            }
+          }
+        },
+        {
+          "name": "Export Batch as ZIP",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/admin/batch/{{batch_id}}/export", "host": ["{{base_url}}"], "path": ["api","admin","batch","{{batch_id}}","export"] }
+          }
+        },
+        {
+          "name": "Delete Batch",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/admin/batch/{{batch_id}}", "host": ["{{base_url}}"], "path": ["api","admin","batch","{{batch_id}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📋 Campaign Schemes",
+      "item": [
+        {
+          "name": "Create Scheme",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const res = pm.response.json();",
+                "if (res.success && res.data && res.data.id) {",
+                "  pm.collectionVariables.set('scheme_id', String(res.data.id));",
+                "  console.log('Scheme ID saved:', res.data.id);",
+                "}"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{base_url}}/api/schemes", "host": ["{{base_url}}"], "path": ["api","schemes"] },
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Spring Campaign 2024\",\n  \"description\": \"Win exciting prizes this spring\",\n  \"reward_details\": \"50 loyalty points + free bottle\",\n  \"reward_text\": \"Win a free bottle!\",\n  \"start_date\": \"2024-02-01T00:00:00Z\",\n  \"end_date\": \"2024-12-31T23:59:59Z\"\n}" }
+          }
+        },
+        {
+          "name": "List Schemes",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/schemes?page=1&per_page=50",
+              "host": ["{{base_url}}"], "path": ["api","schemes"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "per_page", "value": "50" }, { "key": "active_only", "value": "true", "disabled": true }]
+            }
+          }
+        },
+        {
+          "name": "Get Scheme Details",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/schemes/{{scheme_id}}", "host": ["{{base_url}}"], "path": ["api","schemes","{{scheme_id}}"] }
+          }
+        },
+        {
+          "name": "Update Scheme",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{base_url}}/api/schemes/{{scheme_id}}", "host": ["{{base_url}}"], "path": ["api","schemes","{{scheme_id}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Updated Campaign Title\",\n  \"reward_text\": \"Updated reward text\"\n}" }
+          }
+        },
+        {
+          "name": "Activate Scheme",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/schemes/{{scheme_id}}/activate", "host": ["{{base_url}}"], "path": ["api","schemes","{{scheme_id}}","activate"] }
+          }
+        },
+        {
+          "name": "Deactivate Scheme",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/schemes/{{scheme_id}}/deactivate", "host": ["{{base_url}}"], "path": ["api","schemes","{{scheme_id}}","deactivate"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏆 Winner Management",
+      "item": [
+        {
+          "name": "Select Random Winners",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{base_url}}/api/winners/select-random", "host": ["{{base_url}}"], "path": ["api","winners","select-random"] },
+            "body": { "mode": "raw", "raw": "{\n  \"scheme_id\": {{scheme_id}},\n  \"count\": 10\n}" }
+          }
+        },
+        {
+          "name": "Mark Winner Manually",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{base_url}}/api/winners/mark-winner", "host": ["{{base_url}}"], "path": ["api","winners","mark-winner"] },
+            "body": { "mode": "raw", "raw": "{\n  \"submission_id\": {{submission_id}},\n  \"scheme_id\": {{scheme_id}}\n}" }
+          }
+        },
+        {
+          "name": "List Winners",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/winners?page=1&per_page=50",
+              "host": ["{{base_url}}"], "path": ["api","winners"],
+              "query": [
+                { "key": "page", "value": "1" }, { "key": "per_page", "value": "50" },
+                { "key": "scheme_id", "value": "{{scheme_id}}", "disabled": true },
+                { "key": "announced_only", "value": "false", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Announce Winner",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/api/winners/{{submission_id}}/announce", "host": ["{{base_url}}"], "path": ["api","winners","{{submission_id}}","announce"] }
+          }
+        },
+        {
+          "name": "Bulk Announce Winners",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{base_url}}/api/winners/announce-bulk", "host": ["{{base_url}}"], "path": ["api","winners","announce-bulk"] },
+            "body": { "mode": "raw", "raw": "{\n  \"submission_ids\": [1, 2, 3, 4, 5]\n}" }
+          }
+        },
+        {
+          "name": "Export Winners CSV",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/winners/export",
+              "host": ["{{base_url}}"], "path": ["api","winners","export"],
+              "query": [{ "key": "scheme_id", "value": "{{scheme_id}}", "disabled": true }]
+            }
+          }
+        },
+        {
+          "name": "Winner Statistics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/winners/statistics",
+              "host": ["{{base_url}}"], "path": ["api","winners","statistics"],
+              "query": [{ "key": "scheme_id", "value": "{{scheme_id}}", "disabled": true }]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
