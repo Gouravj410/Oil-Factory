@@ -110,11 +110,17 @@ const ProductDetail = () => {
 
   const product = products[id]
 
+  const handleBackToProducts = (e) => {
+    e.preventDefault()
+    localStorage.setItem('scroll_to_section', 'products')
+    window.location.href = '#/'
+  }
+
   if (!product) {
     return (
       <div className="product-not-found">
         <h1>Product Not Found</h1>
-        <Link to={{ pathname: '/', hash: '#products' }}>Back to Products</Link>
+        <a href="#/" onClick={handleBackToProducts}>Back to Products</a>
       </div>
     )
   }
@@ -130,9 +136,9 @@ const ProductDetail = () => {
         style={{ background: `linear-gradient(135deg, ${product.accentColor}15 0%, ${product.accentColor}05 100%)` }}
       >
         <div className="product-hero-content">
-          <Link to={{ pathname: '/', hash: '#products' }} className="back-link">
+          <a href="#/" onClick={handleBackToProducts} className="back-link">
             ← Back to Products
-          </Link>
+          </a>
           
           <motion.h1
             className="product-hero-title"
@@ -276,9 +282,9 @@ const ProductDetail = () => {
         <h2>Ready to Experience Gold Mairani Quality?</h2>
         <p>Find our products at your nearest retailers.</p>
         <div className="cta-buttons">
-          <Link to={{ pathname: '/', hash: '#products' }} className="cta-btn-secondary">
+          <a href="#/" onClick={handleBackToProducts} className="cta-btn-secondary">
             Back to Products
-          </Link>
+          </a>
         </div>
       </motion.div>
     </section>

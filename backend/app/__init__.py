@@ -33,6 +33,29 @@ def create_app(config_name=None):
     app = Flask(__name__)
     app.config.from_object(config)
     
+    # Proactive DNS check for PostgreSQL to fall back to SQLite when offline
+    db_uri = app.config.get("SQLALCHEMY_DATABASE_URI", "")
+    if db_uri.startswith("postgresql"):
+        import socket
+        from urllib.parse import urlparse
+        hostname = "unknown"
+        try:
+            parsed = urlparse(db_uri)
+            hostname = parsed.hostname or "unknown"
+            if hostname and hostname != "unknown":
+                # Save current default timeout to avoid polluting other sockets
+                old_timeout = socket.getdefaulttimeout()
+                socket.setdefaulttimeout(2.0)
+                try:
+                    socket.gethostbyname(hostname)
+                finally:
+                    # Restore previous default timeout
+                    socket.setdefaulttimeout(old_timeout)
+        except Exception as e:
+            logger.warning(f"PostgreSQL database host '{hostname}' is offline or unreachable ({str(e)}). Falling back to local SQLite database...")
+            sqlite_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "local_fmcg_rewards.db")
+            app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{sqlite_path}"
+
     # Initialize extensions
     db.init_app(app)
     CORS(app, origins=app.config.get("CORS_ORIGINS", ["*"]))

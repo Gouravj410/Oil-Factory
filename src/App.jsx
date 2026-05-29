@@ -10,7 +10,7 @@ import About from './components/About'
 import Footer from './components/Footer'
 import ProductDetail from './components/ProductDetail'
 import ClaimPage from './components/ClaimPage'
-import Rewards from './components/Rewards'
+import ScannerPage from './components/ScannerPage'
 import './App.css'
 
 function AppInner() {
@@ -18,6 +18,25 @@ function AppInner() {
   const isClaim = location.pathname.startsWith('/r/')
   const [rewardsOpen, setRewardsOpen] = useState(false)
   const hideChrome = isClaim
+
+  React.useEffect(() => {
+    if (location.pathname === '/') {
+      const targetId = localStorage.getItem('scroll_to_section')
+      if (targetId) {
+        localStorage.removeItem('scroll_to_section')
+        // Wait a brief moment for DOM to load/render
+        setTimeout(() => {
+          const el = document.getElementById(targetId)
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }, 150)
+      }
+    } else {
+      // If we navigate to a details page, scroll to top automatically
+      window.scrollTo(0, 0)
+    }
+  }, [location])
 
   return (
     <>
@@ -52,7 +71,7 @@ function AppInner() {
                exit={{ opacity: 0, y: 20, scale: 0.95 }}
                transition={{ duration: 0.3 }}
             >
-              <Rewards onClose={() => setRewardsOpen(false)} />
+              <ScannerPage onClose={() => setRewardsOpen(false)} />
             </motion.div>
           </div>
         )}

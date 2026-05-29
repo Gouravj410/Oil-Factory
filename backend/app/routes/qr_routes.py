@@ -215,10 +215,15 @@ def get_public_scheme(scheme_id):
             )
         
         # Check if scheme is within valid dates
-        now = datetime.utcnow()
-        if now < scheme.start_date or now > scheme.end_date:
+        now_utc = datetime.utcnow()
+        now_local = datetime.now()
+        is_active_utc = (scheme.start_date <= now_utc <= scheme.end_date)
+        is_active_local = (scheme.start_date <= now_local <= scheme.end_date)
+        
+        if not (is_active_utc or is_active_local):
+            error_msg = "Campaign has not started yet" if (now_utc < scheme.start_date and now_local < scheme.start_date) else "Campaign period has expired"
             return format_response(
-                error="Campaign period has expired",
+                error=error_msg,
                 status_code=400
             )
         

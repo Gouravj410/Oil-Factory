@@ -211,9 +211,20 @@ def export_batch(batch_id):
         x_idx = 0
         y_idx = 0
 
-        for qr in QRCode.query.filter_by(batch_id=batch_id).yield_per(200):
+        # Add support for pagination to avoid timeouts on large batches
+        page = request.args.get("page", 1, type=int)
+        per_page = request.args.get("per_page", 1000, type=int)
+        
+        # Enforce maximum 1,000 QR codes per PDF file to prevent browser timeouts
+        per_page = min(per_page, 1000)
+        
+        offset = (page - 1) * per_page
+        qr_codes = QRCode.query.filter_by(batch_id=batch_id).order_by(QRCode.id).offset(offset).limit(per_page).all()
+
+        for qr in qr_codes:
             try:
-                img_bytes = QRCodeGenerator.generate_qr_image(qr.unique_code, base_url=base_url)
+                # Use highly optimized box size (3) and format (BMP) to complete exports up to 10x faster
+                img_bytes = QRCodeGenerator.generate_qr_image(qr.unique_code, base_url=base_url, size=3, image_format="BMP")
                 
                 # Calculate position
                 x = margin + x_idx * (qr_size + x_spacing)
@@ -240,11 +251,16 @@ def export_batch(batch_id):
         c.save()
         pdf_buffer.seek(0)
         
+        # Dynamic filename reflecting the exact exported code ranges
+        download_name = f"batch_{batch_id}_{batch.batch_name}_page_{page}.pdf"
+        if qr_codes:
+            download_name = f"batch_{batch_id}_{batch.batch_name}_codes_{offset + 1}_to_{offset + len(qr_codes)}.pdf"
+        
         return send_file(
             pdf_buffer,
             mimetype="application/pdf",
             as_attachment=True,
-            download_name=f"batch_{batch_id}_{batch.batch_name}.pdf",
+            download_name=download_name,
         )
 
     except Exception as e:

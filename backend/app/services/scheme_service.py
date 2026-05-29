@@ -26,7 +26,8 @@ class SchemeService:
             if start_date >= end_date:
                 return False, None, "Start date must be before end date"
             
-            if start_date < datetime.utcnow():
+            # Check if start date is in the past in both UTC and local server time (to handle timezone mismatch gracefully)
+            if start_date < datetime.utcnow() and start_date < datetime.now():
                 return False, None, "Start date cannot be in the past"
             
             scheme = Scheme(

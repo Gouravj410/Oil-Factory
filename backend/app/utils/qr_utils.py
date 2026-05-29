@@ -39,7 +39,7 @@ class QRCodeGenerator:
         return f"QR{batch_id}{index:06d}" + unique_code[:8]
     
     @staticmethod
-    def generate_qr_image(unique_code: str, base_url: str = None, size: int = 12, border: int = 2) -> bytes:
+    def generate_qr_image(unique_code: str, base_url: str = None, size: int = 12, border: int = 2, image_format: str = "PNG") -> bytes:
         """
         Generate QR image that encodes the full claim URL.
         Customers scan this — they land on the claim form with code pre-filled.
@@ -49,9 +49,10 @@ class QRCodeGenerator:
             base_url: Base URL of the claim site (defaults to config)
             size: Box size in pixels (higher = bigger image)
             border: Border in boxes
+            image_format: Format of the image (PNG, BMP, etc.)
 
         Returns:
-            PNG image bytes
+            Image bytes
         """
         try:
             if base_url is None:
@@ -71,7 +72,7 @@ class QRCodeGenerator:
             img = qr.make_image(fill_color="black", back_color="white")
 
             img_bytes = io.BytesIO()
-            img.save(img_bytes, format="PNG")
+            img.save(img_bytes, format=image_format)
             img_bytes.seek(0)
 
             return img_bytes.getvalue()
@@ -131,9 +132,18 @@ class QRValidator:
                 return False, "Scheme is no longer active", None
             
             # Check if scheme dates are valid
-            now = datetime.utcnow()
-            if now < scheme.start_date or now > scheme.end_date:
-                return False, "Campaign period has ended", None
+            now_utc = datetime.utcnow()
+            now_local = datetime.now()
+            
+            # Match active campaign either by UTC time or Local server time (for timezone resilience)
+            is_active_utc = (scheme.start_date <= now_utc <= scheme.end_date)
+            is_active_local = (scheme.start_date <= now_local <= scheme.end_date)
+            
+            if not (is_active_utc or is_active_local):
+                if now_utc < scheme.start_date and now_local < scheme.start_date:
+                    return False, "Campaign has not started yet", None
+                else:
+                    return False, "Campaign period has ended", None
             
             return True, None, qr
             

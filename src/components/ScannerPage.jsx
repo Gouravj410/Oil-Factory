@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import './ScannerPage.css'
 
 export default function ScannerPage({ onClose }) {
+  const [activeTab, setActiveTab] = useState('camera') // camera | file
   const [scanStatus, setScanStatus] = useState('idle') // idle | scanning | success | error
   const [errorMsg, setErrorMsg] = useState('')
   const [lastCode, setLastCode] = useState('')
@@ -39,8 +40,8 @@ export default function ScannerPage({ onClose }) {
           setLastCode(decodedText)
           scanner.stop().catch(() => {})
 
-          // Extract code from URL /r/<code> or use raw text
-          const match = decodedText.match(/\/r\/([A-Z0-9]+)$/i)
+          // Extract code from URL /r/<code> or use raw text (handles trailing slashes and query parameters)
+          const match = decodedText.match(/\/r\/([A-Z0-9]+)(?:\/|\?|$)/i)
           if (match) {
             setScanStatus('success')
             setTimeout(() => {
@@ -74,6 +75,41 @@ export default function ScannerPage({ onClose }) {
       } else {
         setErrorMsg('Could not start camera. Please check your device and try again.')
       }
+    }
+  }
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    setScanStatus('scanning')
+    setErrorMsg('')
+
+    try {
+      const { Html5Qrcode } = await import('html5-qrcode')
+
+      // Use the sc-reader element in the DOM to initialize
+      const html5QrCode = new Html5Qrcode('sc-reader')
+
+      const decodedText = await html5QrCode.scanFile(file, false)
+
+      // Success!
+      setLastCode(decodedText)
+      setScanStatus('success')
+
+      // Extract code and redirect (handles trailing slashes and query parameters)
+      const match = decodedText.match(/\/r\/([A-Z0-9]+)(?:\/|\?|$)/i)
+      const finalCode = match ? match[1].toUpperCase() : decodedText.trim().toUpperCase()
+
+      setTimeout(() => {
+        navigate(`/r/${finalCode}`)
+        if (onClose) onClose()
+      }, 1000)
+
+    } catch (err) {
+      console.error('File scan error:', err)
+      setScanStatus('error')
+      setErrorMsg('No valid QR code found in this photo. Please make sure the QR is clear and well-lit.')
     }
   }
 
@@ -112,17 +148,38 @@ export default function ScannerPage({ onClose }) {
         {/* Header */}
         <div className="sc-header">
           <div className="sc-icon-wrap">
-            <span className="sc-icon"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sc-icon-svg-badge">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="4" />
+              <line x1="8" y1="2" x2="8" y2="4" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
             <div className="sc-icon-pulse" />
           </div>
-          <h1 className="sc-title">Scan QR Code</h1>
+          <h1 className="sc-title">Scan QR & Win Reward!</h1>
           <p className="sc-subtitle">
-            Scan the QR code on your <strong>Gold Mairani</strong> oil bottle to claim your reward
+            Point camera or upload a bottle photo to unlock your exclusive **Gold Mairani** reward
           </p>
         </div>
 
+        {/* Tab Toggle */}
+        <div className="sc-tabs">
+          <button
+            className={`sc-tab-btn ${activeTab === 'camera' ? 'sc-tab-btn--active' : ''}`}
+            onClick={() => { stopScanner(); setActiveTab('camera'); setScanStatus('idle'); setErrorMsg('') }}
+          >
+            📷 Live Camera
+          </button>
+          <button
+            className={`sc-tab-btn ${activeTab === 'file' ? 'sc-tab-btn--active' : ''}`}
+            onClick={() => { stopScanner(); setActiveTab('file'); setScanStatus('idle'); setErrorMsg('') }}
+          >
+            📁 Upload Photo
+          </button>
+        </div>
+
         {/* Scanner Area */}
-        <div className="sc-reader-wrap">
+        <div className="sc-reader-wrap" style={{ display: activeTab === 'camera' || scanStatus === 'success' ? 'block' : 'none' }}>
           <div
             id="sc-reader"
             className={`sc-reader ${scanStatus === 'scanning' ? 'sc-reader--active' : ''}`}
@@ -132,7 +189,7 @@ export default function ScannerPage({ onClose }) {
           {/* Overlay when idle */}
           {scanStatus === 'idle' && (
             <div className="sc-overlay-idle">
-              <div className="sc-idle-icon"></div>
+              <div className="sc-idle-icon">📷</div>
               <p>Camera preview will appear here</p>
             </div>
           )}
@@ -158,8 +215,34 @@ export default function ScannerPage({ onClose }) {
           )}
         </div>
 
+        {/* File Upload Tab Area */}
+        {activeTab === 'file' && scanStatus !== 'success' && (
+          <div className="sc-file-wrapper">
+            <div className="sc-file-dropzone" onClick={() => document.getElementById('sc-file-input').click()}>
+              <div className="sc-file-icon">📤</div>
+              <p className="sc-file-text-main">Click or select a photo of the QR code</p>
+              <p className="sc-file-text-sub">Supports JPG, PNG or camera photos</p>
+              <input
+                type="file"
+                id="sc-file-input"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+              />
+            </div>
+            {scanStatus === 'scanning' && (
+              <div className="sc-file-loading">
+                <span className="sc-spinner-icon" /> Decoding image, please wait...
+              </div>
+            )}
+            
+            {/* hidden div for html5-qrcode file initialization requirements */}
+            <div id="sc-reader-dummy" style={{ display: 'none' }} />
+          </div>
+        )}
+
         {/* Status */}
-        {scanStatus === 'scanning' && (
+        {activeTab === 'camera' && scanStatus === 'scanning' && (
           <div className="sc-status sc-status--scanning">
             <span className="sc-status-dot" />
             Scanning… Point camera at QR code on bottle
@@ -172,18 +255,20 @@ export default function ScannerPage({ onClose }) {
           </div>
         )}
 
-        {/* Buttons */}
-        <div className="sc-actions">
-          {scanStatus === 'idle' || scanStatus === 'error' ? (
-            <button className="sc-btn sc-btn--primary" onClick={startScanner}>
-              Start Scanning
-            </button>
-          ) : scanStatus === 'scanning' ? (
-            <button className="sc-btn sc-btn--secondary" onClick={stopScanner}>
-              ✕ Stop Scanner
-            </button>
-          ) : null}
-        </div>
+        {/* Camera Control Buttons */}
+        {activeTab === 'camera' && (
+          <div className="sc-actions">
+            {scanStatus === 'idle' || scanStatus === 'error' ? (
+              <button className="sc-btn sc-btn--primary" onClick={startScanner}>
+                Start Scanning
+              </button>
+            ) : scanStatus === 'scanning' ? (
+              <button className="sc-btn sc-btn--secondary" onClick={stopScanner}>
+                ✕ Stop Scanner
+              </button>
+            ) : null}
+          </div>
+        )}
 
         {/* Manual entry */}
         <div className="sc-manual">
@@ -201,15 +286,15 @@ export default function ScannerPage({ onClose }) {
             </div>
             <div className="sc-step">
               <span className="sc-step-num">2</span>
-              <p>Click <strong>Start Scanning</strong> and point camera at QR code</p>
+              <p>Click <strong>Start Scanning</strong> or upload a clear photo of it</p>
             </div>
             <div className="sc-step">
               <span className="sc-step-num">3</span>
-              <p>Fill in your details and submit your entry</p>
+              <p>Fill in your details in the secure form and submit</p>
             </div>
             <div className="sc-step">
               <span className="sc-step-num">4</span>
-              <p>Wait for the announcement — you could win exciting prizes!</p>
+              <p>Wait for the announcements — you could win exciting prizes!</p>
             </div>
           </div>
         </div>

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import '../styles/Navbar.css'
 
 const Navbar = ({ onRewardsClick }) => {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const location = useLocation()
+  const isHome = location.pathname === '/'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,11 +18,11 @@ const Navbar = ({ onRewardsClick }) => {
   }, [])
 
   const navLinks = [
-    { label: 'Home', href: '#products' },
-    { label: 'Health', href: '#nutrition' },
-    { label: 'Recipes', href: '#recipes' },
-    { label: 'Why Us', href: '#features' },
-    { label: 'About', href: '#about' }
+    { label: 'Home', href: isHome ? '#hero' : '/#hero' },
+    { label: 'Products', href: isHome ? '#products' : '/#products' },
+    { label: 'Health', href: isHome ? '#nutrition' : '/#nutrition' },
+    { label: 'Why Us', href: isHome ? '#features' : '/#features' },
+    { label: 'About', href: isHome ? '#about' : '/#about' }
   ]
 
   return (
@@ -31,7 +34,19 @@ const Navbar = ({ onRewardsClick }) => {
     >
       <div className="navbar-inner">
         {/* Logo */}
-        <a href="#products" className="navbar-logo">
+        <a 
+          href={isHome ? '#hero' : '#/'} 
+          className="navbar-logo"
+          onClick={(e) => {
+            if (isHome) {
+              e.preventDefault();
+              const el = document.getElementById('hero');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }
+          }}
+        >
           <img src="./images/logo.jpeg" alt="Mateshwari Industries" className="logo-img" />
           <div className="logo-text">
             <span className="logo-brand">Gold Mairani</span>
@@ -44,7 +59,20 @@ const Navbar = ({ onRewardsClick }) => {
           {navLinks.map((link, i) => (
             <li key={i}>
               <motion.a
-                href={link.href}
+                href={isHome ? link.href : '#/'}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const targetId = link.href.split('#').pop();
+                  if (isHome) {
+                    const el = document.getElementById(targetId);
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  } else {
+                    localStorage.setItem('scroll_to_section', targetId);
+                    window.location.href = '#/';
+                  }
+                }}
                 className="nav-link"
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.2 }}
@@ -61,28 +89,45 @@ const Navbar = ({ onRewardsClick }) => {
           <motion.button
             className="navbar-scan-btn"
             onClick={onRewardsClick}
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, boxShadow: '0 8px 25px rgba(212, 175, 55, 0.5)' }}
             whileTap={{ scale: 0.95 }}
-            aria-label="View Rewards"
+            aria-label="Scan QR Code"
             style={{
-              background: 'linear-gradient(135deg, #f5576c, #f093fb)',
+              background: 'linear-gradient(135deg, #D4AF37 0%, #F5D061 50%, #B8860B 100%)',
               border: 'none',
               padding: '10px 24px',
               borderRadius: '50px',
-              color: '#fff',
-              fontWeight: '700',
+              color: '#2C2212',
+              fontWeight: '800',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              boxShadow: '0 4px 15px rgba(212, 175, 55, 0.35)',
+              textShadow: '0 1px 0 rgba(255,255,255,0.3)'
             }}
           >
-            <span className="navbar-scan-icon" style={{ fontSize: '1.2rem' }}></span>
-            <span className="navbar-scan-text">View Rewards</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '18px', height: '18px' }}>
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+            <span className="navbar-scan-text">Scan QR & Win!</span>
           </motion.button>
 
           <motion.a
-            href="#products"
+            href={isHome ? '#products' : '#/'}
+            onClick={(e) => {
+              e.preventDefault();
+              if (isHome) {
+                const el = document.getElementById('products');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              } else {
+                localStorage.setItem('scroll_to_section', 'products');
+                window.location.href = '#/';
+              }
+            }}
             className="navbar-cta"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -114,12 +159,25 @@ const Navbar = ({ onRewardsClick }) => {
             {navLinks.map((link, i) => (
               <motion.a
                 key={i}
-                href={link.href}
+                href={isHome ? link.href : '#/'}
                 className="mobile-link"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileOpen(false);
+                  const targetId = link.href.split('#').pop();
+                  if (isHome) {
+                    const el = document.getElementById(targetId);
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  } else {
+                    localStorage.setItem('scroll_to_section', targetId);
+                    window.location.href = '#/';
+                  }
+                }}
               >
                 {link.label}
               </motion.a>
@@ -132,7 +190,7 @@ const Navbar = ({ onRewardsClick }) => {
               transition={{ delay: navLinks.length * 0.05 }}
               onClick={() => { setMobileOpen(false); onRewardsClick && onRewardsClick() }}
             >
-              View Rewards & Offers
+              Scan QR & Win Reward!
             </motion.button>
           </motion.div>
         )}

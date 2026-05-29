@@ -70,7 +70,7 @@ class QRBatchService:
     @staticmethod
     def _generate_codes_for_batch(batch_id: int, quantity: int, scheme_id: int):
         """
-        Generate QR codes for batch in chunks
+        Generate QR codes for batch in chunks using highly optimized bulk insertions
         
         Args:
             batch_id: Batch ID
@@ -87,18 +87,18 @@ class QRBatchService:
             for j in range(codes_to_create):
                 unique_code = QRCodeGenerator.generate_unique_code(batch_id, i + j)
                 
-                qr = QRCode(
-                    unique_code=unique_code,
-                    batch_id=batch_id,
-                    scheme_id=scheme_id,
-                    is_used=False
-                )
-                qr_codes.append(qr)
+                qr_codes.append({
+                    "unique_code": unique_code,
+                    "batch_id": batch_id,
+                    "scheme_id": scheme_id,
+                    "is_used": False
+                })
             
-            db.session.add_all(qr_codes)
-            db.session.commit()
+            # Perform direct bulk mappings insertion for rapid execution
+            db.session.bulk_insert_mappings(QRCode, qr_codes)
+            db.session.flush()  # Flush changes to database without committing yet
             
-            logger.info(f"Generated {codes_to_create} codes for batch {batch_id} (progress: {i}/{quantity})")
+            logger.info(f"Bulk generated {codes_to_create} codes for batch {batch_id} (progress: {i}/{quantity})")
     
     @staticmethod
     def get_batch_stats(batch_id: int) -> dict:

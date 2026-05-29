@@ -72,7 +72,7 @@ const InteractiveShowcase = () => {
   ];
 
   return (
-    <>
+    <section id="products" className="interactive-showcase-section">
       {/* Kitchen Banner */}
       <div className="kitchen-banner">
         <h2>The Gold Mairani Kitchen</h2>
@@ -91,7 +91,7 @@ const InteractiveShowcase = () => {
           );
         })}
       </div>
-    </>
+    </section>
   );
 };
 
@@ -99,15 +99,36 @@ const ShowcaseItem = ({ item, isReversed }) => {
   const { ref, inView } = useInView({ threshold: 0.3, triggerOnce: true });
   const [imageIndex, setImageIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [autoplayActive, setAutoplayActive] = useState(true);
+
+  // Natural automatic fade-in transition timer (4.5 seconds)
+  React.useEffect(() => {
+    if (item.productImages.length <= 1 || !autoplayActive) return;
+
+    const interval = setInterval(() => {
+      setDirection(1);
+      setImageIndex((prev) => (prev + 1) % item.productImages.length);
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, [item.productImages.length, autoplayActive]);
 
   const handleNextImage = () => {
     setDirection(1);
     setImageIndex((prev) => (prev + 1) % item.productImages.length);
+    // Pause autoplay for 8 seconds after manual user interaction, then resume naturally
+    setAutoplayActive(false);
+    const timeout = setTimeout(() => setAutoplayActive(true), 8000);
+    return () => clearTimeout(timeout);
   };
 
   const handlePrevImage = () => {
     setDirection(-1);
     setImageIndex((prev) => (prev - 1 + item.productImages.length) % item.productImages.length);
+    // Pause autoplay for 8 seconds after manual user interaction, then resume naturally
+    setAutoplayActive(false);
+    const timeout = setTimeout(() => setAutoplayActive(true), 8000);
+    return () => clearTimeout(timeout);
   };
 
   // Variants for Dish Rotation

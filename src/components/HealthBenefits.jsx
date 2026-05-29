@@ -9,22 +9,48 @@ const HealthBenefits = () => {
   const benefits = [
     {
       title: "Fortified with Vitamins",
-      icon: "",
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ width: '32px', height: '32px' }}>
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" strokeDasharray="3 3"/>
+          <circle cx="12" cy="12" r="5" />
+          <circle cx="6" cy="7" r="2.5" />
+          <circle cx="18" cy="17" r="2.5" />
+          <line x1="8.5" y1="8.5" x2="10" y2="10" />
+          <line x1="14" y1="14" x2="15.5" y2="15.5" />
+        </svg>
+      ),
       desc: "Enriched with Vitamin A and D to support your immunity, vision, and bone health every single day."
     },
     {
       title: "Heart-Healthy Omega 3 & 6",
-      icon: "",
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ width: '32px', height: '32px' }}>
+          <path d="M12 2C12 2 3 9 3 14a9 9 0 0 0 18 0c0-5-9-12-9-12z" />
+          <path d="M12 8.5c-1.2-1.2-3 0-3 1.5 0 2 3 3.5 3 3.5s3-1.5 3-3.5c0-1.5-1.8-2.7-3-1.5z" fill="currentColor" />
+        </svg>
+      ),
       desc: "Our oils maintain the perfect balance of MUFA and PUFA, helping maintain healthy cholesterol levels."
     },
     {
       title: "Zero Trans-Fat",
-      icon: "",
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ width: '32px', height: '32px' }}>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <circle cx="12" cy="11" r="3.5" />
+          <line x1="9.5" y1="13.5" x2="14.5" y2="8.5" />
+        </svg>
+      ),
       desc: "Processed with state-of-the-art European technology to ensure 100% trans-fat-free purity."
     },
     {
       title: "Antioxidant Rich",
-      icon: "",
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ width: '32px', height: '32px' }}>
+          <path d="M2 22c0-5.5 4.5-10 10-10s10 4.5 10 10" />
+          <path d="M12 2a15.3 15.3 0 0 1 4 10H8a15.3 15.3 0 0 1 4-10z" fill="rgba(46, 111, 64, 0.15)"/>
+          <path d="M12 2v20" />
+        </svg>
+      ),
       desc: "Retains natural tocopherols (Vitamin E) which act as powerful antioxidants for healthy skin."
     }
   ]

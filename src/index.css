@@ -14,8 +14,8 @@ body {
   font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #0a0a0a;
-  color: #fff;
+  background: var(--bg-dark);
+  color: var(--text-white);
   overflow-x: hidden;
 }
 
@@ -47,7 +47,7 @@ ul, ol {
   --gold-primary: #DDBA38;
   --gold-light: #F4D03F;
   --gold-dark: #B8860B;
-  --green-primary: #1B5E20;
+  --green-primary: #2E6F40;
   --green-light: #4CAF50;
   --green-dark: #0D3B0F;
   --red-primary: #D32F2F;
@@ -58,13 +58,13 @@ ul, ol {
   --cream: #FFF8E1;
   --cream-dark: #F5E6C8;
   
-  /* Neutrals */
-  --bg-dark: #0a0a0a;
-  --bg-dark-2: #111111;
-  --bg-dark-3: #1a1a1a;
-  --text-white: #ffffff;
-  --text-light: rgba(255, 255, 255, 0.85);
-  --text-muted: rgba(255, 255, 255, 0.6);
+  /* Neutrals - Redesigned to Premium Light Cream Gold Kitchen Theme */
+  --bg-dark: #FCF9F2;
+  --bg-dark-2: #FFFDF9;
+  --bg-dark-3: #F5EFEB;
+  --text-white: #2C2212;
+  --text-light: #4A3E2E;
+  --text-muted: #7C6E5C;
   --text-dark: #1a1a1a;
   
   /* Spacing */

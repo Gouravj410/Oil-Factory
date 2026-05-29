@@ -195,6 +195,8 @@ async function loadDashboard() {
 
 function renderStats(d) {
   const qr = d.qr_codes || {}; const sub = d.submissions || {}; const sch = d.schemes || {}; const win = d.winners || {};
+  const isOffline = document.getElementById('status-text')?.textContent.includes('Offline');
+  
   const cards = [
     { icon: '📱', label: 'Total QR Codes', value: fmt(qr.total), sub: `${fmt(qr.used)} used`, badge: `${qr.usage_percentage?.toFixed(1) || 0}%`, btype: 'info' },
     { icon: '✅', label: 'Available QR', value: fmt(qr.remaining), sub: 'Ready to distribute', badge: 'Active', btype: 'success' },
@@ -203,13 +205,25 @@ function renderStats(d) {
     { icon: '🏆', label: 'Total Winners', value: fmt(win.total_winners), sub: `${fmt(win.announced)} announced`, badge: `${win.pending_announcement || 0} pending`, btype: 'warning' },
     { icon: '📋', label: 'Active Campaigns', value: fmt(sch.active), sub: `${fmt(sch.total)} total schemes`, badge: `${sch.inactive || 0} inactive`, btype: 'info' },
   ];
-  document.getElementById('stats-grid').innerHTML = cards.map(c => `
+  
+  let html = '';
+  if (isOffline) {
+    html += `
+      <div style="grid-column: 1 / -1; background: #fee2e2; border: 1.5px solid #fca5a5; color: #b91c1c; padding: 16px; border-radius: 12px; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; text-shadow: none;">
+        ⚠️ DATABASE CONNECTION WARNING: Backend API is offline. Showing cached/mock data. Please ensure Python backend is running (python start.py) and connected to your Supabase PostgreSQL.
+      </div>
+    `;
+  }
+  
+  html += cards.map(c => `
     <div class="stat-card">
       <div class="stat-icon">${c.icon}</div>
       <div class="stat-label">${c.label}</div>
       <div class="stat-value">${c.value}</div>
       <div class="stat-sub">${c.sub} &nbsp;<span class="stat-badge badge-${c.btype}">${c.badge}</span></div>
     </div>`).join('');
+    
+  document.getElementById('stats-grid').innerHTML = html;
 }
 
 function renderMockStats() {
@@ -355,7 +369,7 @@ async function loadBatches() {
         <td>${fmtDate(b.created_at)}</td>
         <td>
           <div style="display:flex;gap:6px">
-            <button class="btn-sm btn-outline" onclick="exportBatch(${b.id})">⬇ Export PDF</button>
+            <button class="btn-sm btn-outline" onclick="exportBatch(${b.id}, ${b.total_codes || 0})">⬇ Export PDF</button>
             <button class="btn-sm btn-danger" onclick="deleteBatch(${b.id})">Delete</button>
           </div>
         </td>
@@ -393,10 +407,25 @@ async function handleCreateBatch(e) {
   } catch (err) { errEl.textContent = err.message; errEl.classList.remove('hidden'); }
 }
 
-async function exportBatch(id) {
+async function exportBatch(id, totalCodes = 0) {
+  let page = 1;
+  let perPage = 1000;
+  
+  if (totalCodes > 1000) {
+    const totalPages = Math.ceil(totalCodes / 1000);
+    const input = prompt(`This batch has ${fmt(totalCodes)} QR codes.\nTo prevent browser timeouts, please enter the page number (1 to ${totalPages}) to export 1,000 codes at a time:`, "1");
+    if (input === null) return; // User cancelled
+    const parsed = parseInt(input);
+    if (isNaN(parsed) || parsed < 1 || parsed > totalPages) {
+      showToast("Invalid page number. Export cancelled.", "error");
+      return;
+    }
+    page = parsed;
+  }
+
   try {
-    showToast('Preparing PDF export...', 'info');
-    const res = await fetch(`${API}/api/admin/batch/${id}/export`, {
+    showToast(`Preparing PDF export for page ${page}...`, 'info');
+    const res = await fetch(`${API}/api/admin/batch/${id}/export?page=${page}&per_page=${perPage}`, {
       headers: { 'Authorization': `Bearer ${getToken()}` }
     });
     if (!res.ok) {
@@ -409,7 +438,7 @@ async function exportBatch(id) {
     a.href = url;
     // Extract filename from headers if possible
     const disp = res.headers.get('Content-Disposition');
-    let filename = `batch_${id}.pdf`;
+    let filename = `batch_${id}_page_${page}.pdf`;
     if (disp && disp.includes('filename=')) {
       filename = disp.split('filename=')[1].replace(/"/g, '');
     }

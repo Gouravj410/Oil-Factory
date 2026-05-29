@@ -1,8 +1,8 @@
 .rewards-section {
   padding: 80px 20px;
-  background: linear-gradient(180deg, #121212 0%, #1a1a2e 100%);
-  color: #fff;
-  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #FCF9F2 0%, #F5EFEB 100%);
+  color: var(--text-white);
+  font-family: 'Outfit', sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -23,8 +23,9 @@
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 15px;
-  background: linear-gradient(90deg, #ffb300, #ffea00);
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -32,7 +33,7 @@
 
 .rewards-subtitle {
   font-size: 1.2rem;
-  color: #a0a0b0;
+  color: var(--text-light);
   max-width: 600px;
   margin: 0 auto;
 }
@@ -44,8 +45,8 @@
 }
 
 .reward-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-dark-2);
+  border: 1px solid rgba(44, 34, 18, 0.08);
   border-radius: 20px;
   padding: 30px;
   position: relative;
@@ -56,44 +57,44 @@
 
 .reward-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 179, 0, 0.2);
-  border-color: rgba(255, 179, 0, 0.3);
+  box-shadow: 0 15px 30px rgba(44, 34, 18, 0.05), 0 0 15px rgba(221, 186, 56, 0.15);
+  border-color: rgba(221, 186, 56, 0.4);
 }
 
 .reward-badge {
   position: absolute;
   top: 20px;
   right: -30px;
-  background: #ffb300;
-  color: #000;
-  font-weight: 700;
+  background: var(--gold-primary);
+  color: var(--text-white);
+  font-weight: 800;
   font-size: 0.8rem;
   padding: 5px 40px;
   transform: rotate(45deg);
-  box-shadow: 0 2px 10px rgba(255, 179, 0, 0.4);
+  box-shadow: 0 2px 10px rgba(221, 186, 56, 0.25);
 }
 
 .reward-title {
   font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 10px;
-  color: #fff;
+  color: var(--text-white);
   padding-right: 20px;
 }
 
 .reward-desc {
   font-size: 1rem;
-  color: #b0b0c0;
+  color: var(--text-light);
   margin-bottom: 25px;
   line-height: 1.5;
 }
 
 .reward-details-box {
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--bg-dark-3);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 25px;
-  border-left: 4px solid #ffb300;
+  border-left: 4px solid var(--gold-primary);
 }
 
 .reward-highlight {
@@ -110,12 +111,12 @@
 .reward-text {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #ffb300;
+  color: var(--gold-dark);
 }
 
 .reward-details {
   font-size: 0.95rem;
-  color: #e0e0e0;
+  color: var(--text-light);
   line-height: 1.5;
 }
 
@@ -123,10 +124,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(44, 34, 18, 0.08);
   padding-top: 20px;
   font-size: 0.9rem;
-  color: #888;
+  color: var(--text-muted);
 }
 
 .reward-validity {
