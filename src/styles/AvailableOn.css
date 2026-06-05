@@ -1,0 +1,115 @@
+/* ===== AVAILABLE ON SECTION ===== */
+.available-on-section {
+  padding: 4rem 2rem;
+  background: var(--bg-dark);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.available-on-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.available-on-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  padding: 3rem 4rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.03);
+}
+
+.available-text-container {
+  flex: 1;
+}
+
+.available-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--gold-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 50px;
+  margin-bottom: 1rem;
+}
+
+.available-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-white);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.available-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.available-logos {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.partner-card {
+  background: #ffffff;
+  padding: 1.2rem 2rem;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  min-width: 140px;
+  border: 1px solid rgba(0,0,0,0.02);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  .available-on-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 2.5rem;
+    gap: 2rem;
+  }
+  
+  .available-logos {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .available-on-section {
+    padding: 3rem 1.5rem;
+  }
+  
+  .available-on-content {
+    padding: 2rem 1.5rem;
+  }
+  
+  .available-title {
+    font-size: 1.8rem;
+  }
+  
+  .partner-card {
+    padding: 1rem 1.5rem;
+    min-width: 120px;
+  }
+  
+  .partner-card img {
+    height: 30px !important;
+  }
+}

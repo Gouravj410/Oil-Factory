@@ -90,12 +90,20 @@
   padding: 0.25rem 0;
 }
 
-.navbar:not(.navbar-scrolled) .nav-link {
+.navbar:not(.navbar-scrolled):not(.navbar-light-bg) .nav-link {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.navbar:not(.navbar-scrolled) .logo-sub {
+.navbar:not(.navbar-scrolled):not(.navbar-light-bg) .logo-sub {
   color: rgba(255, 255, 255, 0.65);
+}
+
+.navbar.navbar-light-bg .nav-link {
+  color: var(--text-light);
+}
+
+.navbar.navbar-light-bg .logo-sub {
+  color: var(--text-muted);
 }
 
 .nav-link:hover {

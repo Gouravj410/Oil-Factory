@@ -11,6 +11,7 @@ import Footer from './components/Footer'
 import ProductDetail from './components/ProductDetail'
 import ClaimPage from './components/ClaimPage'
 import ScannerPage from './components/ScannerPage'
+import AvailableOn from './components/AvailableOn'
 import './App.css'
 
 function AppInner() {
@@ -46,6 +47,7 @@ function AppInner() {
         <Route path="/" element={
           <>
             <Hero onRewardsClick={() => setRewardsOpen(true)} />
+            <AvailableOn />
             <InteractiveShowcase />
             <HealthBenefits />
             <Features />

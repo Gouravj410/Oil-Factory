@@ -27,7 +27,7 @@ const Navbar = ({ onRewardsClick }) => {
 
   return (
     <motion.nav
-      className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}
+      className={`navbar ${scrolled ? 'navbar-scrolled' : ''} ${!isHome && !scrolled ? 'navbar-light-bg' : ''}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}

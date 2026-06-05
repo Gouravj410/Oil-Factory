@@ -280,7 +280,22 @@ const ProductDetail = () => {
         style={{ background: `linear-gradient(135deg, ${product.accentColor}20 0%, ${product.accentColor}05 100%)` }}
       >
         <h2>Ready to Experience Gold Mairani Quality?</h2>
-        <p>Find our products at your nearest retailers.</p>
+        <p>Find our products at your nearest retailers and online on Blinkit, IndiaMART, and Amazon.</p>
+        
+        {/* Availability Logos */}
+        <div className="availability-logos" style={{ display: 'flex', gap: '30px', justifyContent: 'center', margin: '30px 0', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div style={{ background: '#fff', padding: '10px 20px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center' }}>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Blinkit-yellow-app-icon.svg" alt="Blinkit" style={{ height: '40px', objectFit: 'contain' }} />
+            <span style={{ marginLeft: '10px', fontWeight: 'bold', color: '#333' }}>Blinkit</span>
+          </div>
+          <div style={{ background: '#fff', padding: '10px 20px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center' }}>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/IndiaMART_Logo.png" alt="IndiaMART" style={{ height: '35px', objectFit: 'contain' }} />
+          </div>
+          <div style={{ background: '#fff', padding: '10px 20px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center' }}>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style={{ height: '35px', objectFit: 'contain' }} />
+          </div>
+        </div>
+
         <div className="cta-buttons">
           <a href="#/" onClick={handleBackToProducts} className="cta-btn-secondary">
             Back to Products
