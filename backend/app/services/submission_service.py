@@ -76,9 +76,15 @@ class SubmissionService:
                 logger.warning(f"Blocked submission attempt: {phone} - {reason}")
                 return False, None, "Too many submission attempts. Please try again later."
             
+            # Explicit row-level lock to prevent double-submission race conditions
+            qr_lock = QRCode.query.with_for_update().filter_by(id=qr_obj.id).first()
+            if not qr_lock or qr_lock.is_used:
+                db.session.rollback()
+                return False, None, "This QR code has already been claimed."
+            
             # Create submission
             submission = Submission(
-                qr_code_id=qr_obj.id,
+                qr_code_id=qr_lock.id,
                 name=name,
                 phone=phone,
                 city=city,
@@ -92,12 +98,12 @@ class SubmissionService:
             db.session.flush()  # Get submission ID
             
             # Mark QR as used
-            qr_obj.is_used = True
-            qr_obj.used_at = datetime.utcnow()
-            qr_obj.used_by_submission_id = submission.id
+            qr_lock.is_used = True
+            qr_lock.used_at = datetime.utcnow()
+            qr_lock.used_by_submission_id = submission.id
             
             # Update batch usage counter
-            batch = qr_obj.batch
+            batch = qr_lock.batch
             batch.used_count += 1
             
             db.session.commit()

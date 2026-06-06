@@ -33,7 +33,8 @@ class Config:
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
     
     # CORS
-    CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
+    raw_cors = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:5173")
+    CORS_ORIGINS = [origin.strip() for origin in raw_cors.split(",") if origin.strip()]
     
     # Rate Limiting
     RATELIMIT_STORAGE_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
