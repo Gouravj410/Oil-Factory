@@ -57,15 +57,26 @@ const HealthBenefits = () => {
 
   const productImages = [
     "./images/MustardOilCan.png",
-    "./images/soyabean850.png",
-    "./images/mustard400.png",
     "./images/SoyaBeansOilCan.png",
-    "./images/cottonseed400.png",
+    "./images/cottonseed850.png"
+  ];
+
+  const outerImages = [
+    "./images/soyabean400.png",
     "./images/mustard850.png",
-    "./images/soyabean400.png"
+    "./images/cottonseed400.png",
+    "./images/mustard400.png",
+    "./images/soyabean850.png"
   ];
   
   const [activeIndex, setActiveIndex] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -73,6 +84,27 @@ const HealthBenefits = () => {
     }, 3500);
     return () => clearInterval(interval);
   }, []);
+
+  const isMobile = windowWidth <= 768;
+  const isSmallMobile = windowWidth <= 480;
+
+  const getRadius = () => {
+    if (isSmallMobile) return 140;
+    if (isMobile) return 180;
+    return 260;
+  };
+
+  const getCenterScale = () => {
+    if (isSmallMobile) return 0.8;
+    if (isMobile) return 1.0;
+    return 1.4;
+  };
+
+  const getOuterScale = () => {
+    if (isSmallMobile) return 0.35;
+    if (isMobile) return 0.45;
+    return 0.65;
+  };
 
   return (
     <section className="health-section" id="nutrition" ref={ref}>
@@ -123,41 +155,42 @@ const HealthBenefits = () => {
                   src={productImages[activeIndex]}
                   alt="Center Product"
                   className="health-product-img center"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1.4, x: 0, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: getCenterScale() * 0.7 }}
+                  animate={{ opacity: 1, scale: getCenterScale(), x: 0, y: 0 }}
+                  exit={{ opacity: 0, scale: getCenterScale() * 0.7 }}
                   transition={{ duration: 0.6 }}
                   style={{ zIndex: 10 }}
                 />
               </AnimatePresence>
 
-              {(() => {
-                const otherImages = productImages.filter((_, idx) => idx !== activeIndex);
-                const slotsCount = otherImages.length;
+              {outerImages.map((src, i) => {
+                const slotsCount = outerImages.length;
+                const angleDeg = slotsCount > 1 ? 180 - (180 / (slotsCount - 1)) * i : 90;
+                const radius = getRadius();
+                const angleRad = angleDeg * (Math.PI / 180);
+                const x = Math.cos(angleRad) * radius;
                 
-                return Array.from({ length: slotsCount }).map((_, i) => {
-                  const angleDeg = slotsCount > 1 ? 180 - (180 / (slotsCount - 1)) * i : 90;
-                  const radius = 260;
-                  const angleRad = angleDeg * (Math.PI / 180);
-                  const x = Math.cos(angleRad) * radius;
-                  const y = -Math.sin(angleRad) * radius + 60;
+                // Adjust y-offset dynamically too, keeping the arch looking good
+                const yOffset = isSmallMobile ? 30 : (isMobile ? 40 : 60);
+                const y = -Math.sin(angleRad) * radius + yOffset;
+                
+                const outerScale = getOuterScale();
+                
+                // Tilt outwards like rising sun rays
+                const rotate = 90 - angleDeg;
 
-                  return (
-                    <AnimatePresence key={`slot-${i}`}>
-                      <motion.img 
-                        key={`surrounding-${otherImages[i]}`}
-                        src={otherImages[i]}
-                        alt="Product"
-                        className="health-product-img surrounding"
-                        initial={{ opacity: 0, x, y, scale: 0.65 }}
-                        animate={{ opacity: 0.7, x, y, scale: 0.65, zIndex: 1 }}
-                        exit={{ opacity: 0, x, y, scale: 0.65 }}
-                        transition={{ duration: 0.8 }}
-                      />
-                    </AnimatePresence>
-                  );
-                });
-              })()}
+                return (
+                  <motion.img 
+                    key={`static-surrounding-${i}`}
+                    src={src}
+                    alt="Product"
+                    className="health-product-img surrounding"
+                    initial={{ opacity: 0, x, y, scale: outerScale, rotate }}
+                    animate={{ opacity: 0.85, x, y, scale: outerScale, rotate, zIndex: 1 }}
+                    transition={{ duration: 1.2 }}
+                  />
+                );
+              })}
 
               <div className="health-badge badge-1">100% Pure</div>
               <div className="health-badge badge-2">Heart Friendly</div>

@@ -114,20 +114,24 @@
 
 .health-badge {
   position: absolute;
-  background: var(--bg-dark-2);
-  color: var(--gold-dark);
-  border: 1.5px solid var(--gold-primary);
-  padding: 8px 16px;
+  background: rgba(44, 34, 18, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--gold-primary);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  padding: 8px 18px;
   border-radius: 30px;
   font-weight: 700;
-  font-size: 0.9rem;
-  z-index: 3;
-  box-shadow: 0 8px 25px rgba(44, 34, 18, 0.08);
+  font-size: 0.95rem;
+  z-index: 15;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+  letter-spacing: 0.5px;
 }
 
-.badge-1 { top: 10%; right: 5%; }
-.badge-2 { bottom: 20%; left: -5%; }
-.badge-3 { bottom: 10%; right: 10%; }
+.badge-1 { bottom: 20%; left: -8%; }
+.badge-2 { bottom: -6%; left: 50%; transform: translateX(-50%); }
+.badge-3 { bottom: 20%; right: -8%; }
 
 @media (max-width: 968px) {
   .health-layout {
@@ -135,16 +139,43 @@
     gap: 60px;
   }
   .health-content {
-    order: 2;
-  }
-  .health-visual {
     order: 1;
   }
+  .health-visual {
+    order: 2;
+  }
   .health-circle {
-    width: 300px;
-    height: 300px;
+    width: 380px;
+    height: 380px;
   }
   .health-can-img {
     width: 160px;
   }
+}
+
+@media (max-width: 768px) {
+  .health-circle {
+    width: 320px;
+    height: 320px;
+  }
+  .health-badge {
+    font-size: 0.8rem;
+    padding: 6px 14px;
+  }
+  .badge-1 { left: -10%; }
+  .badge-3 { right: -10%; }
+}
+
+@media (max-width: 480px) {
+  .health-circle {
+    width: 280px;
+    height: 280px;
+  }
+  .health-badge {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+  .badge-1 { bottom: 12%; left: -12%; }
+  .badge-2 { bottom: -10%; }
+  .badge-3 { bottom: 12%; right: -12%; }
 }

@@ -63,6 +63,10 @@ async function apiFetch(path, opts = {}) {
   const headers = { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}), ...opts.headers };
   const res = await fetch(`${API}${path}`, { ...opts, headers });
   const json = await res.json().catch(() => ({}));
+  if (res.status === 401) {
+    handleLogout();
+    throw new Error('Session expired. Please log in again.');
+  }
   if (!res.ok) throw new Error(json.error || json.message || `HTTP ${res.status}`);
   return json;
 }
@@ -174,7 +178,7 @@ async function checkApiStatus() {
   const txt = document.getElementById('status-text');
   if (DEMO_MODE) { dot.className = 'status-dot'; dot.style.background = '#f7c94f'; txt.textContent = '⚡ Demo Mode'; return; }
   try {
-    const r = await fetch(`${API}/api/auth/profile`, { headers: { Authorization: `Bearer ${getToken()}` } });
+    const r = await fetch(`${API}/health`);
     dot.className = r.ok ? 'status-dot online' : 'status-dot offline';
     txt.textContent  = r.ok ? 'API Online' : 'API Offline';
   } catch {
@@ -842,7 +846,7 @@ async function loadContacts() {
     const contacts = res.data || [];
     document.getElementById('contacts-tbody').innerHTML = contacts.length ? contacts.map(c => `
       <tr class="${c.is_read ? 'row-read' : 'row-unread'}">
-        <td>${fmtDate(c.created_at)}</td>
+        <td>${new Date(c.created_at).toLocaleString()}</td>
         <td><strong>${c.name}</strong></td>
         <td>${c.email}</td>
         <td>${c.phone}</td>

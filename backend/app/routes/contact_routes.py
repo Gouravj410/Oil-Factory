@@ -1,31 +1,8 @@
 from flask import Blueprint, request, jsonify
 from app.models import ContactMessage, db
-from functools import wraps
-import jwt
-from flask import current_app
+from app.utils import AdminAuthDecorator
 
 contact_bp = Blueprint('contact', __name__)
-
-def admin_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-        if 'Authorization' in request.headers:
-            auth_header = request.headers['Authorization']
-            if auth_header.startswith('Bearer '):
-                token = auth_header.split(' ')[1]
-        
-        if not token:
-            return jsonify({'success': False, 'message': 'Token is missing'}), 401
-            
-        try:
-            data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
-            # Assuming payload contains 'admin_id'
-        except Exception as e:
-            return jsonify({'success': False, 'message': 'Token is invalid'}), 401
-            
-        return f(*args, **kwargs)
-    return decorated
 
 @contact_bp.route('/api/contact/submit', methods=['POST'])
 def submit_contact():
@@ -64,7 +41,7 @@ def submit_contact():
         }), 500
 
 @contact_bp.route('/api/admin/contacts', methods=['GET'])
-@admin_required
+@AdminAuthDecorator.admin_required
 def get_contacts():
     try:
         contacts = ContactMessage.query.order_by(ContactMessage.created_at.desc()).all()
@@ -93,7 +70,7 @@ def get_contacts():
         }), 500
 
 @contact_bp.route('/api/admin/contacts/<int:contact_id>/read', methods=['PUT'])
-@admin_required
+@AdminAuthDecorator.admin_required
 def mark_read(contact_id):
     try:
         contact = ContactMessage.query.get(contact_id)

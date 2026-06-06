@@ -257,6 +257,24 @@
         <div class="pagination" id="winners-pagination"></div>
       </section>
 
+      <!-- CONTACTS / QUERIES PAGE -->
+      <section id="page-contacts" class="page hidden">
+        <div class="page-header">
+          <h2>User Queries & Messages</h2>
+          <button class="btn-secondary" onclick="loadContacts()" title="Refresh">🔄 Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th><th>Message</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contacts-tbody"><tr><td colspan="8" class="loading-row">Loading queries…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- PROFILE PAGE -->
       <section id="page-profile" class="page hidden">
         <div class="page-header">
