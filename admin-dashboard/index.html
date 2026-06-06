@@ -77,6 +77,9 @@
       <a href="#" class="nav-item" onclick="navigate('winners', this)" id="nav-winners">
         <span class="nav-icon">★</span><span class="nav-label">Winners</span>
       </a>
+      <a href="#" class="nav-item" onclick="navigate('contacts', this)" id="nav-contacts">
+        <span class="nav-icon">✉</span><span class="nav-label">Queries</span>
+      </a>
       <div class="nav-section-label">Account</div>
       <a href="#" class="nav-item" onclick="navigate('profile', this)" id="nav-profile">
         <span class="nav-icon">◉</span><span class="nav-label">Profile</span>
@@ -296,6 +299,24 @@
             <button class="btn-primary" onclick="openModal('create-batch-modal')">📦 Create New QR Batch</button>
             <button class="btn-outline" onclick="navigate('batches', document.getElementById('nav-batches'))">View Existing Batches →</button>
           </div>
+        </div>
+      </section>
+
+      <!-- CONTACTS PAGE -->
+      <section id="page-contacts" class="page hidden">
+        <div class="page-header">
+          <h2>Contact Queries</h2>
+          <button class="btn-secondary" onclick="loadContacts()">🔄 Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th><th>Message</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contacts-tbody"><tr><td colspan="8" class="loading-row">Loading queries…</td></tr></tbody>
+          </table>
         </div>
       </section>
 

@@ -1,5 +1,5 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import '../styles/HealthBenefits.css'
 
@@ -55,6 +55,25 @@ const HealthBenefits = () => {
     }
   ]
 
+  const productImages = [
+    "./images/MustardOilCan.png",
+    "./images/soyabean850.png",
+    "./images/mustard400.png",
+    "./images/SoyaBeansOilCan.png",
+    "./images/cottonseed400.png",
+    "./images/mustard850.png",
+    "./images/soyabean400.png"
+  ];
+  
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex(current => (current + 1) % productImages.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="health-section" id="nutrition" ref={ref}>
       <div className="section-container">
@@ -98,7 +117,48 @@ const HealthBenefits = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="health-circle">
-              <img src="./images/MustardOilCan.png" alt="Gold Mairani Quality" className="health-can-img" />
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={`center-${activeIndex}`}
+                  src={productImages[activeIndex]}
+                  alt="Center Product"
+                  className="health-product-img center"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1.4, x: 0, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.6 }}
+                  style={{ zIndex: 10 }}
+                />
+              </AnimatePresence>
+
+              {(() => {
+                const otherImages = productImages.filter((_, idx) => idx !== activeIndex);
+                const slotsCount = otherImages.length;
+                
+                return Array.from({ length: slotsCount }).map((_, i) => {
+                  const angleDeg = slotsCount > 1 ? 180 - (180 / (slotsCount - 1)) * i : 90;
+                  const radius = 260;
+                  const angleRad = angleDeg * (Math.PI / 180);
+                  const x = Math.cos(angleRad) * radius;
+                  const y = -Math.sin(angleRad) * radius + 60;
+
+                  return (
+                    <AnimatePresence key={`slot-${i}`}>
+                      <motion.img 
+                        key={`surrounding-${otherImages[i]}`}
+                        src={otherImages[i]}
+                        alt="Product"
+                        className="health-product-img surrounding"
+                        initial={{ opacity: 0, x, y, scale: 0.65 }}
+                        animate={{ opacity: 0.7, x, y, scale: 0.65, zIndex: 1 }}
+                        exit={{ opacity: 0, x, y, scale: 0.65 }}
+                        transition={{ duration: 0.8 }}
+                      />
+                    </AnimatePresence>
+                  );
+                });
+              })()}
+
               <div className="health-badge badge-1">100% Pure</div>
               <div className="health-badge badge-2">Heart Friendly</div>
               <div className="health-badge badge-3">Vitamin A&D</div>

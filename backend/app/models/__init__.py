@@ -209,3 +209,19 @@ class DuplicateSubmissionCheck(db.Model):
     __table_args__ = (
         db.Index("idx_duplicate_phone_date", "phone_number", "last_attempt_at"),
     )
+
+
+class ContactMessage(db.Model):
+    """User contact message model"""
+    __tablename__ = "contact_messages"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    state = db.Column(db.String(100))
+    city = db.Column(db.String(100))
+    message = db.Column(db.Text, nullable=False)
+    is_read = db.Column(db.Boolean, default=False, index=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+

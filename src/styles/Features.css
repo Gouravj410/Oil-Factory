@@ -34,7 +34,7 @@
 .feature-card:hover {
   background: var(--bg-dark-2);
   border-color: rgba(212, 175, 55, 0.35);
-  box-shadow: 0 10px 30px rgba(44, 34, 18, 0.06);
+  box-shadow: var(--premium-shadow-hover);
 }
 
 .feature-shine { display: none; }

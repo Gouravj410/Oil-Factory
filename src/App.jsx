@@ -12,6 +12,8 @@ import ProductDetail from './components/ProductDetail'
 import ClaimPage from './components/ClaimPage'
 import ScannerPage from './components/ScannerPage'
 import AvailableOn from './components/AvailableOn'
+import ContactWidget from './components/ContactWidget'
+import PackSizesMarquee from './components/PackSizesMarquee'
 import './App.css'
 
 function AppInner() {
@@ -50,6 +52,7 @@ function AppInner() {
             <AvailableOn />
             <InteractiveShowcase />
             <HealthBenefits />
+            <PackSizesMarquee />
             <Features />
             <About />
           </>
@@ -78,6 +81,8 @@ function AppInner() {
           </div>
         )}
       </AnimatePresence>
+
+      {!hideChrome && <ContactWidget />}
     </>
   )
 }

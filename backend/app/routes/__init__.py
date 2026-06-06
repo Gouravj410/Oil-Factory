@@ -4,6 +4,7 @@ from .qr_routes import qr_bp
 from .admin_routes import admin_bp
 from .scheme_routes import scheme_bp
 from .winner_routes import winner_bp
+from .contact_routes import contact_bp
 
 __all__ = [
     "auth_bp",
@@ -11,4 +12,5 @@ __all__ = [
     "admin_bp",
     "scheme_bp",
     "winner_bp",
+    "contact_bp",
 ]

@@ -563,12 +563,13 @@ body {
 }
 
 @media (max-width: 480px) {
-  .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stats-grid { grid-template-columns: 1fr; gap: 12px; }
   .winner-stats { grid-template-columns: 1fr; }
   .data-table { font-size: 12px; }
   .data-table td, .data-table thead th { padding: 8px 10px; }
   .page-area { padding: 10px; }
   .toast { left: 12px; right: 12px; max-width: none; }
+  .dash-bottom { grid-template-columns: 1fr; }
 }
 
 /* ── CSS aliases for new components ────────── */

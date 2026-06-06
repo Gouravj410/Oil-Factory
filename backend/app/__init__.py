@@ -10,7 +10,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from app.config import get_config
 from app.models import db
-from app.routes import auth_bp, qr_bp, admin_bp, scheme_bp, winner_bp
+from app.routes import auth_bp, qr_bp, admin_bp, scheme_bp, winner_bp, contact_bp
 import logging
 import os
 
@@ -72,6 +72,7 @@ def create_app(config_name=None):
     app.register_blueprint(admin_bp)
     app.register_blueprint(scheme_bp)
     app.register_blueprint(winner_bp)
+    app.register_blueprint(contact_bp)
     
     # Error handlers
     @app.errorhandler(404)

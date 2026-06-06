@@ -80,8 +80,8 @@
 
 .health-circle {
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
   border-radius: 50%;
   display: flex;
@@ -103,10 +103,13 @@
   to { transform: rotate(360deg); }
 }
 
-.health-can-img {
-  width: 220px;
-  z-index: 2;
-  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+.health-product-img {
+  position: absolute;
+  width: 180px;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.4));
+  will-change: transform, opacity;
+  object-fit: contain;
+  max-height: 280px;
 }
 
 .health-badge {

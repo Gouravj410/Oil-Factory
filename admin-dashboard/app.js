@@ -152,7 +152,7 @@ function navigate(page, el) {
   if (target) { target.classList.remove('hidden'); target.classList.add('active'); }
   if (el) el.classList.add('active');
   document.getElementById('page-title').textContent = el ? el.querySelector('.nav-label').textContent : page;
-  const loaders = { dashboard: loadDashboard, schemes: loadSchemes, batches: loadBatches, submissions: loadSubmissions, winners: loadWinners, profile: loadProfile, qrgen: loadQRGen };
+  const loaders = { dashboard: loadDashboard, schemes: loadSchemes, batches: loadBatches, submissions: loadSubmissions, winners: loadWinners, profile: loadProfile, qrgen: loadQRGen, contacts: loadContacts };
   if (loaders[page]) loaders[page]();
   // Auto-refresh submissions when on that page
   if (page === 'submissions') startSubmissionsAutoRefresh();
@@ -833,3 +833,35 @@ window.addEventListener('load', () => {
   else if (token && admin) bootApp(admin);
   setInterval(checkApiStatus, 30000);
 });
+
+// ── Contacts ────────────────────────────────────────────────────
+async function loadContacts() {
+  try {
+    if (DEMO_MODE) throw new Error('demo');
+    const res = await apiFetch('/api/admin/contacts');
+    const contacts = res.data || [];
+    document.getElementById('contacts-tbody').innerHTML = contacts.length ? contacts.map(c => `
+      <tr class="${c.is_read ? 'row-read' : 'row-unread'}">
+        <td>${fmtDate(c.created_at)}</td>
+        <td><strong>${c.name}</strong></td>
+        <td>${c.email}</td>
+        <td>${c.phone}</td>
+        <td>${c.city || ''}, ${c.state || ''}</td>
+        <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${c.message}">${c.message}</td>
+        <td>${c.is_read ? '<span class="status-pill pill-active">Read</span>' : '<span class="status-pill pill-warning">New</span>'}</td>
+        <td>
+          ${!c.is_read ? `<button class="btn-sm btn-primary" onclick="markContactRead(${c.id})">Mark Read</button>` : ''}
+        </td>
+      </tr>`).join('') : '<tr><td colspan="8" class="loading-row">No queries found</td></tr>';
+  } catch {
+    document.getElementById('contacts-tbody').innerHTML = '<tr><td colspan="8" class="loading-row">Demo: Connect backend to see queries</td></tr>';
+  }
+}
+
+async function markContactRead(id) {
+  try {
+    await apiFetch(`/api/admin/contacts/${id}/read`, { method: 'PUT' });
+    showToast('Marked as read', 'success');
+    loadContacts();
+  } catch (err) { showToast(err.message, 'error'); }
+}
