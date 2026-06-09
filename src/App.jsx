@@ -14,6 +14,8 @@ import ScannerPage from './components/ScannerPage'
 import AvailableOn from './components/AvailableOn'
 import ContactWidget from './components/ContactWidget'
 import PackSizesMarquee from './components/PackSizesMarquee'
+import FAQ from './components/FAQ'
+import ContactPage from './components/ContactPage'
 import './App.css'
 
 function AppInner() {
@@ -54,10 +56,12 @@ function AppInner() {
             <HealthBenefits />
             <PackSizesMarquee />
             <Features />
+            <FAQ />
             <About />
           </>
         } />
         <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/r/:code" element={<ClaimPage />} />
       </Routes>
 

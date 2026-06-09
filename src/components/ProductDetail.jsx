@@ -33,14 +33,17 @@ const ProductDetail = () => {
         'Traditional Cooking Essential'
       ],
       packagingTypes: [
-        { type: 'Plastic Bottle', size: '400 ML', image: './images/mustard400.png', description: 'Perfect for everyday use' },
-        { type: 'Plastic Bottle', size: '850 ML', image: './images/mustard850.png', description: 'Ideal for kitchen staples' },
-        { type: 'Can', size: '5 Liter', image: './images/MustardOilCan.png', description: 'Bulk storage solution' }
+        { type: 'Bottle', size: '250 ML', image: './images/bottle-models/Mustard Small.png', description: 'Perfect for trial', customClass: 'pack-small' },
+        { type: 'Bottle', size: '500 ML', image: './images/bottle-models/Mustard Small.png', description: 'Convenient daily use', customClass: 'pack-medium' },
+        { type: 'Bottle', size: '850 ML', image: './images/bottle-models/Mustard.png', description: 'Standard family pack', customClass: 'pack-large' },
+        { type: 'Can', size: '2 Liter', image: './images/bottle-models/Mustard Can.png', description: 'Value pack', customClass: 'pack-can-small' },
+        { type: 'Can', size: '5 Liter', image: './images/bottle-models/Mustard Can.png', description: 'Bulk storage solution', customClass: 'pack-can' },
+        { type: 'Tin', size: '15 Liter', image: './images/bottle-models/Mustard Tin.png', description: 'Commercial & large family size', customClass: 'pack-tin' }
       ],
       images: [
-        './images/mustard850.png',
-        './images/mustard_poster_1.png',
-        './images/mustard_poster_2.png'
+        './images/ads/10.png',
+        './images/ads/11.png',
+        './images/ads/12.png'
       ]
     },
     soyabean: {
@@ -65,14 +68,17 @@ const ProductDetail = () => {
         'Versatile for All Dishes'
       ],
       packagingTypes: [
-        { type: 'Plastic Bottle', size: '400 ML', image: './images/soyabean400.png', description: 'Perfect for everyday use' },
-        { type: 'Plastic Bottle', size: '850 ML', image: './images/soyabean850.png', description: 'Ideal for kitchen staples' },
-        { type: 'Can', size: '5 Liter', image: './images/SoyaBeansOilCan.png', description: 'Bulk storage solution' }
+        { type: 'Bottle', size: '250 ML', image: './images/bottle-models/Soyabean Small.png', description: 'Perfect for trial', customClass: 'pack-small' },
+        { type: 'Bottle', size: '500 ML', image: './images/bottle-models/Soyabean Small.png', description: 'Convenient daily use', customClass: 'pack-medium' },
+        { type: 'Bottle', size: '850 ML', image: './images/bottle-models/Soyabean.png', description: 'Standard family pack', customClass: 'pack-large' },
+        { type: 'Can', size: '2 Liter', image: './images/bottle-models/Soyabean Can.png', description: 'Value pack', customClass: 'pack-can-small' },
+        { type: 'Can', size: '5 Liter', image: './images/bottle-models/Soyabean Can.png', description: 'Bulk storage solution', customClass: 'pack-can' },
+        { type: 'Tin', size: '15 Liter', image: './images/bottle-models/Soyabean Tin.png', description: 'Commercial & large family size', customClass: 'pack-tin' }
       ],
       images: [
-        './images/soyabean850.png',
-        './images/soya_poster_1.png',
-        './images/soya_poster_2.png'
+        './images/ads/13.png',
+        './images/ads/14.png',
+        './images/ads/15.png'
       ]
     },
     cottonseed: {
@@ -97,13 +103,15 @@ const ProductDetail = () => {
         'Long Shelf Life'
       ],
       packagingTypes: [
-        { type: 'Plastic Bottle', size: '400 ML', image: './images/cottonseed400.png', description: 'Perfect for everyday use' },
-        { type: 'Plastic Bottle', size: '850 ML', image: './images/cottonseed850.png', description: 'Ideal for kitchen staples' }
+        { type: 'Bottle', size: '250 ML', image: './images/bottle-models/Cottonseed Small.png', description: 'Perfect for trial', customClass: 'pack-small' },
+        { type: 'Bottle', size: '500 ML', image: './images/bottle-models/Cottonseed Small.png', description: 'Convenient daily use', customClass: 'pack-medium' },
+        { type: 'Bottle', size: '850 ML', image: './images/bottle-models/Cottonseed.png', description: 'Standard family pack', customClass: 'pack-large' },
+        { type: 'Tin', size: '15 Liter', image: './images/bottle-models/Cottonseed Tin.png', description: 'Commercial & large family size', customClass: 'pack-tin' }
       ],
       images: [
-        './images/cottonseed850.png',
-        './images/cotton_poster_1.png',
-        './images/cotton_poster_2.png'
+        './images/ads/16.png',
+        './images/ads/17.png',
+        './images/ads/18.png'
       ]
     }
   }
@@ -255,13 +263,13 @@ const ProductDetail = () => {
           {product.packagingTypes.map((pack, i) => (
             <motion.div
               key={i}
-              className="packing-card"
+              className={`packing-card ${pack.customClass || ''}`}
               whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}
               transition={{ duration: 0.3 }}
               style={{ borderTopColor: product.accentColor }}
             >
               <div className="packing-image">
-                <img src={pack.image} alt={`${pack.type} ${pack.size}`} />
+                <img src={pack.image} alt={`${pack.type} ${pack.size}`} className={pack.customClass || ''} />
               </div>
               <div className="packing-type">{pack.type}</div>
               <div className="packing-size">{pack.size}</div>
@@ -289,7 +297,7 @@ const ProductDetail = () => {
             <span style={{ marginLeft: '10px', fontWeight: 'bold', color: '#333' }}>Blinkit</span>
           </div>
           <div style={{ background: '#fff', padding: '10px 20px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center' }}>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/IndiaMART_Logo.png" alt="IndiaMART" style={{ height: '35px', objectFit: 'contain' }} />
+            <img src="./images/indiamart-logo.svg" alt="IndiaMART" style={{ height: '35px', objectFit: 'contain' }} />
           </div>
           <div style={{ background: '#fff', padding: '10px 20px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center' }}>
             <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style={{ height: '35px', objectFit: 'contain' }} />

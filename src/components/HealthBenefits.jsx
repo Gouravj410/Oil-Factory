@@ -56,17 +56,17 @@ const HealthBenefits = () => {
   ]
 
   const productImages = [
-    "./images/MustardOilCan.png",
-    "./images/SoyaBeansOilCan.png",
-    "./images/cottonseed850.png"
+    "./images/bottle-models/Mustard Tin.png",
+    "./images/bottle-models/Soyabean Tin.png",
+    "./images/bottle-models/Cottonseed Tin.png"
   ];
 
   const outerImages = [
-    "./images/soyabean400.png",
-    "./images/mustard850.png",
-    "./images/cottonseed400.png",
-    "./images/mustard400.png",
-    "./images/soyabean850.png"
+    "./images/bottle-models/Mustard Can.png",
+    "./images/bottle-models/Soyabean Can.png",
+    "./images/bottle-models/Mustard Tin.png",
+    "./images/bottle-models/Soyabean Tin.png",
+    "./images/bottle-models/Cottonseed Tin.png"
   ];
   
   const [activeIndex, setActiveIndex] = useState(0);

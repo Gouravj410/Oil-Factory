@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import '../styles/Navbar.css'
 
@@ -7,6 +7,7 @@ const Navbar = ({ onRewardsClick }) => {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
   const isHome = location.pathname === '/'
 
   useEffect(() => {
@@ -19,7 +20,16 @@ const Navbar = ({ onRewardsClick }) => {
 
   const navLinks = [
     { label: 'Home', href: isHome ? '#hero' : '/#hero' },
-    { label: 'Products', href: isHome ? '#products' : '/#products' },
+    { 
+      label: 'Products', 
+      href: isHome ? '#products' : '/#products',
+      dropdown: [
+        { label: 'All Products', href: isHome ? '#products' : '/#products' },
+        { label: 'Mustard Oil', href: '/product/mustard', isRoute: true },
+        { label: 'Soyabean Oil', href: '/product/soyabean', isRoute: true },
+        { label: 'Cottonseed Oil', href: '/product/cottonseed', isRoute: true }
+      ]
+    },
     { label: 'Health', href: isHome ? '#nutrition' : '/#nutrition' },
     { label: 'Why Us', href: isHome ? '#features' : '/#features' },
     { label: 'About', href: isHome ? '#about' : '/#about' }
@@ -57,20 +67,19 @@ const Navbar = ({ onRewardsClick }) => {
         {/* Desktop Nav Links */}
         <ul className="navbar-links">
           {navLinks.map((link, i) => (
-            <li key={i}>
+            <li key={i} className={link.dropdown ? 'nav-item-has-dropdown' : ''}>
               <motion.a
-                href={isHome ? link.href : '#/'}
+                href={link.href}
                 onClick={(e) => {
+                  if (link.dropdown) return; // Hover handles dropdown, clicking it scrolls to #products if we want
                   e.preventDefault();
                   const targetId = link.href.split('#').pop();
                   if (isHome) {
                     const el = document.getElementById(targetId);
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   } else {
                     localStorage.setItem('scroll_to_section', targetId);
-                    window.location.href = '#/';
+                    navigate('/');
                   }
                 }}
                 className="nav-link"
@@ -78,8 +87,41 @@ const Navbar = ({ onRewardsClick }) => {
                 transition={{ duration: 0.2 }}
               >
                 {link.label}
+                {link.dropdown && (
+                  <svg className="dropdown-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginLeft: '4px', verticalAlign: 'middle' }}><path d="M6 9l6 6 6-6"/></svg>
+                )}
                 <span className="nav-link-underline" />
               </motion.a>
+              
+              {link.dropdown && (
+                <div className="nav-dropdown">
+                  {link.dropdown.map((dropItem, j) => (
+                    <a
+                      key={j}
+                      href={dropItem.href}
+                      className="nav-dropdown-link"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (dropItem.isRoute) {
+                          navigate(dropItem.href);
+                          window.scrollTo(0, 0);
+                        } else {
+                          const targetId = dropItem.href.split('#').pop();
+                          if (isHome) {
+                            const el = document.getElementById(targetId);
+                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          } else {
+                            localStorage.setItem('scroll_to_section', targetId);
+                            navigate('/');
+                          }
+                        }
+                      }}
+                    >
+                      {dropItem.label}
+                    </a>
+                  ))}
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -157,30 +199,61 @@ const Navbar = ({ onRewardsClick }) => {
             transition={{ duration: 0.3 }}
           >
             {navLinks.map((link, i) => (
-              <motion.a
-                key={i}
-                href={isHome ? link.href : '#/'}
-                className="mobile-link"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setMobileOpen(false);
-                  const targetId = link.href.split('#').pop();
-                  if (isHome) {
-                    const el = document.getElementById(targetId);
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              <React.Fragment key={i}>
+                <motion.a
+                  href={link.href}
+                  className="mobile-link"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (!link.dropdown) {
+                      setMobileOpen(false);
+                      const targetId = link.href.split('#').pop();
+                      if (isHome) {
+                        const el = document.getElementById(targetId);
+                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      } else {
+                        localStorage.setItem('scroll_to_section', targetId);
+                        navigate('/');
+                      }
                     }
-                  } else {
-                    localStorage.setItem('scroll_to_section', targetId);
-                    window.location.href = '#/';
-                  }
-                }}
-              >
-                {link.label}
-              </motion.a>
+                  }}
+                >
+                  {link.label}
+                </motion.a>
+                {link.dropdown && link.dropdown.map((dropItem, j) => (
+                  <motion.a
+                    key={`drop-${j}`}
+                    href={dropItem.href}
+                    className="mobile-link mobile-dropdown-link"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 + 0.05 }}
+                    style={{ paddingLeft: '2rem', fontSize: '1.2rem', color: '#ccc' }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileOpen(false);
+                      if (dropItem.isRoute) {
+                        navigate(dropItem.href);
+                        window.scrollTo(0, 0);
+                      } else {
+                        const targetId = dropItem.href.split('#').pop();
+                        if (isHome) {
+                          const el = document.getElementById(targetId);
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        } else {
+                          localStorage.setItem('scroll_to_section', targetId);
+                          navigate('/');
+                        }
+                      }
+                    }}
+                  >
+                    - {dropItem.label}
+                  </motion.a>
+                ))}
+              </React.Fragment>
             ))}
             {/* View Rewards in mobile menu */}
             <motion.button

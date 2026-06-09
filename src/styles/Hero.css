@@ -240,6 +240,7 @@
   position: relative;
   overflow: hidden;
   text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  z-index: 1;
 }
 
 .btn-scan-hero::before {
@@ -249,6 +250,7 @@
   background: linear-gradient(135deg, #B8860B 0%, #F5D061 50%, #D4AF37 100%);
   opacity: 0;
   transition: opacity 0.3s;
+  z-index: -1;
 }
 
 .btn-scan-hero:hover::before { opacity: 1; }

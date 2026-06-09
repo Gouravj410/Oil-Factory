@@ -6,25 +6,25 @@ const PackSizesMarquee = () => {
     {
       name: "Mustard Oil",
       variants: [
-        { size: "1L", img: "./images/mustard400.png", imgClass: "size-small" },
-        { size: "5L", img: "./images/mustard400.png", imgClass: "size-medium" },
-        { size: "15L", img: "./images/MustardOilCan.png", imgClass: "size-large" }
+        { size: "1L", img: "./images/bottle-models/Mustard.png", imgClass: "size-small" },
+        { size: "5L", img: "./images/bottle-models/Mustard Can.png", imgClass: "size-medium" },
+        { size: "15L", img: "./images/bottle-models/Mustard Tin.png", imgClass: "size-large" }
       ]
     },
     {
       name: "Soyabean Oil",
       variants: [
-        { size: "1L", img: "./images/soyabean400.png", imgClass: "size-small" },
-        { size: "5L", img: "./images/soyabean400.png", imgClass: "size-medium" },
-        { size: "15L", img: "./images/SoyaBeansOilCan.png", imgClass: "size-large" }
+        { size: "1L", img: "./images/bottle-models/Soyabean.png", imgClass: "size-small" },
+        { size: "5L", img: "./images/bottle-models/Soyabean Can.png", imgClass: "size-medium" },
+        { size: "15L", img: "./images/bottle-models/Soyabean Tin.png", imgClass: "size-large" }
       ]
     },
     {
       name: "Cottonseed Oil",
       variants: [
-        { size: "1L", img: "./images/cottonseed400.png", imgClass: "size-small" },
-        { size: "5L", img: "./images/cottonseed850.png", imgClass: "size-medium" },
-        { size: "15L", img: "./images/cottonseed850.png", imgClass: "size-large" }
+        { size: "1L", img: "./images/bottle-models/Cottonseed.png", imgClass: "size-small" },
+        { size: "5L", img: "./images/bottle-models/Cottonseed Can.png", imgClass: "size-medium" },
+        { size: "15L", img: "./images/bottle-models/Cottonseed Tin.png", imgClass: "size-large" }
       ]
     }
   ];
