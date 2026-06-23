@@ -58,15 +58,15 @@ const About = () => {
             </h2>
 
             <p className="about-text">
-              At <strong>Mateshwari Industries</strong>, we take pride in delivering premium cooking oils 
-              under our trusted brand — <strong>Gold Mairani</strong>. Our commitment to purity, quality, 
-              and tradition drives every bottle we produce.
+              <strong>Mateshwari Industries</strong> is a trusted manufacturer of high-quality mustard oil, committed to delivering purity and excellence to its customers. Since its establishment in 1998, the company has focused on producing premium mustard oil using carefully selected mustard seeds and modern processing techniques.
             </p>
 
             <p className="about-text">
-              From the bold flavour of <strong>Kachi Ghani Mustard Oil</strong> to the light refinement 
-              of <strong>Soya Bean Oil</strong> and the versatile <strong>Cottonseed Oil</strong>, 
-              our range is crafted to meet the diverse needs of Indian kitchens.
+              Our mission is to provide healthy, pure, and nutritious edible oil while maintaining the highest standards of quality, integrity, and customer satisfaction. We value trust, transparency, and continuous improvement in everything we do.
+            </p>
+
+            <p className="about-text">
+              What makes our products unique is their natural purity, rich aroma, authentic taste, and strict quality control processes. At Mateshwari Industries, we strive to bring the goodness of traditional mustard oil to every household under our trusted brand — <strong>Gold Mairani</strong>.
             </p>
 
             <div className="about-highlights">
@@ -111,7 +111,7 @@ const About = () => {
           <div className="timeline-header">
             <span className="timeline-eyebrow">Milestones</span>
             <h3 className="timeline-main-title">Celebrating 15 Years of Purity & Trust</h3>
-            <p className="timeline-subtitle">A legacy of delivering healthy cooking oils to Indian families since 2011</p>
+            <p className="timeline-subtitle">A legacy of delivering healthy cooking oils to Indian families since 1998</p>
           </div>
 
           <div className="timeline-container">
@@ -119,7 +119,7 @@ const About = () => {
             <div className="timeline-items">
               {[
                 {
-                  year: "2011",
+                  year: "1998",
                   title: "Foundation & Genesis",
                   desc: "Started as a traditional cold-pressing expeller unit in Rajasthan, processing premium local mustard seeds for local families."
                 },

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './ContactPage.css';
+import FAQ from './FAQ';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -55,6 +56,7 @@ const ContactPage = () => {
   };
 
   return (
+    <>
     <section className="contact-page">
       <div className="contact-page-header">
         <motion.div
@@ -96,7 +98,7 @@ const ContactPage = () => {
       >
         <div className="contact-map-section">
           <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14008.114827184312!2d77.2090212!3d28.6139391!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b347eb62d%3A0x52c2b7494e204dce!2sNew%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1709230000000!5m2!1sen!2sin" 
+            src="https://maps.google.com/maps?q=Riico+Industrial+Area,+Sheoganj,+Rajasthan+307027&t=&z=14&ie=UTF8&iwloc=&output=embed" 
             allowFullScreen="" 
             loading="lazy" 
             referrerPolicy="no-referrer-when-downgrade"
@@ -159,7 +161,7 @@ const ContactPage = () => {
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
           </svg>
           <h3>Phone</h3>
-          <p>+91 98765 43210</p>
+          <p>+91 90019 09266</p>
           <p>Mon-Fri, 9am - 6pm</p>
         </div>
         
@@ -169,7 +171,7 @@ const ContactPage = () => {
             <polyline points="22,6 12,13 2,6"></polyline>
           </svg>
           <h3>Email</h3>
-          <p>info@goldmairani.com</p>
+          <p>mateshwariindustries5758@gmail.com</p>
           <p>support@goldmairani.com</p>
         </div>
         
@@ -179,11 +181,13 @@ const ContactPage = () => {
             <circle cx="12" cy="10" r="3"></circle>
           </svg>
           <h3>Head Office</h3>
-          <p>Industrial Area Phase 1</p>
-          <p>New Delhi, 110020, India</p>
+          <p>Riico industrial area</p>
+          <p>Sheoganj, Rajasthan 307027</p>
         </div>
       </motion.div>
     </section>
+    <FAQ />
+    </>
   );
 };
 

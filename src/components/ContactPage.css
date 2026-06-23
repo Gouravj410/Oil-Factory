@@ -40,8 +40,8 @@
 }
 
 .contact-map-section {
-  flex: 1.2;
-  min-height: 500px;
+  flex: 0.7;
+  min-height: 400px;
   position: relative;
 }
 

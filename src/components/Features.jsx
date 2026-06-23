@@ -56,38 +56,50 @@ const Features = () => {
     {
       iconType: 'natural',
       title: '100% Pure & Natural',
-      description: 'No chemicals, no additives. Gold Mairani oils are crafted with traditional methods to deliver pure, unadulterated quality.',
+      description: 'Made from carefully selected mustard seeds to ensure authentic quality and purity.',
+      gradient: 'linear-gradient(135deg, #1B5E20, #4CAF50)',
+    },
+    {
+      iconType: 'cooking',
+      title: 'Rich Aroma & Authentic Taste',
+      description: 'Enhances the flavor of traditional and everyday cooking.',
+      gradient: 'linear-gradient(135deg, #B8860B, #F4D03F)',
+    },
+    {
+      iconType: 'healthy',
+      title: 'Health-Focused Quality',
+      description: 'Retains the natural goodness and nutritional benefits of mustard oil.',
+      gradient: 'linear-gradient(135deg, #D32F2F, #EF5350)',
+    },
+    {
+      iconType: 'certified',
+      title: 'Strict Quality Control',
+      description: 'Produced under high manufacturing standards to deliver consistent quality in every bottle.',
+      gradient: 'linear-gradient(135deg, #0D3B0F, #1B5E20)',
+    },
+    {
+      iconType: 'certified',
+      title: 'Trusted Brand',
+      description: 'Customers rely on Mateshwari Industries for purity, freshness, and reliability.',
+      gradient: 'linear-gradient(135deg, #4A148C, #7C4DFF)',
+    },
+    {
+      iconType: 'packing',
+      title: 'Value for Money',
+      description: 'Premium quality mustard oil at a competitive price.',
       gradient: 'linear-gradient(135deg, #1B5E20, #4CAF50)',
     },
     {
       iconType: 'processing',
-      title: 'Modern Processing',
-      description: 'State-of-the-art refinery by Mateshwari Industries ensures consistent quality and hygiene in every bottle.',
+      title: 'Hygienic Processing & Packaging',
+      description: 'Ensures safety, freshness, and longer shelf life.',
       gradient: 'linear-gradient(135deg, #E65100, #FF9800)',
     },
     {
       iconType: 'healthy',
-      title: 'Heart-Healthy Oils',
-      description: 'Our oils are rich in essential fatty acids and antioxidants, supporting cardiovascular health for your family.',
+      title: 'Customer Satisfaction',
+      description: 'Dedicated to providing products that meet the needs and expectations of families and businesses alike.',
       gradient: 'linear-gradient(135deg, #D32F2F, #EF5350)',
-    },
-    {
-      iconType: 'cooking',
-      title: 'Perfect for Every Dish',
-      description: 'From crispy frying to aromatic tempering, our range of oils caters to every Indian cooking style.',
-      gradient: 'linear-gradient(135deg, #B8860B, #F4D03F)',
-    },
-    {
-      iconType: 'certified',
-      title: 'FSSAI Certified',
-      description: 'Every batch is tested and certified, meeting the highest Indian food safety standards.',
-      gradient: 'linear-gradient(135deg, #0D3B0F, #1B5E20)',
-    },
-    {
-      iconType: 'packing',
-      title: 'Multiple Pack Sizes',
-      description: 'Available in convenient sizes from 500ml to 15L, perfect for households and businesses alike.',
-      gradient: 'linear-gradient(135deg, #4A148C, #7C4DFF)',
     }
   ]
 

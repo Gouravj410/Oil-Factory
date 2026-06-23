@@ -32,7 +32,8 @@ const Navbar = ({ onRewardsClick }) => {
     },
     { label: 'Health', href: isHome ? '#nutrition' : '/#nutrition' },
     { label: 'Why Us', href: isHome ? '#features' : '/#features' },
-    { label: 'About', href: isHome ? '#about' : '/#about' }
+    { label: 'About', href: isHome ? '#about' : '/#about' },
+    { label: 'Contact', href: '/contact', isRoute: true }
   ]
 
   return (
@@ -72,6 +73,11 @@ const Navbar = ({ onRewardsClick }) => {
                 href={link.href}
                 onClick={(e) => {
                   e.preventDefault();
+                  if (link.isRoute) {
+                    navigate(link.href);
+                    window.scrollTo(0, 0);
+                    return;
+                  }
                   const targetId = link.href.split('#').pop();
                   if (isHome) {
                     const el = document.getElementById(targetId);
@@ -208,6 +214,11 @@ const Navbar = ({ onRewardsClick }) => {
                   onClick={(e) => {
                     e.preventDefault();
                     setMobileOpen(false);
+                    if (link.isRoute) {
+                      navigate(link.href);
+                      window.scrollTo(0, 0);
+                      return;
+                    }
                     const targetId = link.href.split('#').pop();
                     if (isHome) {
                       const el = document.getElementById(targetId);
