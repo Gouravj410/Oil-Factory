@@ -15,6 +15,7 @@ import AvailableOn from './components/AvailableOn'
 import ContactWidget from './components/ContactWidget'
 import PackSizesMarquee from './components/PackSizesMarquee'
 import ContactPage from './components/ContactPage'
+import CompanyPage from './components/CompanyPage'
 import './App.css'
 
 function AppInner() {
@@ -63,6 +64,7 @@ function AppInner() {
         } />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/company" element={<CompanyPage />} />
         <Route path="/r/:code" element={<ClaimPage />} />
       </Routes>
 

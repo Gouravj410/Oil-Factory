@@ -33,6 +33,7 @@ const Navbar = ({ onRewardsClick }) => {
     { label: 'Health', href: isHome ? '#nutrition' : '/#nutrition' },
     { label: 'Why Us', href: isHome ? '#features' : '/#features' },
     { label: 'About', href: isHome ? '#about' : '/#about' },
+    { label: 'Company', href: '/company', isRoute: true },
     { label: 'Contact', href: '/contact', isRoute: true }
   ]
 
