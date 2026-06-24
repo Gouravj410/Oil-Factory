@@ -36,6 +36,8 @@ function AppInner() {
             el.scrollIntoView({ behavior: 'smooth', block: 'start' })
           }
         }, 150)
+      } else {
+        window.scrollTo(0, 0)
       }
     } else {
       // If we navigate to a details page, scroll to top automatically

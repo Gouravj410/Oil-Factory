@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
 import '../styles/CompanyPage.css'
 
@@ -29,6 +29,8 @@ const FadeInSection = ({ children, delay = 0, direction = 'up' }) => {
 }
 
 const CompanyPage = () => {
+  const navigate = useNavigate()
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -60,91 +62,28 @@ const CompanyPage = () => {
         </div>
       </section>
 
-      {/* Global Trade & Export Section */}
-      <section className="company-section export-section">
-        <div className="section-container">
-          <div className="company-split-layout">
-            <FadeInSection direction="right">
-              <div className="company-text-content">
-                <span className="section-label">Global Trade</span>
-                <h2>Export & Import Excellence</h2>
-                <p>
-                  Mateshwari Industries has established a robust supply chain network designed to cater to both national and international markets. Our specialized export division ensures that the authentic taste and nutritional value of Indian cooking oils reach global kitchens seamlessly.
-                </p>
-                <ul className="company-features-list">
-                  <li>
-                    <span className="list-icon">🌍</span>
-                    <div>
-                      <strong>Global Footprint</strong>
-                      <p>Strategic export partnerships across the Middle East, Southeast Asia, and Europe.</p>
-                    </div>
-                  </li>
-                  <li>
-                    <span className="list-icon">📦</span>
-                    <div>
-                      <strong>Bulk & Retail Packaging</strong>
-                      <p>Flexible packaging solutions tailored for large-scale importers and wholesale distributors.</p>
-                    </div>
-                  </li>
-                  <li>
-                    <span className="list-icon">⚖️</span>
-                    <div>
-                      <strong>International Compliance</strong>
-                      <p>Strict adherence to global food safety standards and custom regulatory requirements.</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </FadeInSection>
-            
-            <FadeInSection direction="left" delay={0.2}>
-              <div className="company-image-card">
-                <img src="./images/Slogan.jpeg" alt="Global Trade Excellence" className="company-img" />
-                <div className="image-card-accent"></div>
-              </div>
-            </FadeInSection>
-          </div>
-        </div>
-      </section>
-
-      {/* Infrastructure Section */}
-      <section className="company-section infra-section bg-darker">
+      {/* Gallery Section */}
+      <section className="company-section gallery-section bg-darker">
         <div className="section-container">
           <FadeInSection direction="up">
             <div className="section-header-centered">
-              <span className="section-label">Our Infrastructure</span>
-              <h2>State-of-the-Art Manufacturing</h2>
-              <p>Combining traditional expeller techniques with modern, automated European hygienic lines.</p>
+              <span className="section-label">Our Legacy</span>
+              <h2>A Glimpse of Excellence</h2>
+              <p>Explore our state-of-the-art facilities and premium product lineup.</p>
             </div>
           </FadeInSection>
 
-          <div className="infra-grid">
+          <div className="gallery-grid">
             {[
-              {
-                title: "Advanced Refinery",
-                desc: "High-capacity multi-oil refining units ensuring 100% purity without compromising natural nutrients.",
-                img: "./images/SoyaBeanOil.jpeg"
-              },
-              {
-                title: "Automated Packaging",
-                desc: "Zero-touch, hygienic bottling and tin sealing lines to guarantee extended shelf life.",
-                img: "./images/RefinedSoyaOil.jpeg"
-              },
-              {
-                title: "Quality Control Lab",
-                desc: "In-house testing laboratories running rigorous checks on every batch before dispatch.",
-                img: "./images/MustardOilCan.png"
-              }
-            ].map((item, index) => (
-              <FadeInSection key={index} delay={index * 0.2} direction="up">
-                <div className="infra-card">
-                  <div className="infra-img-wrapper">
-                    <img src={item.img} alt={item.title} />
-                  </div>
-                  <div className="infra-card-body">
-                    <h3>{item.title}</h3>
-                    <p>{item.desc}</p>
-                  </div>
+              "./images/gallery_1.png",
+              "./images/gallery_2.png",
+              "./images/gallery_3.png",
+              "./images/gallery_4.png"
+            ].map((imgSrc, index) => (
+              <FadeInSection key={index} delay={index * 0.15} direction="up">
+                <div className="gallery-item">
+                  <img src={imgSrc} alt={`Gallery ${index + 1}`} className="gallery-img" />
+                  <div className="gallery-overlay"></div>
                 </div>
               </FadeInSection>
             ))}
@@ -175,7 +114,11 @@ const CompanyPage = () => {
                 </div>
                 <div className="partnership-actions">
                   <a href="mailto:exports@mateshwari.com" className="primary-btn">Contact Export Team</a>
-                  <Link to="/" className="secondary-btn">Explore Products</Link>
+                  <a href="#/" className="secondary-btn" onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.setItem('scroll_to_section', 'products');
+                    navigate('/');
+                  }}>Explore Products</a>
                 </div>
               </div>
             </div>

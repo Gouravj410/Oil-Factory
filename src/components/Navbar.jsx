@@ -50,12 +50,15 @@ const Navbar = ({ onRewardsClick }) => {
           href={isHome ? '#hero' : '#/'} 
           className="navbar-logo"
           onClick={(e) => {
+            e.preventDefault();
             if (isHome) {
-              e.preventDefault();
               const el = document.getElementById('hero');
               if (el) {
                 el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
+            } else {
+              localStorage.setItem('scroll_to_section', 'hero');
+              navigate('/');
             }
           }}
         >

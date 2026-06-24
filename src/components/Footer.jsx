@@ -56,6 +56,7 @@ const Footer = () => {
           <div className="footer-col">
             <h4 className="footer-col-title">Company</h4>
             <ul className="footer-links">
+              <li><Link to="/company">Company Profile</Link></li>
               <li><a href="#/" onClick={(e) => handleScrollTo(e, 'about')}>About Us</a></li>
               <li><a href="#/" onClick={(e) => handleScrollTo(e, 'features')}>Quality Standards</a></li>
               <li><span style={{ color: 'var(--text-light)', cursor: 'default' }}>FSSAI Certified</span></li>
