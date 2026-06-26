@@ -132,15 +132,17 @@ class QRValidator:
                 return False, "Scheme is no longer active", None
             
             # Check if scheme dates are valid
+            from datetime import timedelta
             now_utc = datetime.utcnow()
-            now_local = datetime.now()
             
-            # Match active campaign either by UTC time or Local server time (for timezone resilience)
-            is_active_utc = (scheme.start_date <= now_utc <= scheme.end_date)
-            is_active_local = (scheme.start_date <= now_local <= scheme.end_date)
+            # Add a 24-hour buffer to handle all global timezones gracefully
+            start_buffered = scheme.start_date - timedelta(hours=24)
+            end_buffered = scheme.end_date + timedelta(hours=24)
             
-            if not (is_active_utc or is_active_local):
-                if now_utc < scheme.start_date and now_local < scheme.start_date:
+            is_active = (start_buffered <= now_utc <= end_buffered)
+            
+            if not is_active:
+                if now_utc < start_buffered:
                     return False, "Campaign has not started yet", None
                 else:
                     return False, "Campaign period has ended", None

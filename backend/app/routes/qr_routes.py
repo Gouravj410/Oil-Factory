@@ -215,13 +215,17 @@ def get_public_scheme(scheme_id):
             )
         
         # Check if scheme is within valid dates
+        from datetime import timedelta
         now_utc = datetime.utcnow()
-        now_local = datetime.now()
-        is_active_utc = (scheme.start_date <= now_utc <= scheme.end_date)
-        is_active_local = (scheme.start_date <= now_local <= scheme.end_date)
         
-        if not (is_active_utc or is_active_local):
-            error_msg = "Campaign has not started yet" if (now_utc < scheme.start_date and now_local < scheme.start_date) else "Campaign period has expired"
+        # Add a 24-hour buffer to handle all global timezones gracefully
+        start_buffered = scheme.start_date - timedelta(hours=24)
+        end_buffered = scheme.end_date + timedelta(hours=24)
+        
+        is_active = (start_buffered <= now_utc <= end_buffered)
+        
+        if not is_active:
+            error_msg = "Campaign has not started yet" if now_utc < start_buffered else "Campaign period has expired"
             return format_response(
                 error=error_msg,
                 status_code=400
