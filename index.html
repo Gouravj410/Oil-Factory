@@ -10,6 +10,13 @@
     <meta name="author" content="Mateshwari Industries" />
     <meta name="robots" content="index, follow" />
     
+    <!-- Fix for legacy QR codes without HashRouter format -->
+    <script>
+      if (window.location.pathname.startsWith('/r/')) {
+        window.location.replace('/#' + window.location.pathname);
+      }
+    </script>
+    
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="Gold Mairani | Premium Cooking Oils by Mateshwari Industries" />
     <meta property="og:description" content="Pure, healthy & trusted quality cooking oils for every Indian kitchen. Gold Mairani - Premium Mustard Oil, Kacchi Ghani Oil & more." />

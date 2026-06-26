@@ -58,7 +58,8 @@ class QRCodeGenerator:
             if base_url is None:
                 base_url = current_app.config.get("BASE_URL", "http://localhost:3000")
 
-            claim_url = f"{base_url}/r/{unique_code}"
+            # Use HashRouter format for React frontend
+            claim_url = f"{base_url}/#/r/{unique_code}"
 
             qr = qrcode.QRCode(
                 version=1,
@@ -96,7 +97,7 @@ class QRCodeGenerator:
         if base_url is None:
             base_url = current_app.config.get("BASE_URL", "http://localhost:5173")
         
-        return f"{base_url}/r/{qr_code}"
+        return f"{base_url}/#/r/{qr_code}"
 
 
 class QRValidator:
