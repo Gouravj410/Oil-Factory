@@ -33,6 +33,7 @@ const Navbar = ({ onRewardsClick }) => {
     { label: 'Health', href: isHome ? '#nutrition' : '/#nutrition' },
     { label: 'Why Us', href: isHome ? '#features' : '/#features' },
     { label: 'About', href: isHome ? '#about' : '/#about' },
+    { label: 'Company', href: '/company', isRoute: true },
     { label: 'Contact', href: '/contact', isRoute: true }
   ]
 
@@ -49,12 +50,15 @@ const Navbar = ({ onRewardsClick }) => {
           href={isHome ? '#hero' : '#/'} 
           className="navbar-logo"
           onClick={(e) => {
+            e.preventDefault();
             if (isHome) {
-              e.preventDefault();
               const el = document.getElementById('hero');
               if (el) {
                 el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
+            } else {
+              localStorage.setItem('scroll_to_section', 'hero');
+              navigate('/');
             }
           }}
         >
