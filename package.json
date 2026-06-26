@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "test": "vitest run"
   },
   "dependencies": {
     "framer-motion": "^10.16.4",
@@ -22,10 +23,14 @@
     "swiper": "^11.2.10"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
     "gh-pages": "^6.3.0",
-    "vite": "^4.4.5"
+    "jsdom": "^29.1.1",
+    "vite": "^4.4.5",
+    "vitest": "^4.1.9"
   }
 }

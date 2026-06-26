@@ -75,6 +75,7 @@ class TestingConfig(Config):
     """Testing configuration"""
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    SQLALCHEMY_ENGINE_OPTIONS = {} # SQLite does not support pool_size
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=5)
     RATELIMIT_ENABLED = False
 
