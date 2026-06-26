@@ -8,32 +8,27 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/admin/style.css" />
 </head>
 <body>
 
 <!-- LOGIN SCREEN -->
 <div id="login-screen" class="screen active">
-  <div class="login-bg">
-    <div class="login-orb orb1"></div>
-    <div class="login-orb orb2"></div>
-    <div class="login-orb orb3"></div>
-  </div>
   <div class="login-card">
     <div class="login-logo">
       <div class="logo-icon">🛢️</div>
       <h1>FMCG Admin</h1>
-      <p>Reward Campaign Control Panel</p>
+      <p>Reward Campaign Portal</p>
     </div>
     <form id="login-form" onsubmit="handleLogin(event)">
       <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter admin username" required autocomplete="username" />
+        <input type="text" id="username" placeholder="admin" required autocomplete="username" />
       </div>
       <div class="form-group">
         <label for="password">Password</label>
         <div class="password-wrap">
-          <input type="password" id="password" placeholder="Enter password" required autocomplete="current-password" />
+          <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" />
           <button type="button" class="toggle-pw" onclick="togglePassword()">👁</button>
         </div>
       </div>
@@ -44,8 +39,7 @@
       </button>
     </form>
     <div class="login-hint">
-      <strong style="color:var(--warning)">⚡ Demo Mode:</strong> username <code style="color:var(--primary)">admin</code> / password <code style="color:var(--primary)">admin123</code><br/>
-      <span style="opacity:0.6">Backend API: <span id="api-base-display">http://localhost:5000</span></span>
+      Default: <strong>admin</strong> / <strong>Admin@1234</strong> &nbsp;|&nbsp; Demo: admin / admin123
     </div>
   </div>
 </div>
@@ -57,29 +51,38 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">
-        <span class="logo-icon-sm">🛢️</span>
+        <div class="logo-icon-sm">🛢️</div>
         <span class="sidebar-brand">FMCG Admin</span>
       </div>
       <button class="sidebar-close" onclick="toggleSidebar()" id="sidebar-close-btn">✕</button>
     </div>
     <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
       <a href="#" class="nav-item active" onclick="navigate('dashboard', this)" id="nav-dashboard">
-        <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
+        <span class="nav-icon">▦</span><span class="nav-label">Dashboard</span>
       </a>
+      <div class="nav-section-label">Manage</div>
       <a href="#" class="nav-item" onclick="navigate('schemes', this)" id="nav-schemes">
-        <span class="nav-icon">📋</span><span class="nav-label">Campaigns</span>
+        <span class="nav-icon">◈</span><span class="nav-label">Campaigns</span>
       </a>
       <a href="#" class="nav-item" onclick="navigate('batches', this)" id="nav-batches">
-        <span class="nav-icon">📦</span><span class="nav-label">QR Batches</span>
+        <span class="nav-icon">▤</span><span class="nav-label">QR Batches</span>
+      </a>
+      <a href="#" class="nav-item" onclick="navigate('qrgen', this)" id="nav-qrgen">
+        <span class="nav-icon">⊞</span><span class="nav-label">QR Generator</span>
       </a>
       <a href="#" class="nav-item" onclick="navigate('submissions', this)" id="nav-submissions">
-        <span class="nav-icon">📥</span><span class="nav-label">Submissions</span>
+        <span class="nav-icon">↓</span><span class="nav-label">Submissions</span>
       </a>
       <a href="#" class="nav-item" onclick="navigate('winners', this)" id="nav-winners">
-        <span class="nav-icon">🏆</span><span class="nav-label">Winners</span>
+        <span class="nav-icon">★</span><span class="nav-label">Winners</span>
       </a>
+      <a href="#" class="nav-item" onclick="navigate('contacts', this)" id="nav-contacts">
+        <span class="nav-icon">✉</span><span class="nav-label">Queries</span>
+      </a>
+      <div class="nav-section-label">Account</div>
       <a href="#" class="nav-item" onclick="navigate('profile', this)" id="nav-profile">
-        <span class="nav-icon">👤</span><span class="nav-label">Profile</span>
+        <span class="nav-icon">◉</span><span class="nav-label">Profile</span>
       </a>
     </nav>
     <div class="sidebar-footer">
@@ -172,7 +175,7 @@
           <table class="data-table" id="batches-table">
             <thead>
               <tr>
-                <th>ID</th><th>Batch Name</th><th>Total Codes</th><th>Used</th><th>Remaining</th><th>Usage %</th><th>Created</th><th>Actions</th>
+                <th>ID</th><th>Batch Name</th><th>Campaign</th><th>Total Codes</th><th>Used</th><th>Remaining</th><th>Usage %</th><th>Created</th><th>Actions</th>
               </tr>
             </thead>
             <tbody id="batches-tbody"><tr><td colspan="8" class="loading-row">Loading batches…</td></tr></tbody>
@@ -183,28 +186,31 @@
       <!-- SUBMISSIONS PAGE -->
       <section id="page-submissions" class="page hidden">
         <div class="page-header">
-          <h2>User Submissions</h2>
+          <h2>User Submissions — Entries</h2>
           <div class="filter-row">
-            <input type="text" id="filter-city" placeholder="Filter by city…" class="filter-input" />
-            <select id="filter-period" class="filter-select">
+            <input type="text" id="filter-city" placeholder="Filter by city…" class="filter-input" oninput="loadSubmissions()" />
+            <input type="text" id="filter-name" placeholder="Search by name…" class="filter-input" oninput="loadSubmissions()" />
+            <select id="filter-period" class="filter-select" onchange="loadSubmissions()">
               <option value="">All Time</option>
               <option value="today">Today</option>
               <option value="week">This Week</option>
               <option value="month">This Month</option>
               <option value="year">This Year</option>
             </select>
-            <button class="btn-secondary" onclick="loadSubmissions()">Filter</button>
+            <button class="btn-secondary" onclick="loadSubmissions()">🔍 Filter</button>
             <button class="btn-outline" onclick="exportSubmissions()">⬇ Export CSV</button>
+            <button class="btn-secondary" onclick="loadSubmissions()" title="Refresh">🔄</button>
           </div>
         </div>
+        <div id="submissions-summary" class="sub-summary hidden"></div>
         <div class="table-wrap">
           <table class="data-table">
             <thead>
               <tr>
-                <th>ID</th><th>Name</th><th>Phone</th><th>City</th><th>State</th><th>QR Code</th><th>Submitted</th><th>Winner</th>
+                <th>#</th><th>Name</th><th>📱 Phone</th><th>🏙️ City</th><th>State</th><th>Product</th><th>QR Code</th><th>Submitted At</th><th>Status</th>
               </tr>
             </thead>
-            <tbody id="submissions-tbody"><tr><td colspan="8" class="loading-row">Loading submissions…</td></tr></tbody>
+            <tbody id="submissions-tbody"><tr><td colspan="9" class="loading-row">Loading entries…</td></tr></tbody>
           </table>
         </div>
         <div class="pagination" id="submissions-pagination"></div>
@@ -251,6 +257,24 @@
         <div class="pagination" id="winners-pagination"></div>
       </section>
 
+      <!-- CONTACTS / QUERIES PAGE -->
+      <section id="page-contacts" class="page hidden">
+        <div class="page-header">
+          <h2>User Queries & Messages</h2>
+          <button class="btn-secondary" onclick="loadContacts()" title="Refresh">🔄 Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th><th>Message</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contacts-tbody"><tr><td colspan="8" class="loading-row">Loading queries…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- PROFILE PAGE -->
       <section id="page-profile" class="page hidden">
         <div class="page-header">
@@ -276,6 +300,41 @@
             <div id="pw-msg" class="hidden"></div>
             <button type="submit" class="btn-primary">Update Password</button>
           </form>
+        </div>
+      </section>
+
+      <!-- QR GENERATOR PAGE -->
+      <section id="page-qrgen" class="page hidden">
+        <div class="page-header">
+          <h2>Bulk QR Code Generator</h2>
+          <p style="font-size:13px;color:var(--text3);margin-top:4px">Generate unique QR codes in bulk and export them as a print-ready PDF</p>
+        </div>
+        
+        <div class="qrgen-bulk-card" style="margin-top: 20px;">
+          <h3>Create a New Batch</h3>
+          <p style="font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.6">Generate thousands of unique, secure QR codes instantly. Once generated, you can download them as a formatted PDF document ready for printing and packaging.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn-primary" onclick="openModal('create-batch-modal')">📦 Create New QR Batch</button>
+            <button class="btn-outline" onclick="navigate('batches', document.getElementById('nav-batches'))">View Existing Batches →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACTS PAGE -->
+      <section id="page-contacts" class="page hidden">
+        <div class="page-header">
+          <h2>Contact Queries</h2>
+          <button class="btn-secondary" onclick="loadContacts()">🔄 Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th><th>Message</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contacts-tbody"><tr><td colspan="8" class="loading-row">Loading queries…</td></tr></tbody>
+          </table>
         </div>
       </section>
 
@@ -360,6 +419,6 @@
 <!-- Toast -->
 <div class="toast hidden" id="toast"></div>
 
-<script src="app.js"></script>
+<script src="/admin/app.js"></script>
 </body>
 </html>
