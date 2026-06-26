@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import '../styles/Rewards.css';
 import './ScannerPage.css';
 
-const API = 'http://localhost:5000';
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Rewards = ({ onClose }) => {
   const [schemes, setSchemes] = useState([]);
