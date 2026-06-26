@@ -1,5 +1,5 @@
 /* FMCG Admin Dashboard — app.js */
-const API = 'http://localhost:5000';
+const API = 'https://oil-factory.onrender.com';
 
 // ── Demo Mode ─────────────────────────────────────────────────
 // When backend is offline, login with: admin / admin123
@@ -8,53 +8,53 @@ let DEMO_MODE = false;
 
 const MOCK = {
   dashboard: {
-    qr_codes:    { total: 500000, used: 127450, remaining: 372550, usage_percentage: 25.5 },
+    qr_codes: { total: 500000, used: 127450, remaining: 372550, usage_percentage: 25.5 },
     submissions: { total_submissions: 127450, total_winners: 5120, unique_participants: 121300, unique_cities: 648, winner_percentage: 4.0 },
-    schemes:     { total: 5, active: 3, inactive: 2 },
-    batches:     { total: 12 },
-    winners:     { total_winners: 5120, announced: 4600, pending_announcement: 520 }
+    schemes: { total: 5, active: 3, inactive: 2 },
+    batches: { total: 12 },
+    winners: { total_winners: 5120, announced: 4600, pending_announcement: 520 }
   },
   schemes: [
-    { id:1, title:'Summer Oil Campaign 2024', reward_text:'Win a free 5L Oil Tin!', is_active:true,  total_qr_codes:200000, used_qr_codes:58200, usage_percentage:29.1 },
-    { id:2, title:'Mustard Gold Diwali 2024', reward_text:'Win Gold Coins!',        is_active:true,  total_qr_codes:150000, used_qr_codes:43100, usage_percentage:28.7 },
-    { id:3, title:'SoyaBean Harvest 2024',   reward_text:'Win ₹500 Amazon Card!',  is_active:true,  total_qr_codes:100000, used_qr_codes:26150, usage_percentage:26.2 },
-    { id:4, title:'CottonSeed Spring 2023',  reward_text:'Win free product pack!', is_active:false, total_qr_codes:30000,  used_qr_codes:30000, usage_percentage:100  },
-    { id:5, title:'Pilot Campaign 2023',     reward_text:'Early bird gift!',       is_active:false, total_qr_codes:20000,  used_qr_codes:20000, usage_percentage:100  },
+    { id: 1, title: 'Summer Oil Campaign 2024', reward_text: 'Win a free 5L Oil Tin!', is_active: true, total_qr_codes: 200000, used_qr_codes: 58200, usage_percentage: 29.1 },
+    { id: 2, title: 'Mustard Gold Diwali 2024', reward_text: 'Win Gold Coins!', is_active: true, total_qr_codes: 150000, used_qr_codes: 43100, usage_percentage: 28.7 },
+    { id: 3, title: 'SoyaBean Harvest 2024', reward_text: 'Win ₹500 Amazon Card!', is_active: true, total_qr_codes: 100000, used_qr_codes: 26150, usage_percentage: 26.2 },
+    { id: 4, title: 'CottonSeed Spring 2023', reward_text: 'Win free product pack!', is_active: false, total_qr_codes: 30000, used_qr_codes: 30000, usage_percentage: 100 },
+    { id: 5, title: 'Pilot Campaign 2023', reward_text: 'Early bird gift!', is_active: false, total_qr_codes: 20000, used_qr_codes: 20000, usage_percentage: 100 },
   ],
   batches: [
-    { id:1, batch_name:'Summer Campaign Batch 1', total_codes:100000, used_codes:32500, usage_percentage:32.5, created_at:'2024-03-01T10:00:00' },
-    { id:2, batch_name:'Summer Campaign Batch 2', total_codes:100000, used_codes:25700, usage_percentage:25.7, created_at:'2024-03-15T10:00:00' },
-    { id:3, batch_name:'Diwali Gold Batch 1',     total_codes:75000,  used_codes:21000, usage_percentage:28.0, created_at:'2024-09-01T10:00:00' },
-    { id:4, batch_name:'Diwali Gold Batch 2',     total_codes:75000,  used_codes:22100, usage_percentage:29.5, created_at:'2024-09-20T10:00:00' },
-    { id:5, batch_name:'SoyaBean Harvest Batch',  total_codes:100000, used_codes:26150, usage_percentage:26.2, created_at:'2024-06-01T10:00:00' },
+    { id: 1, batch_name: 'Summer Campaign Batch 1', total_codes: 100000, used_codes: 32500, usage_percentage: 32.5, created_at: '2024-03-01T10:00:00' },
+    { id: 2, batch_name: 'Summer Campaign Batch 2', total_codes: 100000, used_codes: 25700, usage_percentage: 25.7, created_at: '2024-03-15T10:00:00' },
+    { id: 3, batch_name: 'Diwali Gold Batch 1', total_codes: 75000, used_codes: 21000, usage_percentage: 28.0, created_at: '2024-09-01T10:00:00' },
+    { id: 4, batch_name: 'Diwali Gold Batch 2', total_codes: 75000, used_codes: 22100, usage_percentage: 29.5, created_at: '2024-09-20T10:00:00' },
+    { id: 5, batch_name: 'SoyaBean Harvest Batch', total_codes: 100000, used_codes: 26150, usage_percentage: 26.2, created_at: '2024-06-01T10:00:00' },
   ],
   submissions: [
-    { id:1001, name:'Ramesh Sharma',   phone:'9876543210', city:'Mumbai',    state:'Maharashtra', qr_code:'QR-SUM-A1B2C3', submitted_at:'2024-03-10T09:32:00', is_winner:true  },
-    { id:1002, name:'Priya Patel',     phone:'9823456789', city:'Ahmedabad', state:'Gujarat',     qr_code:'QR-SUM-D4E5F6', submitted_at:'2024-03-10T10:15:00', is_winner:false },
-    { id:1003, name:'Anil Kumar',      phone:'9765432100', city:'Delhi',     state:'Delhi',       qr_code:'QR-DIW-G7H8I9', submitted_at:'2024-03-11T11:00:00', is_winner:false },
-    { id:1004, name:'Sunita Devi',     phone:'9712345678', city:'Jaipur',    state:'Rajasthan',   qr_code:'QR-SOY-J1K2L3', submitted_at:'2024-03-11T14:22:00', is_winner:true  },
-    { id:1005, name:'Mohan Yadav',     phone:'9698765432', city:'Lucknow',   state:'UP',          qr_code:'QR-SUM-M4N5O6', submitted_at:'2024-03-12T08:45:00', is_winner:false },
-    { id:1006, name:'Kavita Reddy',    phone:'9654321098', city:'Hyderabad', state:'Telangana',   qr_code:'QR-DIW-P7Q8R9', submitted_at:'2024-03-12T16:30:00', is_winner:false },
-    { id:1007, name:'Rajiv Gupta',     phone:'9543210987', city:'Pune',      state:'Maharashtra', qr_code:'QR-SOY-S1T2U3', submitted_at:'2024-03-13T10:10:00', is_winner:true  },
-    { id:1008, name:'Deepa Nair',      phone:'9432109876', city:'Chennai',   state:'Tamil Nadu',  qr_code:'QR-SUM-V4W5X6', submitted_at:'2024-03-13T12:00:00', is_winner:false },
-    { id:1009, name:'Vikram Singh',    phone:'9321098765', city:'Kolkata',   state:'West Bengal', qr_code:'QR-DIW-Y7Z8A9', submitted_at:'2024-03-14T09:20:00', is_winner:false },
-    { id:1010, name:'Meena Mishra',    phone:'9210987654', city:'Bhopal',    state:'MP',          qr_code:'QR-SOY-B1C2D3', submitted_at:'2024-03-14T15:45:00', is_winner:false },
+    { id: 1001, name: 'Ramesh Sharma', phone: '9876543210', city: 'Mumbai', state: 'Maharashtra', qr_code: 'QR-SUM-A1B2C3', submitted_at: '2024-03-10T09:32:00', is_winner: true },
+    { id: 1002, name: 'Priya Patel', phone: '9823456789', city: 'Ahmedabad', state: 'Gujarat', qr_code: 'QR-SUM-D4E5F6', submitted_at: '2024-03-10T10:15:00', is_winner: false },
+    { id: 1003, name: 'Anil Kumar', phone: '9765432100', city: 'Delhi', state: 'Delhi', qr_code: 'QR-DIW-G7H8I9', submitted_at: '2024-03-11T11:00:00', is_winner: false },
+    { id: 1004, name: 'Sunita Devi', phone: '9712345678', city: 'Jaipur', state: 'Rajasthan', qr_code: 'QR-SOY-J1K2L3', submitted_at: '2024-03-11T14:22:00', is_winner: true },
+    { id: 1005, name: 'Mohan Yadav', phone: '9698765432', city: 'Lucknow', state: 'UP', qr_code: 'QR-SUM-M4N5O6', submitted_at: '2024-03-12T08:45:00', is_winner: false },
+    { id: 1006, name: 'Kavita Reddy', phone: '9654321098', city: 'Hyderabad', state: 'Telangana', qr_code: 'QR-DIW-P7Q8R9', submitted_at: '2024-03-12T16:30:00', is_winner: false },
+    { id: 1007, name: 'Rajiv Gupta', phone: '9543210987', city: 'Pune', state: 'Maharashtra', qr_code: 'QR-SOY-S1T2U3', submitted_at: '2024-03-13T10:10:00', is_winner: true },
+    { id: 1008, name: 'Deepa Nair', phone: '9432109876', city: 'Chennai', state: 'Tamil Nadu', qr_code: 'QR-SUM-V4W5X6', submitted_at: '2024-03-13T12:00:00', is_winner: false },
+    { id: 1009, name: 'Vikram Singh', phone: '9321098765', city: 'Kolkata', state: 'West Bengal', qr_code: 'QR-DIW-Y7Z8A9', submitted_at: '2024-03-14T09:20:00', is_winner: false },
+    { id: 1010, name: 'Meena Mishra', phone: '9210987654', city: 'Bhopal', state: 'MP', qr_code: 'QR-SOY-B1C2D3', submitted_at: '2024-03-14T15:45:00', is_winner: false },
   ],
   winners: [
-    { submission_id:1001, name:'Ramesh Sharma', phone:'9876543210', city:'Mumbai',    announced:true  },
-    { submission_id:1004, name:'Sunita Devi',   phone:'9712345678', city:'Jaipur',    announced:true  },
-    { submission_id:1007, name:'Rajiv Gupta',   phone:'9543210987', city:'Pune',      announced:false },
-    { submission_id:1015, name:'Anita Joshi',   phone:'9100000001', city:'Nagpur',    announced:false },
-    { submission_id:1023, name:'Suresh Menon',  phone:'9100000002', city:'Kochi',     announced:true  },
-    { submission_id:1031, name:'Geeta Rani',    phone:'9100000003', city:'Patna',     announced:false },
+    { submission_id: 1001, name: 'Ramesh Sharma', phone: '9876543210', city: 'Mumbai', announced: true },
+    { submission_id: 1004, name: 'Sunita Devi', phone: '9712345678', city: 'Jaipur', announced: true },
+    { submission_id: 1007, name: 'Rajiv Gupta', phone: '9543210987', city: 'Pune', announced: false },
+    { submission_id: 1015, name: 'Anita Joshi', phone: '9100000001', city: 'Nagpur', announced: false },
+    { submission_id: 1023, name: 'Suresh Menon', phone: '9100000002', city: 'Kochi', announced: true },
+    { submission_id: 1031, name: 'Geeta Rani', phone: '9100000003', city: 'Patna', announced: false },
   ],
   winner_stats: { total_winners: 5120, announced: 4600, pending_announcement: 520 },
-  profile: { id:1, username:'admin', email:'admin@fmcgrewards.in', role:'super_admin', is_active:true, last_login:'2024-03-14T09:00:00', created_at:'2024-01-01T00:00:00' },
+  profile: { id: 1, username: 'admin', email: 'admin@fmcgrewards.in', role: 'super_admin', is_active: true, last_login: '2024-03-14T09:00:00', created_at: '2024-01-01T00:00:00' },
 };
 
 // ── Auth helpers ──────────────────────────────────────────────
-const getToken  = () => localStorage.getItem('fmcg_token');
-const setToken  = (t) => localStorage.setItem('fmcg_token', t);
+const getToken = () => localStorage.getItem('fmcg_token');
+const setToken = (t) => localStorage.setItem('fmcg_token', t);
 const clearAuth = () => { localStorage.removeItem('fmcg_token'); localStorage.removeItem('fmcg_admin'); };
 
 async function apiFetch(path, opts = {}) {
@@ -180,7 +180,7 @@ async function checkApiStatus() {
   try {
     const r = await fetch(`${API}/health`);
     dot.className = r.ok ? 'status-dot online' : 'status-dot offline';
-    txt.textContent  = r.ok ? 'API Online' : 'API Offline';
+    txt.textContent = r.ok ? 'API Online' : 'API Offline';
   } catch {
     dot.className = 'status-dot offline'; txt.textContent = 'API Offline';
   }
@@ -200,7 +200,7 @@ async function loadDashboard() {
 function renderStats(d) {
   const qr = d.qr_codes || {}; const sub = d.submissions || {}; const sch = d.schemes || {}; const win = d.winners || {};
   const isOffline = document.getElementById('status-text')?.textContent.includes('Offline');
-  
+
   const cards = [
     { icon: '📱', label: 'Total QR Codes', value: fmt(qr.total), sub: `${fmt(qr.used)} used`, badge: `${qr.usage_percentage?.toFixed(1) || 0}%`, btype: 'info' },
     { icon: '✅', label: 'Available QR', value: fmt(qr.remaining), sub: 'Ready to distribute', badge: 'Active', btype: 'success' },
@@ -209,7 +209,7 @@ function renderStats(d) {
     { icon: '🏆', label: 'Total Winners', value: fmt(win.total_winners), sub: `${fmt(win.announced)} announced`, badge: `${win.pending_announcement || 0} pending`, btype: 'warning' },
     { icon: '📋', label: 'Active Campaigns', value: fmt(sch.active), sub: `${fmt(sch.total)} total schemes`, badge: `${sch.inactive || 0} inactive`, btype: 'info' },
   ];
-  
+
   let html = '';
   if (isOffline) {
     html += `
@@ -218,7 +218,7 @@ function renderStats(d) {
       </div>
     `;
   }
-  
+
   html += cards.map(c => `
     <div class="stat-card">
       <div class="stat-icon">${c.icon}</div>
@@ -226,7 +226,7 @@ function renderStats(d) {
       <div class="stat-value">${c.value}</div>
       <div class="stat-sub">${c.sub} &nbsp;<span class="stat-badge badge-${c.btype}">${c.badge}</span></div>
     </div>`).join('');
-    
+
   document.getElementById('stats-grid').innerHTML = html;
 }
 
@@ -261,7 +261,7 @@ function renderBarChart(d) {
       </div>
       <div class="bar-row">
         <span class="bar-label">Available</span>
-        <div class="bar-track"><div class="bar-fill bar-avail" style="width:${100-pct}%"></div></div>
+        <div class="bar-track"><div class="bar-fill bar-avail" style="width:${100 - pct}%"></div></div>
         <span class="bar-val">${fmt(qr.remaining || 0)}</span>
       </div>
       <div style="margin-top:14px;font-size:13px;color:var(--text3)">QR Usage: ${pct}% of total codes consumed</div>
@@ -317,7 +317,7 @@ async function loadSchemes() {
         <td>${fmt(s.total_qr_codes)}</td>
         <td><div class="usage-bar"><div class="usage-fill" style="width:${s.usage_percentage}%"></div></div>
           <span style="font-size:11px;color:var(--text3)">${s.usage_percentage.toFixed(1)}%</span></td>
-        <td><span class="status-pill ${s.is_active ? 'pill-active':'pill-inactive'}">${s.is_active?'● Active':'● Inactive'}</span></td>
+        <td><span class="status-pill ${s.is_active ? 'pill-active' : 'pill-inactive'}">${s.is_active ? '● Active' : '● Inactive'}</span></td>
         <td><span style="color:var(--text3);font-size:12px">Demo mode</span></td>
       </tr>`).join('');
   }
@@ -414,7 +414,7 @@ async function handleCreateBatch(e) {
 async function exportBatch(id, totalCodes = 0) {
   let page = 1;
   let perPage = 1000;
-  
+
   if (totalCodes > 1000) {
     const totalPages = Math.ceil(totalCodes / 1000);
     const input = prompt(`This batch has ${fmt(totalCodes)} QR codes.\nTo prevent browser timeouts, please enter the page number (1 to ${totalPages}) to export 1,000 codes at a time:`, "1");
@@ -429,7 +429,9 @@ async function exportBatch(id, totalCodes = 0) {
 
   try {
     showToast(`Preparing PDF export for page ${page}...`, 'info');
-    const res = await fetch(`${API}/api/admin/batch/${id}/export?page=${page}&per_page=${perPage}`, {
+    const baseUrl = window.location.href.split('/admin')[0];
+    const siteUrl = encodeURIComponent(baseUrl);
+    const res = await fetch(`${API}/api/admin/batch/${id}/export?page=${page}&per_page=${perPage}&base_url=${siteUrl}`, {
       headers: { 'Authorization': `Bearer ${getToken()}` }
     });
     if (!res.ok) {
@@ -497,7 +499,7 @@ async function loadSubmissions(page = 1) {
 
     document.getElementById('submissions-tbody').innerHTML = filtered.length ? filtered.map((s, idx) => `
       <tr>
-        <td><strong>${(page-1)*25 + idx + 1}</strong></td>
+        <td><strong>${(page - 1) * 25 + idx + 1}</strong></td>
         <td>
           <div style="font-weight:600;color:var(--text1)">${s.name}</div>
         </td>
@@ -524,7 +526,7 @@ async function loadSubmissions(page = 1) {
 
     document.getElementById('submissions-tbody').innerHTML = subs.map((s, idx) => `
       <tr>
-        <td><strong>${idx+1}</strong></td>
+        <td><strong>${idx + 1}</strong></td>
         <td><div style="font-weight:600;color:var(--text1)">${s.name}</div></td>
         <td>${s.phone}</td>
         <td>${s.city}</td>
@@ -711,7 +713,7 @@ async function populateSchemesDropdown() {
       const el = document.getElementById(id);
       if (el) el.innerHTML = (id === 'b-scheme' ? '<option value="">— No campaign —</option>' : '<option value="">Select campaign…</option>') + opts;
     });
-  } catch {}
+  } catch { }
 }
 
 // ── Pagination ─────────────────────────────────────────────────
@@ -742,7 +744,7 @@ function loadQRGen() {
 
 function generateRandomCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  const rand = Array.from({length: 8}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  const rand = Array.from({ length: 8 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
   const code = `QR${Date.now().toString().slice(-6)}${rand}`;
   document.getElementById('qrgen-code').value = code;
 }

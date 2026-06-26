@@ -45,6 +45,8 @@ body {
   min-height: 100vh;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  overflow-y: scroll; /* Prevent scrollbar fluctuation loops */
+  overflow-x: hidden;
 }
 
 /* ── Screens ───────────────────────────────── */

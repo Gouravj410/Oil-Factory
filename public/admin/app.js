@@ -429,7 +429,9 @@ async function exportBatch(id, totalCodes = 0) {
 
   try {
     showToast(`Preparing PDF export for page ${page}...`, 'info');
-    const res = await fetch(`${API}/api/admin/batch/${id}/export?page=${page}&per_page=${perPage}`, {
+    const baseUrl = window.location.href.split('/admin')[0];
+    const siteUrl = encodeURIComponent(baseUrl);
+    const res = await fetch(`${API}/api/admin/batch/${id}/export?page=${page}&per_page=${perPage}&base_url=${siteUrl}`, {
       headers: { 'Authorization': `Bearer ${getToken()}` }
     });
     if (!res.ok) {
