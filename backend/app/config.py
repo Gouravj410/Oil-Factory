@@ -16,10 +16,13 @@ class Config:
     TESTING = False
     
     # Database
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "DATABASE_URL",
-        "postgresql://user:password@localhost:5432/fmcg_rewards"
-    )
+    db_url = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/fmcg_rewards")
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+    if db_url.startswith("postgresql+pg8000://"):
+        db_url = db_url.replace("postgresql+pg8000://", "postgresql://", 1)
+        
+    SQLALCHEMY_DATABASE_URI = db_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_size": 20,
